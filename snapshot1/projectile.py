@@ -5,12 +5,36 @@ g = 9.8
 FPS = 60
 
 class Projectile():
-    def __init__(self, position,power, theta,radio,window):
+    def __init__(self, position, typeBullet,power, theta,window):
         super(Projectile, self).__init__()
+
+        self.typeBullet = typeBullet
+        self.quantity = 0
+        self.dmg = 0
+        self.power = power
+        self.size = 0
+        if self.typeBullet == 1: #105mm
+            self.size = 10.5
+            self.quantity = 3
+            self.dmg = 50
+        elif self.typeBullet == 2: #80mm
+            self.size = 8
+            self.quantity = 10
+            self.dmg = 40
+        elif self.typeBullet == 2: #60mm
+            self.size = 6
+            self.quantity = 3
+            self.dmg = 30
+        else: #standard 60mm
+            self.size = 6
+            self.quantity = 3
+            self.dmg = 30
+        
+
+
 
         self.origin = (position[0],position[1])
 
-        self.power = power
 
         self.theta = toRadian(abs(theta))
 
@@ -27,7 +51,6 @@ class Projectile():
 
         self.f = self.getTrajectory()
         
-        self.radio = radio
             
         self.range = self.x + abs(self.getRange())
         self.win = window
@@ -35,7 +58,6 @@ class Projectile():
         self.oldPath = []
         self.hit = False
         self.hitYourself = False
-
     def timeOfFlight(self):
         
         return round((2 * self.power * math.sin(self.theta)) / g, 2)
@@ -61,31 +83,23 @@ class Projectile():
     def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints):
         self.yNew = self.y-self.ch
 
-        while (self.x +self.radio >0 and self.x <= 1300) and (self.yNew+self.radio > -2000 and self.yNew <terrainPoints[int(self.x)][1]-3) and not self.hit:
-
-            if(self.x +self.radio>= otherHitboxPoints[0][0]  and self.x+self.radio <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
-            
-                if(self.yNew +self.radio>= otherHitboxPoints[0][1]  and self.yNew+self.radio <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
-            
+        while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew <terrainPoints[int(self.x)][1]-3) and not self.hit:
+            if(self.x >= otherHitboxPoints[0][0]  and self.x <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
+                if(self.yNew >= otherHitboxPoints[0][1]  and self.yNew <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
                     #print("hit!")
                     self.hit = True
-            
-            if(self.x +self.radio>= selfhitboxPts[0][0]  and self.x +self.radio<=selfhitboxPts[len(selfhitboxPts)-1][0]):
-            
-                if(self.yNew+self.radio >= selfhitboxPts[0][1]  and self.yNew +self.radio<=selfhitboxPts[len(selfhitboxPts)-1][1]):
-            
+            if(self.x >= selfhitboxPts[0][0]  and self.x <=selfhitboxPts[len(selfhitboxPts)-1][0]):
+                if(self.yNew >= selfhitboxPts[0][1]  and self.yNew <=selfhitboxPts[len(selfhitboxPts)-1][1]):
                     #print("hit!")
                     self.hitYourself = True
-            
             self.x += self.dx 
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.path.append((self.x, self.y-self.ch))
             self.yNew = self.y-self.ch
             self.path = self.path[-50:]
-            
-            pygame.draw.circle(self.win, 'lightblue', self.path[0], self.radio+1)
-            pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.radio+2)
-            pygame.draw.circle(self.win, 'black', self.path[-1], self.radio)
+            pygame.draw.circle(self.win, 'lightblue', self.path[0], self.size-1)
+            pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.size)
+            pygame.draw.circle(self.win, 'black', self.path[-1], self.size-2)
             pygame.display.update()
     
         
@@ -93,30 +107,25 @@ class Projectile():
         time.sleep(0.01)
         self.yNew = self.y-self.ch
         collided = False
-        
-        while (self.x+self.radio >0 and self.x + self.radio <= 1300) and (self.yNew + self.radio > -2000 and self.yNew + self.radio <terrainPoints[int(self.x)][1]-3) and not self.hit:
-        
-            if(self.x+self.radio >= otherHitboxPoints[0][0]  and self.x+self.radio <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
-        
-                if(self.yNew +self.radio>= otherHitboxPoints[0][1]  and self.yNew + self.radio <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
-        
+        while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew <terrainPoints[int(self.x)][1]-3) and not self.hit:
+            if(self.x >= otherHitboxPoints[0][0]  and self.x <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
+                if(self.yNew >= otherHitboxPoints[0][1]  and self.yNew <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
                     #print("hit!")
                     collide = True
-        
-            if(self.x +self.radio >= selfhitboxPts[0][0]  and self.x +self.radio <=selfhitboxPts[len(selfhitboxPts)-1][0]):
-        
-                if(self.yNew +self.radio>= selfhitboxPts[0][1]  and self.yNew +self.radio<=selfhitboxPts[len(selfhitboxPts)-1][1]):
-        
+            if(self.x >= selfhitboxPts[0][0]  and self.x <=selfhitboxPts[len(selfhitboxPts)-1][0]):
+                if(self.yNew >= selfhitboxPts[0][1]  and self.yNew <=selfhitboxPts[len(selfhitboxPts)-1][1]):
                     #print("hit!")
                     collide = True
-
-            self.x += self.dx 
+            
+            
+            
+            self.x += self.dx
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.path.append((self.x, self.y-self.ch))
             self.yNew = self.y-self.ch
             self.path = self.path[-50:]
                 
-            pygame.draw.circle(self.win, 'lightblue', self.path[-1], self.radio+6)
+            pygame.draw.circle(self.win, 'lightblue', self.path[-1], self.size)
             pygame.display.update()
         return True
     
@@ -125,11 +134,8 @@ class Projectile():
     
     def returnHit(self):
         if self.hitYourself == True:
-            self.hit = False
             return 2
-            
         elif self.hit == True:
-            self.hitYourself = False
             return 1
         else:
             return 0
