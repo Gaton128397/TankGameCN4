@@ -1,11 +1,4 @@
-import pygame,sys#,mainScreen
-
-pygame.init()
-
-WIDTH,HEIGHT = 1300,700
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-
+import pygame,sys
 #Menu
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Menu:
@@ -20,9 +13,8 @@ class Menu:
         
         self.buttonPlay = pygame.Rect(475, 305, 350, 150)
         self.buttonExit = pygame.Rect(475, 485, 350, 150)
+    
     def draw_menu(self):
-        
-        
         self.screen.blit(self.background, (0, 0))
 
         font = pygame.font.Font(None,150)
@@ -41,35 +33,3 @@ class Menu:
         text = font.render("Salir", True, 'white')
         text_rect = text.get_rect(center=self.buttonExit.center)
         self.screen.blit(text, text_rect)
-        
-        
-
-
-#Codigo para saber si funciona el boton jugar
-def draw_red_screen():
-    screen.fill('red')
-    pygame.display.flip()
-
-def main():
-    menu1 = Menu(WIDTH,HEIGHT)
-    # menu1.draw_menu()
-    # menu1.getButton()
-    while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if menu1.buttonPlay.collidepoint(event.pos):
-                        draw_red_screen()
-                        #mainScreen.game()
-
-                    elif menu1.buttonExit.collidepoint(event.pos):
-                        pygame.quit()
-                        sys.exit()
-            menu1.draw_menu()
-
-
-if __name__ == "__main__":
-    main()
