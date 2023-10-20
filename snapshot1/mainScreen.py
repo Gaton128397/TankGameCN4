@@ -80,7 +80,7 @@ def game():
     window = pygame.display.set_mode((WIDTH,HEIGHT))
     window.fill('lightblue')
     pygame.display.set_caption("Tank v Tank")
-    menu1 = Menu(WIDTH,HEIGHT)
+    menu1 = Menu(window,WIDTH,HEIGHT)
     start = 0
     if start ==0:
         menu1.draw_menu()
