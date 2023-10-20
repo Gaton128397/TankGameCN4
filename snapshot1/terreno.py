@@ -13,7 +13,6 @@ class terrenoCoseno:
         frequency = 0.02#randint(1,2)/100
         phase_shift = 0
 
-
         for x in range(self.width):
             y = amplitude * math.cos(frequency * x + phase_shift) + self.height/2 + 150
             self.cos_points.append((x, int(y)))

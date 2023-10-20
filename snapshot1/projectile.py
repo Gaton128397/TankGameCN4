@@ -30,9 +30,6 @@ class Projectile():
             self.quantity = 3
             self.dmg = 30
         
-
-
-
         self.origin = (position[0],position[1])
 
 
@@ -50,8 +47,7 @@ class Projectile():
 
 
         self.f = self.getTrajectory()
-        
-            
+               
         self.range = self.x + abs(self.getRange())
         self.win = window
         self.path = []
@@ -116,9 +112,7 @@ class Projectile():
                 if(self.yNew >= selfhitboxPts[0][1]  and self.yNew <=selfhitboxPts[len(selfhitboxPts)-1][1]):
                     #print("hit!")
                     collide = True
-            
-            
-            
+                 
             self.x += self.dx
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.path.append((self.x, self.y-self.ch))

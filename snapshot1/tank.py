@@ -6,7 +6,6 @@ class Tank:
 
         self.health = 100
 
-
         self.x = position[0] - 15
         self.y = position[1] - 25
         self.width = 50
@@ -48,7 +47,6 @@ class Tank:
         
         pygame.draw.circle(self.surface, color, ((self.x + self.width, self.y + self.height/2)), self.height/2) #rectangulo donde estara el cañon
         
-
     def actualizar(self,a):
             
             if self.LoR == 0:
@@ -95,4 +93,3 @@ class Tank:
     def getAngle(self):
         
         return self.angulo
-

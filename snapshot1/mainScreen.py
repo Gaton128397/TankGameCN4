@@ -9,9 +9,6 @@ tiempo_presionado = 0
 tiempo_anterior = 0
 presionado = False
 
-
-
-
 #choose bullet 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 class ChooseMenu:
@@ -47,10 +44,8 @@ class ChooseMenu:
     def delOpBef(self,window,position):
         self.noFillingRectangle(window,'lightblue',(position[0],position[1]),(position[2],position[3]))  
 
-
     def choosing(self):
         
-
         self.options(self.window,self.matrizPos[0])
         self.options(self.window,self.matrizPos[1])
         self.options(self.window,self.matrizPos[2])
@@ -71,7 +66,6 @@ class ChooseMenu:
             self.delOpBef(self.window,self.matrizPos[0])
             self.delOpBef(self.window,self.matrizPos[1])
 
-
 #Game
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -89,7 +83,6 @@ def game():
     fuente = pygame.font.Font(None, 30)
     fuente2 = pygame.font.Font(None, 60)
     
-
     initialHeight = HEIGHT-HEIGHT/6
 
     clock = pygame.time.Clock()
@@ -144,8 +137,7 @@ def game():
                     pygame.draw.rect(window, 'lightblue', (50,90,400, 50)) 
                     textoAnguloActual1 = fuente.render(f'ACTUAL ANGLE PLAYER {turno}: {angleBullet1:.1f}', True, 'black')
                     window.blit(textoAnguloActual1,(50,110))
-                    
-                    
+                                       
                 elif turno ==2:
                     
                     positionBullet2 = player2.moveCannon()
@@ -153,7 +145,6 @@ def game():
                     pygame.draw.rect(window, 'lightblue', (100,90,400, 50)) 
                     textoAnguloActual2 = fuente.render(f'ACTUAL ANGLE PLAYER  {turno}: {180-angleBullet2:.1f}', True, 'black')
                     window.blit(textoAnguloActual2,(50,110))
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -246,10 +237,6 @@ def game():
                 pygame.draw.rect(window, 'grey', (50, 50, 200, 20))  
 
             #pygame.draw.rect(window, 'green', ((600,20),(200, 100)),0)
-
-            
-
-
                 if presionado:
                     tiempo_presion = tiempo_actual - tiempo_presionado
                     llenado = min(tiempo_presion * 20, 200)  # Ajustamos el llenado
@@ -274,9 +261,6 @@ def game():
                     pygame.draw.rect(window, (255, 213, 158), (50,660,300, 50))
                     window.blit(textoAltura2, (50, 670))
 
-                    
-                    
-
                 if turno ==2:
                     
                     texto_potencia = fuente.render(f'LAST POWER PLAYER {turno}: {potencia2:.1f}', True, 'black')
@@ -293,15 +277,13 @@ def game():
                     textoAltura2 = fuente.render(f'LAST HEIGHT PLAYER {turno}: {alturamaxima2:.1f}', True, 'black')
                     pygame.draw.rect(window, (255, 213, 158), (900,660,300, 50))
                     window.blit(textoAltura2, (900, 670))
-
-                    
+            
                 elif end:
                     
                     window.fill('gold')
                     textoGanar = fuente2.render(f'GANA PLAYER {turno}', True, 'black')
                     time.sleep(0.2)
                     window.blit(textoGanar, (400, 300))
-
 
                 if presionado:
                     potencia_actual = min(tiempo_presion * 20, 200)
@@ -313,13 +295,10 @@ def game():
                     textoGanar = fuente2.render(f'GANA PLAYER {turno}', True, 'black')
                     time.sleep(0.2)
                     window.blit(textoGanar, (400, 300))
-                
-                
-                    
+                                
                 clock.tick(60)
                 pygame.display.update()
         except ZeroDivisionError:
             textoError = fuente.render("Espera tu turno", True, 'black')
             
-
 game()
