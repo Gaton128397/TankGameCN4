@@ -13,7 +13,7 @@ class Menu:
         self.screen = window
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT  
-        self.background = pygame.image.load("Background.jpeg")
+        self.background = pygame.image.load("snapshot1/Background.jpeg")
         self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
         self.ARENA_COLOR = (244, 164, 96) 
         self.CACTUS_GREEN = (85, 107, 47)
