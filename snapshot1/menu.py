@@ -43,33 +43,3 @@ class Menu:
         self.screen.blit(text, text_rect)
         
         
-
-
-#Codigo para saber si funciona el boton jugar
-def draw_red_screen():
-    screen.fill('red')
-    pygame.display.flip()
-
-def main():
-    menu1 = Menu(WIDTH,HEIGHT)
-    # menu1.draw_menu()
-    # menu1.getButton()
-    while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if menu1.buttonPlay.collidepoint(event.pos):
-                        draw_red_screen()
-                        #mainScreen.game()
-
-                    elif menu1.buttonExit.collidepoint(event.pos):
-                        pygame.quit()
-                        sys.exit()
-            menu1.draw_menu()
-
-
-if __name__ == "__main__":
-    main()

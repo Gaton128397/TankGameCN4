@@ -1,6 +1,5 @@
 import math,pygame,time
 from functions import *
-
 g = 9.8
 FPS = 60
 

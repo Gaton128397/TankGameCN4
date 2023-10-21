@@ -1,6 +1,6 @@
 from random import randint
 from menu import Menu
-import pygame,projectile,tank,terreno,time,cloud,menu,bird,sys
+import pygame,projectile,tank,terreno,time,sys,chooseMenu
 WIDTH,HEIGHT = 1300,700
 hills = []
 canyons = []
@@ -14,62 +14,7 @@ presionado = False
 
 #choose bullet 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
-class ChooseMenu:
-    def __init__(self,window,width,height):
-        self.window = window
-        positionX = width/2
-        positionY = height/628
-        widthSquare = WIDTH/21
-        heightSquare = HEIGHT/23
-        radius = WIDTH/130
-        self.pos=[610,30,40,40,10]
-        self.pos2=[660,30,40,40,8]
-        self.pos3=[710,30,40,40,6]
 
-        self.matrizPos=[self.pos,self.pos2,self.pos3]
-
-    def noFillingRectangle(self,screen,rect_color,rect_position,rect_size):
-        pygame.draw.line(screen, rect_color, rect_position, (rect_position[0] + rect_size[0], rect_position[1]), 2)
-        pygame.draw.line(screen, rect_color, (rect_position[0] + rect_size[0], rect_position[1]), (rect_position[0] + rect_size[0], rect_position[1] + rect_size[1]), 2)
-        pygame.draw.line(screen, rect_color, (rect_position[0] + rect_size[0], rect_position[1] + rect_size[1]), (rect_position[0], rect_position[1] + rect_size[1]), 2)
-        pygame.draw.line(screen, rect_color, (rect_position[0], rect_position[1] + rect_size[1]), rect_position, 2)
-                
-    def options(self,window,position): 
-        pygame.draw.circle(window, 'black',(position[0]+WIDTH/65,position[1]+WIDTH/65),position[4])
-        pygame.draw.rect(window, 'white', (position[0],position[1]+WIDTH/28.8,position[2], position[3]))
-        #("llega aqui")
-        pygame.display.update()
-
-    def choose(self,window,position):
-        self.noFillingRectangle(window,'red',(position[0],position[1]),(position[2],position[3])) 
-
-
-    def delOpBef(self,window,position):
-        self.noFillingRectangle(window,'lightblue',(position[0],position[1]),(position[2],position[3]))  
-
-
-    def choosing(self):
-        
-
-        self.options(self.window,self.matrizPos[0])
-        self.options(self.window,self.matrizPos[1])
-        self.options(self.window,self.matrizPos[2])
-        i=0
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_1]:
-            self.choose(self.window,self.matrizPos[0])
-            self.delOpBef(self.window,self.matrizPos[1])
-            self.delOpBef(self.window,self.matrizPos[2])
-            
-        if keys[pygame.K_2]:
-            self.choose(self.window,self.matrizPos[1])
-            self.delOpBef(self.window,self.matrizPos[2])
-            self.delOpBef(self.window,self.matrizPos[0])
-
-        if keys[pygame.K_3]:
-            self.choose(self.window,self.matrizPos[2])
-            self.delOpBef(self.window,self.matrizPos[0])
-            self.delOpBef(self.window,self.matrizPos[1])
 
 
 #Game
@@ -126,10 +71,10 @@ def game():
     player2.draw_tank('red')
 
     run = True
-    menuChoose = ChooseMenu(window,WIDTH,HEIGHT)
+    menuChoose = chooseMenu.ChooseMenu(window,WIDTH,HEIGHT)
 
     #menuChoose.choosing()
-
+    
     while run:
         try:
             
@@ -137,10 +82,12 @@ def game():
                 
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
                 menuChoose.choosing()
+                
                 if turno == 1:
                     
                     positionBullet1 = player1.moveCannon()
                     angleBullet1 = player1.getAngle()
+                    
                     pygame.draw.rect(window, 'lightblue', (50,90,400, 50)) 
                     textoAnguloActual1 = fuente.render(f'ACTUAL ANGLE PLAYER {turno}: {angleBullet1:.1f}', True, 'black')
                     window.blit(textoAnguloActual1,(50,110))
@@ -150,6 +97,7 @@ def game():
                     
                     positionBullet2 = player2.moveCannon()
                     angleBullet2 = 180-player2.getAngle()
+                    #projectileSize2 = menuChoose.choosing()
                     pygame.draw.rect(window, 'lightblue', (100,90,400, 50)) 
                     textoAnguloActual2 = fuente.render(f'ACTUAL ANGLE PLAYER  {turno}: {180-angleBullet2:.1f}', True, 'black')
                     window.blit(textoAnguloActual2,(50,110))
@@ -160,13 +108,15 @@ def game():
                     pygame.quit()        
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if menu1.buttonPlay.collidepoint(event.pos):
-                        print("HOLA")
+
                         start = 1
                     elif menu1.buttonExit.collidepoint(event.pos):
                         run = False
                         pygame.quit()
                         sys.exit()
                 elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        print(1)
                     if event.key == pygame.K_SPACE:
                         tiempo_presionado = tiempo_actual
                         presionado = True
