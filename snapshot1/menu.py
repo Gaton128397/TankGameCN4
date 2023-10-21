@@ -12,7 +12,7 @@ class Menu:
         self.CACTUS_GREEN = (85, 107, 47)
         
         self.buttonPlay = pygame.Rect(475, 305, 350, 150)
-        self.buttonExit = pygame.Rect(475, 485, 350, 150)
+        self.buttonExit = pygame.Rect(975, 635, 350, 150)
     
     def draw_menu(self):
         self.screen.blit(self.background, (0, 0))
