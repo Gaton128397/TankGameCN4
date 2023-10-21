@@ -1,7 +1,7 @@
 from random import randint
 from menu import Menu
-import pygame,projectile,tank,terreno,time,sys,chooseMenu
-WIDTH,HEIGHT = 1300,700
+import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions
+WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
 hills = []
 canyons = []
 potencia = 0
@@ -19,7 +19,6 @@ presionado = False
 def game():
     pygame.init()
     window = pygame.display.set_mode((WIDTH,HEIGHT))
-    window.fill('lightblue')
     pygame.display.set_caption("Tank v Tank")
     menu1 = Menu(window,WIDTH,HEIGHT)
     start = 0
@@ -29,8 +28,6 @@ def game():
     
     fuente = pygame.font.Font(None, 30)
     fuente2 = pygame.font.Font(None, 60)
-    
-    initialHeight = HEIGHT-HEIGHT/6
 
     clock = pygame.time.Clock()
     
@@ -61,15 +58,19 @@ def game():
     range1 = 0
     range2 = 0
     end = False
-    terrain.drawTerrain()
-    player1.draw_tank('blue')
-    player2.draw_tank('red')
-
+    playersInGame = []
+    playersInGame.append(player1)
+    playersInGame.append(player2)
+    LAYERS = [] #indice 0 terreno y background, indice 1 jugadores
+    LAYERS.append(terrain.drawTerrain())
+    LAYERS.append(playersInGame)
+    window.blit(LAYERS[0],(0,0))
+    LAYERS[1][0].draw_tank(False)
+    LAYERS[1][1].draw_tank(False)
     run = True
     menuChoose = chooseMenu.ChooseMenu(window,WIDTH,HEIGHT)
-
     #menuChoose.choosing()
-    
+    tempWindow = window.copy()
     while run:
         try:
             
@@ -79,14 +80,16 @@ def game():
                 menuChoose.choosing()
                 
                 if turno == 1:
+                   
+                   
                     
-                    positionBullet1 = player1.moveCannon()
-                    angleBullet1 = player1.getAngle()
+                    player1.moveCannon(tempWindow,window)
                     
                     pygame.draw.rect(window, 'lightblue', (50,90,400, 50)) 
+                    angleBullet1 = player1.getAngle()
                     textoAnguloActual1 = fuente.render(f'ACTUAL ANGLE PLAYER {turno}: {angleBullet1:.1f}', True, 'black')
+                    
                     window.blit(textoAnguloActual1,(50,110))
-                                       
                 elif turno ==2:
                     
                     positionBullet2 = player2.moveCannon()
@@ -94,7 +97,7 @@ def game():
                     #projectileSize2 = menuChoose.choosing()
                     pygame.draw.rect(window, 'lightblue', (100,90,400, 50)) 
                     textoAnguloActual2 = fuente.render(f'ACTUAL ANGLE PLAYER  {turno}: {180-angleBullet2:.1f}', True, 'black')
-                    window.blit(textoAnguloActual2,(50,110))
+                    tempWindow.blit(textoAnguloActual2,(50,110))
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

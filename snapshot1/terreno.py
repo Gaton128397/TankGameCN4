@@ -1,4 +1,4 @@
-import pygame,math,sys
+import pygame,math, drawFunctions
 from random import randint
 class terrenoCoseno:
     def __init__(self,screen,width,height):
@@ -19,9 +19,11 @@ class terrenoCoseno:
             self.yCosPoints.append(int(y))
             #print(self.cos_points[x])
     def drawTerrain(self):
-        self.window.fill('lightblue')
-        pygame.draw.polygon(self.window, (255, 213, 158), [(0, self.height)] + self.cos_points + [(self.width, self.height)])
-        pygame.draw.lines(self.window, (139, 69, 19), False, self.cos_points, 5)
+        surf = self.window.copy()
+        drawFunctions.backgroundDraw(surf)
+        pygame.draw.polygon(surf, (255, 213, 158), [(0, self.height)] + self.cos_points + [(self.width, self.height)])
+        pygame.draw.lines(surf, (139, 69, 19), False, self.cos_points, 5)
+        return surf
         # pygame.display.update()
     def getCosPoints(self):
         return(self.cos_points)
