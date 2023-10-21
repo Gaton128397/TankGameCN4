@@ -33,3 +33,5 @@ class Menu:
         text = font.render("Salir", True, 'white')
         text_rect = text.get_rect(center=self.buttonExit.center)
         self.screen.blit(text, text_rect)
+        
+        
