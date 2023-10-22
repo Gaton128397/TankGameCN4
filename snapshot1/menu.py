@@ -9,15 +9,22 @@ class Menu:
 
         self.background = pygame.image.load("snapshot1/Background.jpg")
         self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
-        self.ARENA_COLOR = (244, 164, 96) 
+
+        self.ARENA_COLOR = (255, 204, 153)
         self.CACTUS_GREEN = (85, 107, 47)
+
+        self.small_font = pygame.font.Font(None, 50)
+        self.font = pygame.font.Font(None, 150)
         
-        self.buttonPlay = pygame.Rect(475, 305, 350, 150)
-        self.buttonExit = pygame.Rect(975, 635, 350, 150)
+        self.buttonPlay = pygame.Rect(500, 305, 250, 75)
+        self.buttonControls = pygame.Rect(500, 405, 250, 75)
+        self.buttonExit = pygame.Rect(975, 585, 250, 75)
+        
     
     def draw_menu(self):
         self.screen.blit(self.background, (0, 0))
 
+        #titulo
         text = self.font.render("Canyon-4", True, self.CACTUS_GREEN) 
         text_rect = text.get_rect(center=(self.WIDTH//2, 200))
         self.screen.blit(text, text_rect)
