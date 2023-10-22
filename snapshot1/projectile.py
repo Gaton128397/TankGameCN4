@@ -75,9 +75,9 @@ class Projectile():
 
         return x * math.tan(self.theta) - self.f * x ** 2
     
-    def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints):
+    def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints,gameInstance):
         self.yNew = self.y-self.ch
-
+        tempWindow = gameInstance.copy()
         while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew <terrainPoints[int(self.x)][1]-3) and not self.hit:
             if(self.x >= otherHitboxPoints[0][0]  and self.x <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
                 if(self.yNew >= otherHitboxPoints[0][1]  and self.yNew <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
@@ -92,11 +92,13 @@ class Projectile():
             self.path.append((self.x, self.y-self.ch))
             self.yNew = self.y-self.ch
             self.path = self.path[-50:]
-            pygame.draw.circle(self.win, 'lightblue', self.path[0], self.size-1)
-            pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.size)
-            pygame.draw.circle(self.win, 'black', self.path[-1], self.size-2)
+            pygame.draw.circle(self.win, 'darkgrey', self.path[0], self.size-1)
+            #pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.size)
+            #pygame.draw.circle(self.win, 'black', self.path[-1], self.size-2)
             pygame.display.update()
-    
+            #self.win.blit(tempWindow,(0,0))
+        self.win.blit(tempWindow,(0,0))
+        pygame.display.update()
         
     def delete(self,terrainPoints,selfhitboxPts,otherHitboxPoints):
         time.sleep(0.01)
