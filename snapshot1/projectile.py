@@ -13,7 +13,7 @@ class Projectile():
         self.power = power
         self.size = 0
         if self.typeBullet == 1: #105mm
-            self.size = 10.5
+            self.size = 10
             self.quantity = 3
             self.dmg = 50
         elif self.typeBullet == 2: #80mm
@@ -78,7 +78,8 @@ class Projectile():
     def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints,gameInstance):
         self.yNew = self.y-self.ch
         tempWindow = gameInstance.copy()
-        while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew <terrainPoints[int(self.x)][1]-10) and not self.hit:
+        #contador = 0
+        while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew < terrainPoints[int(self.x)][1]) and not self.hit:
             if(self.x >= otherHitboxPoints[0][0]  and self.x <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
                 if(self.yNew >= otherHitboxPoints[0][1]  and self.yNew <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
                     #print("hit!")
@@ -87,14 +88,15 @@ class Projectile():
                 if(self.yNew >= selfhitboxPts[0][1]  and self.yNew <=selfhitboxPts[len(selfhitboxPts)-1][1]):
                     #print("hit!")
                     self.hitYourself = True
+            
             self.x += self.dx 
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.path.append((self.x, self.y-(self.ch)))
             self.yNew = self.y-self.ch
             self.path = self.path[-50:]
-            pygame.draw.circle(self.win, 'darkgrey', self.path[0], self.size-5)
+            pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.size-5)
             tempWindow.blit(self.win,(0,0))
-            pygame.draw.circle(self.win, 'black', self.path[0], self.size)
+            pygame.draw.circle(self.win, 'black', self.path[-1], self.size)
             #pygame.draw.circle(self.win, 'black', self.path[-1], self.size-2)
             pygame.display.update()
             self.win.blit(tempWindow,(0,0))
