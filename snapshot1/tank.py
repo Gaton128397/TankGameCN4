@@ -60,7 +60,7 @@ class Tank:
             if keys[pygame.K_UP]:
                 print("algo")
                 self.angulo += 1
-                self.surface.blit(temp,(0,0))
+                self.surface.blit(temp[0],(0,0))
                 pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
                 
                 
@@ -70,7 +70,7 @@ class Tank:
         if 0 < self.angulo:        
             if keys[pygame.K_DOWN]:
                     self.angulo -= 1
-                    self.surface.blit(temp,(0,0))
+                    self.surface.blit(temp[0],(0,0))
                     pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
                     
                     

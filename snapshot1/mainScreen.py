@@ -67,10 +67,13 @@ def game():
     window.blit(LAYERS[0],(0,0))
     LAYERS[1][0].draw_tank(False)
     LAYERS[1][1].draw_tank(False)
+    tempWindows = []
+    tempWindows.append(window.copy())
+    LAYERS[1][0].draw_tank(True)
+    LAYERS[1][1].draw_tank(True)
     run = True
     menuChoose = chooseMenu.ChooseMenu(window,WIDTH,HEIGHT)
     #menuChoose.choosing()
-    tempWindow = window.copy()
     while run:
         try:
             
@@ -80,12 +83,12 @@ def game():
                 menuChoose.choosing()
                 
                 if turno == 1:
-                    LAYERS[1][0].moveCannon(tempWindow)
+                    LAYERS[1][0].moveCannon(tempWindows)
                     angleBullet1 =  LAYERS[1][0].getAngle()
                     
                 elif turno ==2:
                     
-                    positionBullet2 = LAYERS[1][1].moveCannon(tempWindow)
+                    LAYERS[1][1].moveCannon(tempWindows)
                     angleBullet2 = 180-LAYERS[1][1].getAngle()
                     #projectileSize2 = menuChoose.choosing()
                     
