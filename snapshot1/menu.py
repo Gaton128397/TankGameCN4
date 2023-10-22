@@ -24,6 +24,7 @@ class Menu:
     def draw_menu(self):
         self.screen.blit(self.background, (0, 0))
 
+
         #titulo
         text = self.font.render("Canyon-4", True, self.CACTUS_GREEN) 
         text_rect = text.get_rect(center=(self.WIDTH//2, 200))
@@ -46,5 +47,10 @@ class Menu:
         text = self.small_font.render("Salir", True, 'white')
         text_rect = text.get_rect(center=self.buttonExit.center)
         self.screen.blit(text, text_rect)
+        # pygame.display.update()
         
-        
+    def delete_menu(self):
+        self.buttonPlay = 0#pygame.Rect(500, 305, 250, 75)
+        self.buttonControls =0# pygame.Rect(500, 405, 250, 75)
+        self.buttonExit = 0#pygame.Rect(975, 585, 250, 75)
+        # pygame.display.update()

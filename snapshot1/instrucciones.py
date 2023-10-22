@@ -46,4 +46,9 @@ class Instrucciones:
         text_rect = text.get_rect(center=button.center)
         self.screen.blit(text, text_rect)
 
-        pygame.display.flip()
+        pygame.display.update()
+    def delete_instrucciones(self):
+        # self.screen.fill((0,0,0))
+        # print('holis')
+        self.buttonVolver = 0
+        pygame.display.update()
