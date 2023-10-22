@@ -80,24 +80,17 @@ def game():
                 menuChoose.choosing()
                 
                 if turno == 1:
-                   
-                   
+                    player1.moveCannon(tempWindow)
                     
-                    player1.moveCannon(tempWindow,window)
                     
-                    pygame.draw.rect(window, 'lightblue', (50,90,400, 50)) 
                     angleBullet1 = player1.getAngle()
-                    textoAnguloActual1 = fuente.render(f'ACTUAL ANGLE PLAYER {turno}: {angleBullet1:.1f}', True, 'black')
                     
-                    window.blit(textoAnguloActual1,(50,110))
                 elif turno ==2:
                     
                     positionBullet2 = player2.moveCannon()
                     angleBullet2 = 180-player2.getAngle()
                     #projectileSize2 = menuChoose.choosing()
-                    pygame.draw.rect(window, 'lightblue', (100,90,400, 50)) 
-                    textoAnguloActual2 = fuente.render(f'ACTUAL ANGLE PLAYER  {turno}: {180-angleBullet2:.1f}', True, 'black')
-                    tempWindow.blit(textoAnguloActual2,(50,110))
+                    
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -124,13 +117,13 @@ def game():
                         else:
                             potencia = min((tiempo_actual - tiempo_presionado) * 20, 200)
 
-                        tiempo_anterior = tiempo_actual 
+                        tiempo_anterior = tiempo_actual
                         presionado = False
                         if turno == 1:
-                            bullet1 = projectile.Projectile(positionBullet1,1,potencia,angleBullet1,window)
+                            bullet1 = projectile.Projectile(player1.end,1,potencia,angleBullet1,window)
                             #bullet1 = projectile.Projectile(positionBullet1,potencia,angleBullet1,window)
-                            deleteBullet = projectile.Projectile(positionBullet1,1,potencia,angleBullet1,window)
-                            bullet1.shoot(terrainPoints,player1Hitbox,player2Hitbox) 
+                            #deleteBullet = projectile.Projectile(positionBullet1,1,potencia,angleBullet1,window)
+                            bullet1.shoot(terrainPoints,player1Hitbox,player2Hitbox,window) 
                             
                             potencia1 = potencia
                             angulo1 = player1.getAngle()
@@ -154,7 +147,7 @@ def game():
                                 window.blit(textoGanar, (400, 300))
                                 end = True
                             else:
-                                deleteBullet.delete(terrainPoints,player1Hitbox,player2Hitbox)
+                                #deleteBullet.delete(terrainPoints,player1Hitbox,player2Hitbox)
                                 turno = 2
 
                         elif turno == 2:

@@ -58,9 +58,9 @@ class Projectile():
 
         return x * math.tan(self.theta) - self.f * x ** 2
     
-    def shoot(self):
-        self.yNew = self.y-self.ch
-
+    def shoot(self,gameInstance):
+        self.yNew = self.y-self.c
+        tempWindow = gameInstance.copy()
         while (self.x +self.radio >0 and self.x <= 1300) and (self.yNew+self.radio > -2000 ):
             self.x += self.dx 
             self.ch = self.getProjectilePos(self.x - self.origin[0])
@@ -69,10 +69,12 @@ class Projectile():
             self.path = self.path[-50:]
             
             pygame.draw.circle(self.win, 'lightblue', self.path[0], self.radio+1)
-            pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.radio+2)
-            pygame.draw.circle(self.win, 'black', self.path[-1], self.radio)
+            #pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.radio+2)
+            #pygame.draw.circle(self.win, 'black', self.path[-1], self.radio)
             pygame.display.update()
-    
+            self.win.blit(tempWindow,(0,0))
+        self.win.blit(tempWindow,(0,0))
+    pygame.display.update()
         
     def delete(self,terrainPoints,selfhitboxPts,otherHitboxPoints):
         time.sleep(0.01)
