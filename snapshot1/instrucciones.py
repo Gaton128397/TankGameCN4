@@ -7,10 +7,10 @@ class Instrucciones:
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
 
-        self.background = pygame.image.load("snapshot1/Background.jpeg")
+        self.background = pygame.image.load("snapshot1/Background.jpg")
         self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
         
-        self.ARENA_COLOR = (244, 164, 96) 
+        self.ARENA_COLOR = (255, 204, 153) 
         self.CACTUS_GREEN = (85, 107, 47)
 
         self.buttonVolver = pygame.Rect(550, 520, 200, 50) 
