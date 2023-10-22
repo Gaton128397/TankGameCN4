@@ -9,17 +9,12 @@ class Menu:
 
         self.background = pygame.image.load("snapshot1/Background.jpg")
         self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
-        
-        self.ARENA_COLOR = (255, 204, 153)
+        self.ARENA_COLOR = (244, 164, 96) 
         self.CACTUS_GREEN = (85, 107, 47)
         
-        self.buttonPlay = pygame.Rect(495, 325, 275, 75)
-        self.buttonControls = pygame.Rect(495, 425, 275, 75)
-        self.buttonExit = pygame.Rect(875, 535, 275, 75)
-        
-        self.small_font = pygame.font.Font(None, 75)
-        self.font = pygame.font.Font(None,150)
-
+        self.buttonPlay = pygame.Rect(475, 305, 350, 150)
+        self.buttonExit = pygame.Rect(975, 635, 350, 150)
+    
     def draw_menu(self):
         self.screen.blit(self.background, (0, 0))
 
@@ -44,3 +39,5 @@ class Menu:
         text = self.small_font.render("Salir", True, 'white')
         text_rect = text.get_rect(center=self.buttonExit.center)
         self.screen.blit(text, text_rect)
+        
+        

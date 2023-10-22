@@ -36,6 +36,11 @@ class Tank:
 
         self.xCanon2 = (self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
+
+        self.ammo10mm = 3
+        self.ammo8mm = 10
+        self.ammo6mm = 3
+
     def draw_tank(self,color):
 
         pygame.draw.rect(self.surface, color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
@@ -89,7 +94,16 @@ class Tank:
 
         #print(hitboxPoints[0])
         return hitboxPoints
-    
+    # def chooseAmmo(self):
+    #     for event in pygame.event.get():
+    #          if event.type == pygame.KEYDOWN:
+    #             if event.key == pygame.K_1:
+    #                 print(1)
+    #             if event.key == pygame.K_2:
+    #                 print(2)
+    #             if event.key == pygame.K_3:
+    #                 print(3)
+              
     def getAngle(self):
         
         return self.angulo

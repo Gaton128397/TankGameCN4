@@ -29,18 +29,34 @@ class Instrucciones:
     def draw_instrucciones(self):
         self.screen.blit(self.background, (0, 0)) 
 
-        text = self.big_font.render("INSTRUCCIONES", True, self.CACTUS_GREEN)  
-        text_rect = text.get_rect(center=(self.screen.get_width()//2, 100))
-        self.screen.blit(text, text_rect)
-        
-        # Dibujar lista de instrucciones
-        for i, instruccion in enumerate(self.instrucciones):
-            text = self.font.render(instruccion, True, self.CACTUS_GREEN)  
-            text_rect = text.get_rect(center=(self.screen.get_width()//2, 200 + i*50))
-            self.screen.blit(text, text_rect)
-        
-        # Dibujar el botón "Volver"
-        pygame.draw.rect(self.screen, self.ARENA_COLOR, self.buttonVolver)  
-        text = self.font.render("Volver", True, 'white')
-        text_rect = text.get_rect(center=self.buttonVolver.center)
-        self.screen.blit(text, text_rect)
+    text = big_font.render("INSTRUCCIONES", True, CACTUS_GREEN)  
+    text_rect = text.get_rect(center=(screen.get_width()//2, 100))
+    screen.blit(text, text_rect)
+    
+    # Dibujar lista de instrucciones
+    for i, instruccion in enumerate(instrucciones):
+        text = font.render(instruccion, True, CACTUS_GREEN)  
+        text_rect = text.get_rect(center=(screen.get_width()//2, 200 + i*50))
+        screen.blit(text, text_rect)
+    
+    # Dibujar el botón "Volver"
+    button = pygame.Rect(550, 520, 200, 50) 
+    pygame.draw.rect(screen, ARENA_COLOR, button)  
+    text = font.render("Volver", True, WHITE)
+    text_rect = text.get_rect(center=button.center)
+    screen.blit(text, text_rect)
+
+    pygame.display.flip()
+
+
+mostrar_instrucciones()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:  
+            if button.collidepoint(event.pos):  
+                print("Botón Volver presionado")  # Aquí puedes agregar la acción que deseas
+
+                # Por ejemplo, puedes agregar aquí la acción de volver a una pantalla anterior.
