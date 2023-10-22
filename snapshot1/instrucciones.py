@@ -44,18 +44,3 @@ class Instrucciones:
         text = self.font.render("Volver", True, 'white')
         text_rect = text.get_rect(center=self.buttonVolver.center)
         self.screen.blit(text, text_rect)
-
-        pygame.display.flip()
-
-
-#mostrar_instrucciones()
-#while True:
- #   for event in pygame.event.get():
-  #      if event.type == pygame.QUIT:
-   #         pygame.quit()
-    #        sys.exit()
-     #   if event.type == pygame.MOUSEBUTTONDOWN:  
-      #      if button.collidepoint(event.pos):  
-       #         print("Botón Volver presionado")  # Aquí puedes agregar la acción que deseas
-#
- #               # Por ejemplo, puedes agregar aquí la acción de volver a una pantalla anterior.
