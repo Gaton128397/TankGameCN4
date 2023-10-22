@@ -58,7 +58,7 @@ class Tank:
         keys = pygame.key.get_pressed()
         if 90 > self.angulo:
             if keys[pygame.K_UP]:
-                print("algo")
+                #print("algo")
                 self.angulo += 1
                 self.surface.blit(temp[0],(0,0))
                 pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)

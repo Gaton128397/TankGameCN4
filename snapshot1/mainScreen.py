@@ -69,6 +69,8 @@ def game():
     LAYERS[1][1].draw_tank(False)
     tempWindows = []
     tempWindows.append(window.copy())
+    tempWindows.append(window.copy())
+    tempWindows.append(window.copy())
     LAYERS[1][0].draw_tank(True)
     LAYERS[1][1].draw_tank(True)
     run = True
