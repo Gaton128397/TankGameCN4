@@ -13,14 +13,17 @@ class Projectile():
         self.power = power
         self.size = 0
         if self.typeBullet == 1: #105mm
-            self.size = 10.5
+            self.color = 'green'
+            self.size = 15
             self.quantity = 3
             self.dmg = 50
         elif self.typeBullet == 2: #80mm
+            self.color = 'blue'
             self.size = 8
             self.quantity = 10
             self.dmg = 40
-        elif self.typeBullet == 2: #60mm
+        elif self.typeBullet == 3: #60mm
+            self.color = 'red'
             self.size = 6
             self.quantity = 3
             self.dmg = 30
@@ -36,7 +39,7 @@ class Projectile():
 
         self.x, self.y = position[0], position[1]
 
-        self.color = 'blue'
+        # self.color = 'blue'
 
         self.ch = 0
         if (theta >90):
@@ -94,7 +97,7 @@ class Projectile():
             self.path = self.path[-50:]
             pygame.draw.circle(self.win, 'lightblue', self.path[0], self.size-1)
             pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.size)
-            pygame.draw.circle(self.win, 'black', self.path[-1], self.size-2)
+            pygame.draw.circle(self.win, self.color, self.path[-1], self.size-2)
             pygame.display.update()
     
         

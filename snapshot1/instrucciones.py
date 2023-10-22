@@ -1,60 +1,48 @@
 import pygame
 import sys
 
-pygame.init()
+class Instrucciones:
+    def __init__(self,screen,WIDTH,HEIGHT):
+        self.screen = screen
+        self.WIDTH = WIDTH
+        self.HEIGHT = HEIGHT
 
-screen = pygame.display.set_mode((1300, 700))
-pygame.display.set_caption("CONTROLES / CONSEJOS")
+        self.background = pygame.image.load("Background.jpeg")
+        self.background = pygame.transform.scale(self.background, (self.WIDTH, self.HEIGHT))
+        
+        self.ARENA_COLOR = (244, 164, 96) 
+        self.CACTUS_GREEN = (85, 107, 47)
 
-background = pygame.image.load("snapshot1/Background.jpeg")  
-background = pygame.transform.scale(background, (1300, 700))
+        self.buttonVolver = pygame.Rect(550, 520, 200, 50) 
 
-WHITE = (255, 255, 255)
-CACTUS_GREEN = (85, 107, 47)  
-ARENA_COLOR = (244, 164, 96)  
-  
-font = pygame.font.Font(None, 36)
-big_font = pygame.font.Font(None, 72)
+        self.font = pygame.font.Font(None, 36)
+        self.big_font = pygame.font.Font(None, 72)
 
-instrucciones = [
-    "1. Mueve el cañón del tanque con las teclas de flecha hacia arriba y flecha hacia abajo",
-    "2. Manten la barra espaciadora para la potencia del disparo.",
-    "3. Cambia con las teclas 1 , 2 y 3 el tipo de bala.",
-    "4. Tienes que estar atento a las municiones de cada bala.",
-    "5. Debes estar atento a tu vida, si llega a 0 perderas la partida."
-]
+        self.instrucciones = [
+        "1. Mueve el cañón del tanque con las teclas de flecha hacia arriba y flecha hacia abajo",
+        "2. Manten la barra espaciadora para la potencia del disparo.",
+        "3. Cambia con las teclas 1 , 2 y 3 el tipo de bala.",
+        "4. Tienes que estar atento a las municiones de cada bala.",
+        "5. Debes estar atento a tu vida, si llega a 0 perderas la partida."
+        ]
 
-def mostrar_instrucciones():
-    screen.blit(background, (0, 0)) 
+    def draw_instrucciones(self):
+        self.screen.blit(self.background, (0, 0)) 
 
-    text = big_font.render("INSTRUCCIONES", True, CACTUS_GREEN)  
-    text_rect = text.get_rect(center=(screen.get_width()//2, 100))
-    screen.blit(text, text_rect)
-    
-    # Dibujar lista de instrucciones
-    for i, instruccion in enumerate(instrucciones):
-        text = font.render(instruccion, True, CACTUS_GREEN)  
-        text_rect = text.get_rect(center=(screen.get_width()//2, 200 + i*50))
-        screen.blit(text, text_rect)
-    
-    # Dibujar el botón "Volver"
-    button = pygame.Rect(550, 520, 200, 50) 
-    pygame.draw.rect(screen, ARENA_COLOR, button)  
-    text = font.render("Volver", True, WHITE)
-    text_rect = text.get_rect(center=button.center)
-    screen.blit(text, text_rect)
-
-    pygame.display.flip()
+        text = self.big_font.render("INSTRUCCIONES", True, self.CACTUS_GREEN)  
+        text_rect = text.get_rect(center=(self.screen.get_width()//2, 100))
+        self.screen.blit(text, text_rect)
+        
+        # Dibujar lista de instrucciones
+        for i, instruccion in enumerate(self.instrucciones):
+            text = self.font.render(instruccion, True, self.CACTUS_GREEN)  
+            text_rect = text.get_rect(center=(self.screen.get_width()//2, 200 + i*50))
+            self.screen.blit(text, text_rect)
+        
+        # Dibujar el botón "Volver"
+        pygame.draw.rect(self.screen, self.ARENA_COLOR, self.buttonVolver)  
+        text = self.font.render("Volver", True, 'white')
+        text_rect = text.get_rect(center=self.buttonVolver.center)
+        self.screen.blit(text, text_rect)
 
 
-mostrar_instrucciones()
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:  
-            if button.collidepoint(event.pos):  
-                print("Botón Volver presionado")  # Aquí puedes agregar la acción que deseas
-
-                # Por ejemplo, puedes agregar aquí la acción de volver a una pantalla anterior.
