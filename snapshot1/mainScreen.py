@@ -62,8 +62,7 @@ def game():
     terrainPoints = terrain.getPoints()
     
     #crear Jugadores
-    # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
-    # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
+
 
     player1 = tank.Tank((randint(20,WIDTH*0.5),10), "blue", 1, surfaceJuego,terrainPoints)
     player2 = tank.Tank((randint(WIDTH*0.5,WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
