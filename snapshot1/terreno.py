@@ -17,7 +17,7 @@ class TerrenoVariado:
     #funcion para interpolar los puntos
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
-
+    # Genera el terreno
     def getTerrain(self):
         for i in range(self.num_points):
             x = int(i * (self.width / (self.num_points - 1)))
@@ -26,7 +26,7 @@ class TerrenoVariado:
                 self.points.append((x, y))
                 self.yPoints.append(y)
 
-
+        # interpolar los puntos faltantes
         for x in range(0, 1301):
             if not any(point[0] == x for point in self.points):
                 # encontrar los puntos mas cercanos
@@ -41,7 +41,7 @@ class TerrenoVariado:
                 self.points.append((x, int(y)))
                 self.yPoints.append(int(y))
             #print(self.points[x])
-
+    # Dibuja el terreno
     def drawTerrain(self):
         surf = self.window.copy()
         drawFunctions.backgroundDraw(surf)
@@ -55,13 +55,13 @@ class TerrenoVariado:
         pygame.draw.lines(surf, (139, 69, 19), False, points_interp, 5)
         return surf
         #pygame.display.update()
-
+    # Devuelve los puntos del terreno
     def getPoints(self):
         return self.points
-
+    # Devuelve los valores de y
     def yPoint(self):
         return self.yPoints
-
+    # Reinicia el terreno
     def restart(self):
         self.points = []  # Limpia la lista de puntos del terreno
         self.yPoints = []  # Limpia la lista de valores de y
