@@ -36,22 +36,20 @@ class Tank:
 
         self.xCanon2 = (self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
+        
 
         self.ammo10mm = 3
         self.ammo8mm = 10
         self.ammo6mm = 3
 
-    def draw_tank(self,color):
-
-        pygame.draw.rect(self.surface, color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
-        pygame.draw.line(self.surface, color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4) #cañon
-
-        pygame.draw.rect(self.surface, color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
+    def draw_tank(self,staticCan):
+        pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
         
-        pygame.draw.circle(self.surface, color, ((self.x, self.y + self.height/2)), self.height/2) #circunferencia de la derecha
-        
-        pygame.draw.circle(self.surface, color, ((self.x + self.width, self.y + self.height/2)), self.height/2) #rectangulo donde estara el cañon
-        
+        pygame.draw.rect(self.surface, self.color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
+        pygame.draw.circle(self.surface, self.color, ((self.x, self.y + self.height/2)), self.height/2) #circunferencia de la derecha
+        pygame.draw.circle(self.surface, self.color, ((self.x + self.width, self.y + self.height/2)), self.height/2) #rectangulo donde estara el cañon
+        if(staticCan):
+            pygame.draw.line(self.surface, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4) #cañon
     def actualizar(self,a):
             
             if self.LoR == 0:
@@ -60,27 +58,29 @@ class Tank:
             self.xCanon2 = self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo))
             self.yCanon2 = self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo))
             self.end = (self.xCanon2,self.yCanon2)
-    def moveCannon(self):
+            
+    def moveCannon(self,temp):
         self.actualizar(self.LoR)
         
-        keys = pygame.key.get_pressed()
         if 90 > self.angulo:
-            if keys[pygame.K_UP]:
-                
+            keys1 = pygame.key.get_pressed()
+            if keys1[pygame.K_UP]:
+
                 self.angulo += 1
-
-                pygame.draw.line(self.surface, 'lightblue', (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 6)
+                self.surface.blit(temp[0],(0,0))
                 pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
-                pygame.display.update()
+                
 
-        if 0 < self.angulo:        
-            if keys[pygame.K_DOWN]:
+        if 0 < self.angulo:
+            keys1 = pygame.key.get_pressed()        
+            if keys1[pygame.K_DOWN]:
+                    print("algo abajo")
                     self.angulo -= 1
-                    pygame.draw.line(self.surface, 'lightblue', (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 6)
+                    self.surface.blit(temp[0],(0,0))
                     pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
-                    pygame.display.update()
+                    
+                    
 
-        return (self.end)
     def hitBox(self):
         hitboxPoints = []
         hitboxInitialX=self.x-10
