@@ -11,14 +11,12 @@ tiempo_presionado = 0
 tiempo_anterior = 0
 presionado = False
 
-
 def game():
 
     #informacion pygame
     pygame.init()
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((WIDTH, HEIGHT))
-
 
     pygame.display.set_caption("Tank v Tank")
     fuente = pygame.font.Font(None, 30)
@@ -46,19 +44,16 @@ def game():
     #variables globales para la potencia
     global potencia, tiempo_presionado, tiempo_anterior, presionado
 
-
     #variables de informacion impresa
     lastPower1 = 0;lastPower2 = 0;angleBullet1 = 0;angleBullet2 = 0;lastAngulo1 = 0;lastAngulo2 = 0;alturamaxima1 = 0;alturamaxima2 = 0;range1 = 0;range2 = 0;end = False
     
     chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
-
 
     #terreno
     terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
     terrainPoints = terrain.getPoints()
     
-
     #crear Jugadores
     player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
     player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
@@ -77,7 +72,6 @@ def game():
     #info jugadores
     infoPlayer1 = infoBlock.InfoBlock(surfaceJuego,1,WIDTH,HEIGHT,lastAngulo1,potencia,lastPower1,range1,alturamaxima1,)
     infoPlayer2 = infoBlock.InfoBlock(surfaceJuego,2,WIDTH,HEIGHT,lastAngulo2,potencia,lastPower2,range2,alturamaxima2,)
-
 
     #variables flujo de juego
     somebodyWon = False
@@ -109,10 +103,6 @@ def game():
     run = True
     start = 0
     
-    
-        
-
-
     #draw objetcs
     terrain.drawTerrain()
     #chooseMenu1.choosing(1,surfaceJuego)
@@ -227,7 +217,6 @@ def game():
                                 typeBullet = 3
                                 bulletTypePlayer2 = typeBullet
                             
-
                     if event.key == pygame.K_SPACE:
                         tiempo_presionado = tiempo_actual
                         presionado = True
@@ -305,6 +294,7 @@ def game():
                                 end = True
                             else:
                                 turno = 1
+
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_SPACE:
                         if (
@@ -317,6 +307,7 @@ def game():
                             )
                         tiempo_anterior = tiempo_actual
                         presionado = False
+
             if actualScreen ==2:
                 pygame.draw.rect(surfaceJuego, (255, 213, 158), (WIDTH*0.4, 620, 200, 40))
                 pygame.draw.rect(surfaceJuego, "grey", (WIDTH*0.4, 600, 200, 20))
@@ -341,8 +332,8 @@ def game():
                     actualScreen = 3
                 clock.tick(60)
                 pygame.display.update()
+
         except (ZeroDivisionError, UnboundLocalError,AttributeError,IndexError):
             textoError = fuente.render("Espera tu turno", True, "black")
-
 
 game()

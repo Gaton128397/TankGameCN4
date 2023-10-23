@@ -43,7 +43,6 @@ class ChooseMenu:
     def choosing(self,typeBullet,surfaceChooseMenu):
         self.typeBullet = typeBullet
         
-
         i=0
 
         if self.typeBullet==1:
@@ -52,17 +51,13 @@ class ChooseMenu:
             self.delOpBef(surfaceChooseMenu,self.matrizPos[1])
             self.delOpBef(surfaceChooseMenu,self.matrizPos[2])
 
-
         if self.typeBullet == 2:
 
             self.choose(surfaceChooseMenu,self.matrizPos[1])
             self.delOpBef(surfaceChooseMenu,self.matrizPos[2])
             self.delOpBef(surfaceChooseMenu,self.matrizPos[0])
 
-
         if self.typeBullet == 3:
             self.choose(surfaceChooseMenu,self.matrizPos[2])
             self.delOpBef(surfaceChooseMenu,self.matrizPos[0])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[1])
-
-            
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[1])           

@@ -21,6 +21,7 @@ def draw_instrucciones(surfaceInstrucciones,width,heihgt):
     "4. Tienes que estar atento a las municiones de cada bala.",
     "5. Debes estar atento a tu vida, si llega a 0 perderas la partida."
     ]
+    
     surfaceInstrucciones.blit(background, (0, 0)) 
 
     text = font.render("INSTRUCCIONES", True, CACTUS_GREEN)  
