@@ -116,8 +116,9 @@ def game():
         player1 = tank.Tank((0,0), "blue", 1, surfaceJuego,terrainPoints)
         player2 = tank.Tank((0,0), "red", 0, surfaceJuego,terrainPoints)
 
-        positionTank1 = (randint(20,WIDTH*0.5),10)
-        positionTank2 = (randint(WIDTH*0.5,WIDTH),10)
+        #positionTank1 = (randint(20,WIDTH*0.5),10)
+        
+        #positionTank2 = (randint(WIDTH*0.5,WIDTH),10)
         
         # position =[positionTankX,positionTankY]
         
@@ -154,8 +155,8 @@ def game():
     
     #crear nueva partida
     
-    positionTank1 = (randint(20,WIDTH*0.4),10)
-    positionTank2 = (randint(WIDTH*0.6,WIDTH),10)
+    positionTank1 = (randint(20,int(WIDTH*0.4)),10)
+    positionTank2 = (randint(int(WIDTH*0.6),WIDTH),10)
     layer1 = creaLayer(surfaceJuego,positionTank1,positionTank2) #crea una capa con toda la informacion
 
 
