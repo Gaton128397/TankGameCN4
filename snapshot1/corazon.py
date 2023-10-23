@@ -13,7 +13,8 @@ class Corazon:
         self.x = x
         self.y = y
         self.rotar = rotar
-     
+
+        
         self.medio_corazon = pygame.image.load('snapshot1/MedioCorazon.png').convert_alpha()
 
         # Redimensionar el corazón al 80% del tamaño original
@@ -23,30 +24,9 @@ class Corazon:
 
         if self.rotar:
             self.medio_corazon = pygame.transform.flip(self.medio_corazon, True, False)
-
+    
     def draw_corazon(self, superficie):
         superficie.blit(self.medio_corazon, (self.x, self.y))
 
-# Crear una lista de instancias de Corazon
-corazones = []
 
-for i in range(10):
-    x = i * 80  # Ajusta la posición x según tus necesidades
-    y = 100  # Ajusta la posición y según tus necesidades
-    corazon = Corazon(x, y)
-    corazones.append(corazon)
 
-# Bucle principal del juego
-while True:
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-    VENTANA.fill((255, 255, 255))  # Rellenar la ventana con color blanco
-
-    # Dibujar los corazones en la ventana
-    for corazon in corazones:
-        corazon.draw_corazon(VENTANA)
-
-    pygame.display.update()

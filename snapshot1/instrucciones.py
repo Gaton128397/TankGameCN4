@@ -3,7 +3,7 @@ import sys
 
 
 def draw_instrucciones(surfaceInstrucciones,width,heihgt):
-    background = pygame.image.load("snapshot1/Background.jpg")
+    background = pygame.image.load("Background.jpg")
     background = pygame.transform.scale(background, (width, heihgt))
 
     ARENA_COLOR = (255, 204, 153) 

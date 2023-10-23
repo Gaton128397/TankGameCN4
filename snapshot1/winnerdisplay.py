@@ -15,4 +15,5 @@ def drawWinner(winnerSurface,width,height,winner):
     pygame.draw.rect(winnerSurface, ARENA_COLOR, buttonRePlay)  
     text = font.render("Volver a jugar", True, 'white')
     text_rect = text.get_rect(center=buttonRePlay.center)
-    winnerSurface   .blit(text, text_rect)
+    winnerSurface.blit(text, text_rect)
+    return buttonRePlay
