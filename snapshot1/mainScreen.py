@@ -2,6 +2,7 @@ from winnerdisplay import drawWinner
 from newMenu import draw_menu
 from instrucciones import draw_instrucciones
 from random import randint
+from barravida import BarraVida
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
 
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
@@ -54,6 +55,7 @@ def game():
     lastPower1 = 0;lastPower2 = 0;angleBullet1 = 0;angleBullet2 = 0;lastAngulo1 = 0;lastAngulo2 = 0;alturamaxima1 = 0;alturamaxima2 = 0;range1 = 0;range2 = 0;end = False
     
     chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
+    chooseMenu2 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
     #terreno
     terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
@@ -124,7 +126,9 @@ def game():
     
     infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1,)
     infoPlayer2.drawInfoBlock(surfaceJuego,potencia, angleBullet2 + 180, lastPower2, lastAngulo2, range2, alturamaxima2)
-
+    chooseState = []
+    chooseState.append(0)
+    chooseState.append(0)
     #comienzo juego
     while run:
         try:
@@ -133,8 +137,7 @@ def game():
             if actualScreen ==2:
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
-                chooseMenu1.drawChooseMenu(window)
-                # falling = 1
+                chooseMenu1.drawChooseMenu(surfaceJuego,0)
                 if turno == 1:
                     #mover el cañon 1
                     LAYERS[1][0].moveCannon(tempWindows)
@@ -142,15 +145,18 @@ def game():
                     infoPlayer1.deleteLast(surfaceJuego)
                     # escrbir informacion jugador 1
                     infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1)
+                    chooseMenu1.drawChooseMenu(surfaceJuego,chooseState[0])
                     
                 elif turno == 2:
                     #mover el cañon 2
                     LAYERS[1][1].moveCannon(tempWindows)
                     angleBullet2 =180- LAYERS[1][1].getAngle()
-                    
                     infoPlayer2.deleteLast(surfaceJuego)
                     #escrbir informacion jugador 2
                     infoPlayer2.drawInfoBlock(surfaceJuego,potencia,angleBullet2,lastPower2,lastAngulo2,range2,alturamaxima2)
+                    chooseMenu2.drawChooseMenu(surfaceJuego,chooseState[1])
+                    
+                
                     
             for event in pygame.event.get():
                 
@@ -202,39 +208,39 @@ def game():
                     if event.key == pygame.K_1:#boton 1
                         if turno == 1:
                             if ammoPlayer1[0] > 0: #revisa que queden
-                                chooseMenu1.choosing(1,surfaceJuego) #dibuja un cuadrado al rededor del tipo de proyectil
+                                chooseState[0] = 1
                                 typeBullet = 1 #cambia el proyectil al tipo 1 que es 100mm
                                 bulletTypePlayer1 = typeBullet
                             
                         elif turno == 2:
                             if ammoPlayer2[0] > 0:
-                                chooseMenu1.choosing(1,surfaceJuego)
+                                chooseState[1] = 1
                                 typeBullet = 1
                                 bulletTypePlayer2 = typeBullet
                             
                     if event.key == pygame.K_2:#boton 2
                         if turno == 1:
                             if ammoPlayer1[1] > 0:
-                                chooseMenu1.choosing(2,surfaceJuego)
+                                chooseState[0] = 2
                                 typeBullet = 2
                                 bulletTypePlayer1 = typeBullet
                             
                         elif turno == 2:
                             if ammoPlayer2[1] > 0:
-                                chooseMenu1.choosing(2,surfaceJuego)
+                                chooseState[1] = 2
                                 typeBullet = 2
                                 bulletTypePlayer2 = typeBullet
                             
                     if event.key == pygame.K_3:#boton 3
                         if turno == 1:
                             if ammoPlayer1[2] > 0:
-                                chooseMenu1.choosing(3,surfaceJuego)
+                                chooseState[0] = 3
                                 typeBullet = 3
                                 bulletTypePlayer1 = typeBullet
                             
                         elif turno == 2:
                             if ammoPlayer2[2] > 0:
-                                chooseMenu1.choosing(3,surfaceJuego)
+                                chooseState[1] = 3
                                 typeBullet = 3
                                 bulletTypePlayer2 = typeBullet
                             
@@ -258,36 +264,45 @@ def game():
                             potencia = 0
                             range1 = bullet1.getRange()
                             alturamaxima1 = bullet1.getMaxHeight()
-                            if bullet1.returnHit() == 1:
-                                """
+                            alturamaxima1 = bullet1.getMaxHeight()
+                            if player2.getHeath() <= 0:  
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
-                                """
-                                if player2.getHeath() <= 0: # revisar get health o type bullet primero?¿...
-                                    ganador = 1
+                            else:
+                                if bullet1.returnHit() == 1:
+                                    """
+                                    ganador = turno
                                     actualScreen = 3
                                     end = True
-                                else:
-                                    #("el enemigo aun tiene vida!")
+                                    """
+                                    print("el enemigo aun tiene vida!")
                                     if bulletTypePlayer1 == 1:
                                         player2.loseHealth(1)
-                                        #("-50")
+                                        print("-50")
+                                        turno = 2
                                     elif bulletTypePlayer1 == 2:
                                         player2.loseHealth(2)
-                                        #("-40")
+                                        print("-40")
+                                        turno = 2
                                     elif bulletTypePlayer1 == 3:
                                         player2.loseHealth(3)
-                                        #("-30")
+                                        print("-30")
+                                        turno = 2
 
-                            elif bullet1.returnHit() == 2:
-                                ganador = turno
-                                actualScreen = 3
-                                end = True
+                                    if player2.getHeath() <= 0:
+                                        ganador = 1
+                                        actualScreen = 3
+                                        end = True
+                                        
+                                elif bullet1.returnHit() == 2:
+                                    ganador = turno
+                                    actualScreen = 3
+                                    end = True
 
-                            else:
-                                
-                                turno = 2
+                                else:
+                                    turno = 2
+
                         elif turno == 2:
                             if ammoPlayer2[bulletTypePlayer2 - 1] > 0:
                                 bulletTypePlayer2 = typeBullet
@@ -310,34 +325,44 @@ def game():
                             
                             alturamaxima2 = bullet2.getMaxHeight()
                             
-                            if bullet2.returnHit() == 1:
-                                """
+                            if player1.getHeath() <= 0:
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
-                                """
-                                if player1.getHeath() <= 0: # revisar get health o type bullet primero?¿...
-                                    ganador = 2
+                                
+                            else:
+                                if bullet2.returnHit() == 1:
+                                    """
+                                    ganador = turno
                                     actualScreen = 3
                                     end = True
-                                else:
-                                    #("el enemigo aun tiene vida!")
+                                    """
+                                    print("el enemigo aun tiene vida!")
                                     if bulletTypePlayer2 == 1:
                                         player1.loseHealth(1)
-                                        #("-50")
+                                        print("-50")
+                                        turno = 1
                                     elif bulletTypePlayer2 == 2:
                                         player1.loseHealth(2)
-                                        #("-40")
+                                        print("-40")
+                                        turno = 1
                                     elif bulletTypePlayer2 == 3:
                                         player1.loseHealth(3)
-                                        #("-30")
+                                        print("-30")
+                                        turno = 1
+                                    
+                                    if player1.getHeath() <= 0:
+                                        ganador = 2
+                                        actualScreen = 3
+                                        end = True
 
-                            elif bullet2.returnHit() == 2:
-                                ganador = turno
-                                actualScreen = 3
-                                end = True
-                            else:
-                                turno = 1
+                                elif bullet2.returnHit() == 2:
+                                    ganador = turno
+                                    actualScreen = 3
+                                    end = True
+
+                                else:
+                                    turno = 1
 
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_SPACE:

@@ -61,7 +61,8 @@ class Tank:
             self.xCanon2 = self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo))
             self.yCanon2 = self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo))
             self.end = (self.xCanon2,self.yCanon2)
-            
+
+    #funcion para mover el canon del tanque    
     def moveCannon(self,temp):
         self.actualizar(self.LoR)
         
@@ -80,7 +81,8 @@ class Tank:
                     self.angulo -= 1
                     self.surface.blit(temp[0],(0,0))
                     pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
-                    
+
+    # funcion con hitbox del tanque              
     def hitBox(self):
         hitboxPoints = []
         hitboxInitialX=self.x-10
@@ -108,9 +110,11 @@ class Tank:
         
         return self.angulo
     
+    #funcion para obtener la vida del tanque
     def getHeath(self):
         return self.health
     
+    #funcion para restar vida al tanque
     def loseHealth(self, type):
         if type == 1:
             self.health -= 50

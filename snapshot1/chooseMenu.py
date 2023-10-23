@@ -20,39 +20,36 @@ class ChooseMenu:
         pygame.draw.circle(surfaceChooseMenu, 'black',(position[0]+self.width/65,position[1]+self.width/65),position[4])
         # pygame.draw.rect(window, 'white', (position[0],position[1]+self.width/28.8,position[2], position[3]))
         #("llega aqui")
-        # pygame.display.update()
-
+        #pygame.display.update()
+        
+    def delOpBef(self,surfaceChooseMenu,position):
+        self.noFillingRectangle(surfaceChooseMenu,(255, 213, 158),(position[0],position[1]),(position[2],position[3]))
+        
     def choose(self,surfaceChooseMenu,position):
         self.noFillingRectangle(surfaceChooseMenu,'red',(position[0],position[1]),(position[2],position[3])) 
 
-
-    def delOpBef(self,surfaceChooseMenu,position):
-        self.noFillingRectangle(surfaceChooseMenu,(255, 213, 158),(position[0],position[1]),(position[2],position[3]))  
-
-    def drawChooseMenu(self,surfaceChooseMenu):
-        self.options(surfaceChooseMenu,self.matrizPos[0])
-        self.options(surfaceChooseMenu,self.matrizPos[1])
-        self.options(surfaceChooseMenu,self.matrizPos[2])
-        # self.choose(self.window,self.matrizPos[0])
-
-    def choosing(self,typeBullet,surfaceChooseMenu):
-        self.typeBullet = typeBullet
-        
-        i=0
-
-        if self.typeBullet==1:
-
+    def drawChooseMenu(self,surfaceChooseMenu,state):
+        rectangulo = pygame.Surface((300,50))
+        rectangulo.fill((255, 213, 158))
+        if state == 0:
+            self.options(surfaceChooseMenu,self.matrizPos[0])
+            self.options(surfaceChooseMenu,self.matrizPos[1])
+            self.options(surfaceChooseMenu,self.matrizPos[2])
+        if state == 1:
+            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.69))
             self.choose(surfaceChooseMenu,self.matrizPos[0])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[1])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[2])
-
-        if self.typeBullet == 2:
-
+            self.options(surfaceChooseMenu,self.matrizPos[0])
+            self.options(surfaceChooseMenu,self.matrizPos[1])
+            self.options(surfaceChooseMenu,self.matrizPos[2])
+        if state == 2:
+            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.69))
             self.choose(surfaceChooseMenu,self.matrizPos[1])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[2])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[0])
-
-        if self.typeBullet == 3:
+            self.options(surfaceChooseMenu,self.matrizPos[0])
+            self.options(surfaceChooseMenu,self.matrizPos[1])
+            self.options(surfaceChooseMenu,self.matrizPos[2])
+        if state == 3:
+            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.69))
             self.choose(surfaceChooseMenu,self.matrizPos[2])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[0])
-            self.delOpBef(surfaceChooseMenu,self.matrizPos[1])           
+            self.options(surfaceChooseMenu,self.matrizPos[0])
+            self.options(surfaceChooseMenu,self.matrizPos[1])
+            self.options(surfaceChooseMenu,self.matrizPos[2])
