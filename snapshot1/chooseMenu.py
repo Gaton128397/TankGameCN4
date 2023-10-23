@@ -36,19 +36,19 @@ class ChooseMenu:
             self.options(surfaceChooseMenu,self.matrizPos[1])
             self.options(surfaceChooseMenu,self.matrizPos[2])
         if state == 1:
-            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.69))
+            surfaceChooseMenu.blit(rectangulo,(0,self.height+3))
             self.choose(surfaceChooseMenu,self.matrizPos[0])
             self.options(surfaceChooseMenu,self.matrizPos[0])
             self.options(surfaceChooseMenu,self.matrizPos[1])
             self.options(surfaceChooseMenu,self.matrizPos[2])
         if state == 2:
-            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.69))
+            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.70))
             self.choose(surfaceChooseMenu,self.matrizPos[1])
             self.options(surfaceChooseMenu,self.matrizPos[0])
             self.options(surfaceChooseMenu,self.matrizPos[1])
             self.options(surfaceChooseMenu,self.matrizPos[2])
         if state == 3:
-            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.69))
+            surfaceChooseMenu.blit(rectangulo,(self.width*0.40,self.height*0.70))
             self.choose(surfaceChooseMenu,self.matrizPos[2])
             self.options(surfaceChooseMenu,self.matrizPos[0])
             self.options(surfaceChooseMenu,self.matrizPos[1])

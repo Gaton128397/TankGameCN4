@@ -44,6 +44,7 @@ class TerrenoVariado:
                 self.yPoints.append([int(y)])
             #print(self.points[x])
     # Dibuja el terreno
+    
     def drawTerrain(self):
         surf = self.window.copy()
         drawFunctions.backgroundDraw(surf)
