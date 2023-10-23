@@ -15,6 +15,8 @@ class TerrenoVariado:
         pygame.display.set_caption("Terreno Variado")
 
     #funcion para interpolar los puntos
+    def changeTerrain(self,newWindow):
+        self.window = newWindow
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     # Genera el terreno

@@ -254,8 +254,13 @@ def game():
                                 #('no quedan')
                                 bulletTypePlayer1 = 5 #5 es que no quedan
                             bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window,)
-                            
+                           
                             bullet1.shoot(terrainPoints, player1Hitbox, player2Hitbox,surfaceJuego)
+                            #newSurfaceJuego = terrain.drawTerrain()
+                            #surfaceJuego.blit(newSurfaceJuego,(0,0))
+                            
+                            #surfaceJuego.blit(newSurfaceJuego,(0,0))
+                            #tempWindows[0].blit(surfaceJuego,(0,0))
                             ammoPlayer1[bulletTypePlayer1 - 1] -= 1
                             lastAngulo1 = angleBullet1
                             lastPower1 = potencia

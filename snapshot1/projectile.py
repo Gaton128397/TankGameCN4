@@ -1,4 +1,4 @@
-import math,pygame,time
+import math,pygame,params
 from functions import *
 g = 9.8
 FPS = 60
@@ -109,16 +109,18 @@ class Projectile():
             pygame.draw.circle(self.win,self.color, self.path[-1], self.size)
             pygame.display.update()
             self.win.blit(tempWindow,(0,0))
-        print(getColisionPoint)
-        print(terrainPoints[(int(self.x)-self.size)][1])
-        terrainPoints[(int(self.x)-self.size)][1] = 1
-        print(terrainPoints[(int(self.x)-self.size)][1])
-        # for i in range(self.size):
-        #     terrainPoints[(int(self.x)-self.size)+i][1] = terrainPoints[int(self.x)][1]-i
-        # for i in range(self.size):
-        #     diffVariable = self.size-i
-        #     terrainPoints[int(self.x)+i][1] =terrainPoints[int(self.x)][1] - diffVariable
-        #newTempSurf = pygame,
+        #print(getColisionPoint)
+        #print(terrainPoints[(int(self.x)-self.size+1)][1])
+        #print(terrainPoints[(int(self.x)-self.size+1)][1])
+        for i in range(self.size+100):
+            terrainPoints[(int(self.x)-self.size)+i][1] = terrainPoints[int(self.x)-self.size+i][1]+i
+            #print(terrainPoints[(int(self.x)-self.size)+i][1])
+        for i in range(self.size+100):
+            diffVariable = self.size-i
+            terrainPoints[int(self.x)+i][1] =terrainPoints[int(self.x)+1][1] + diffVariable
+            print(terrainPoints[(int(self.x)-self.size)+i][1])
+        
+        
         self.win.blit(tempWindow,(0,0))
         pygame.display.update()
         
