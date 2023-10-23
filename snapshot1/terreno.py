@@ -18,10 +18,10 @@ class terrenoCoseno:
             self.cos_points.append((x, int(y)))
             self.yCosPoints.append(int(y))
             #print(self.cos_points[x])
-    def drawTerrain(self):
-        self.window.fill('lightblue')
-        pygame.draw.polygon(self.window, (255, 213, 158), [(0, self.height)] + self.cos_points + [(self.width, self.height)])
-        pygame.draw.lines(self.window, (139, 69, 19), False, self.cos_points, 5)
+    def drawTerrain(self,surfaceTerrain):
+        surfaceTerrain.fill('lightblue')
+        pygame.draw.polygon(surfaceTerrain, (255, 213, 158), [(0, self.height)] + self.cos_points + [(self.width, self.height)])
+        pygame.draw.lines(surfaceTerrain, (139, 69, 19), False, self.cos_points, 5)
         # pygame.display.update()
     def getCosPoints(self):
         return(self.cos_points)

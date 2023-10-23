@@ -1,6 +1,6 @@
-from menu import Menu
-from winScreen import Winner
-from instrucciones import Instrucciones
+from winnerdisplay import drawWinner
+from newMenu import draw_menu
+from instrucciones import draw_instrucciones
 from random import randint
 import pygame, projectile, tank, terreno, time, sys, chooseMenu, infoBlock
 
@@ -19,14 +19,30 @@ def game():
     pygame.init()
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((WIDTH, HEIGHT))
-    menuSurface = pygame.Surface((WIDTH, HEIGHT))
-    window.fill('lightblue')
+
 
     pygame.display.set_caption("Tank v Tank")
     fuente = pygame.font.Font(None, 30)
     fuente2 = pygame.font.Font(None, 60)
+    
+    ganador = 0
 
+    superficies = []
+    actualScreen = 0
 
+    surfaceMenu = pygame.Surface((WIDTH,HEIGHT))
+    surfaceJuego = pygame.Surface((WIDTH,HEIGHT))
+    surfaceControles = pygame.Surface((WIDTH,HEIGHT))
+    surfaceWinner =pygame.Surface((WIDTH,HEIGHT))
+
+    listaBotones = draw_menu(surfaceMenu, WIDTH, HEIGHT)
+    listaBotones.append(draw_instrucciones(surfaceControles, WIDTH, HEIGHT))
+    listaBotones.append(drawWinner(surfaceWinner, WIDTH, HEIGHT, ganador))
+
+    superficies.append(surfaceMenu)
+    superficies.append(surfaceControles)
+    superficies.append(surfaceJuego)
+    superficies.append(surfaceWinner)
     #variables globales para la potencia
     global potencia, tiempo_presionado, tiempo_anterior, presionado
 
@@ -34,23 +50,18 @@ def game():
     #variables de informacion impresa
     lastPower1 = 0;lastPower2 = 0;angleBullet1 = 0;angleBullet2 = 0;lastAngulo1 = 0;lastAngulo2 = 0;alturamaxima1 = 0;alturamaxima2 = 0;range1 = 0;range2 = 0;end = False
     
-    
-    #Crear objetos 
-    winScreen = Winner(window, WIDTH, HEIGHT)
-    instrucciones = Instrucciones(window, WIDTH, HEIGHT)
-    menu1 = Menu(window, WIDTH, HEIGHT)
-    chooseMenu1 = chooseMenu.ChooseMenu(window, WIDTH, HEIGHT)
+    chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
 
     #terreno
-    terrain = terreno.terrenoCoseno(window, WIDTH, HEIGHT)
+    terrain = terreno.terrenoCoseno(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
     terrainPoints = terrain.getCosPoints()
     
 
     #crear Jugadores
-    player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, window)
-    player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, window)
+    player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
+    player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
     
     #crear hitbox jugadores
     player1Hitbox = player1.hitBox()
@@ -64,101 +75,86 @@ def game():
     bulletTypePlayer2 = typeBullet
 
     #info jugadores
-    infoPlayer1 = infoBlock.InfoBlock(window,1,WIDTH,HEIGHT,lastAngulo1,potencia,lastPower1,range1,alturamaxima1,)
-    infoPlayer2 = infoBlock.InfoBlock(window,2,WIDTH,HEIGHT,lastAngulo2,potencia,lastPower2,range2,alturamaxima2,)
+    infoPlayer1 = infoBlock.InfoBlock(surfaceJuego,1,WIDTH,HEIGHT,lastAngulo1,potencia,lastPower1,range1,alturamaxima1,)
+    infoPlayer2 = infoBlock.InfoBlock(surfaceJuego,2,WIDTH,HEIGHT,lastAngulo2,potencia,lastPower2,range2,alturamaxima2,)
 
 
     #variables flujo de juego
     somebodyWon = False
     shoot = True
     turno = 1
+    run = True
     start = 0
-    if start == 0:
-        menu1.draw_menu()
-        pygame.display.update()
-        run = True
-
-    surfaceMenu = 'menu'
-    surfaceJuego = 'juego'
-    surfaceControles = 'controles'
-    surfaceWinner = 'winner'
+    
     
         
 
 
     #draw objetcs
-    terrain.drawTerrain()
+    terrain.drawTerrain(surfaceJuego)
     player1.draw_tank("blue")
     player2.draw_tank("red")
     chooseMenu1.choosing(1)
     pygame.draw.rect(window, "white", (0, HEIGHT * 0.7, WIDTH, HEIGHT * 0.3))
     infoPlayer1.drawInfoBlock(potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1,)
     infoPlayer2.drawInfoBlock(potencia, angleBullet2 + 180, lastPower2, lastAngulo2, range2, alturamaxima2)
-    
 
     #comienzo juego
     while run:
         try:
-            
-                
-            if start == 1:
-                menu1.delete_menu()
-                instrucciones.delete_instrucciones()
-                chooseMenu1.drawChooseMenu(window)
-                tiempo_actual = pygame.time.get_ticks() / 1000.0
-                if turno == 1:
-                    #mover el cañon 1
-                    positionBullet1 = player1.moveCannon()
-                    angleBullet1 = player1.getAngle()
-                    infoPlayer1.deleteLast()
-                    #escrbir informacion jugador 1
-                    infoPlayer1.drawInfoBlock(
-                        potencia,
-                        angleBullet1,
-                        lastPower1,
-                        lastAngulo1,
-                        range1,
-                        alturamaxima1,
-                    )
-                elif turno == 2:
-                    #mover el cañon 2
-                    positionBullet2 = player2.moveCannon()
-                    angleBullet2 = 180 - player2.getAngle()
-                    infoPlayer2.deleteLast()
-                    #escrbir informacion jugador 2
-                    infoPlayer2.drawInfoBlock(
-                        potencia,
-                        angleBullet2,
-                        lastPower2,
-                        lastAngulo2,
-                        range2,
-                        alturamaxima2,
-                    )
+            window.blit(superficies[actualScreen], (0,0))
+            pygame.display.update()
+
 
             for event in pygame.event.get():
+                
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+
                     #Botones menu
-                    if menu1.buttonPlay.collidepoint(event.pos):
-                        start = 1 #inicia el juego
-                    elif menu1.buttonExit.collidepoint(event.pos):
-                        #cierra el juego
-                        run = False
-                        pygame.quit()
-                        sys.exit()
+                    if actualScreen == 0:
 
-                    elif menu1.buttonControls.collidepoint(event.pos):
+                        if listaBotones[0].collidepoint(event.pos):
+                            
+                            actualScreen = 2
 
-                        instrucciones.draw_instrucciones() #dibuja las instrucciones
+                        elif listaBotones[1].collidepoint(event.pos):
+                            #abre las instrucciones
+                            
+                            actualScreen = 1
 
-                    elif instrucciones.buttonVolver.collidepoint(event.pos):
-                        start = 1
-                        # menu1.draw_menu() #dibuja el menu
-                        # pygame.display.update()
+                        elif listaBotones[2].collidepoint(event.pos):
 
+                            #cierra el juego
+                            run = False
+                            pygame.quit()
+                            sys.exit()
+
+                    if actualScreen == 1:
+                        if listaBotones[3].collidepoint(event.pos):
+                            #vuelve al menu
+                            actualScreen = 0
+                    if actualScreen == 2:
+                        #inicia el juego
+                        
+                        tiempo_actual = pygame.time.get_ticks() / 1000.0
+                        chooseMenu1.drawChooseMenu(window)
+                        if turno == 1:
+                            #mover el cañon 1
+                            positionBullet1 = player1.moveCannon()
+                            angleBullet1 = player1.getAngle()
+                            infoPlayer1.deleteLast()
+                            #escrbir informacion jugador 1
+                            infoPlayer1.drawInfoBlock(potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1)
+                        elif turno == 2:
+                            #mover el cañon 2
+                            positionBullet2 = player2.moveCannon()
+                            angleBullet2 = 180 - player2.getAngle()
+                            infoPlayer2.deleteLast()
+                            #escrbir informacion jugador 2
+                            infoPlayer2.drawInfoBlock(potencia,angleBullet2,lastPower2,lastAngulo2,range2,alturamaxima2)
 
                 elif event.type == pygame.KEYDOWN:
 
@@ -234,10 +230,12 @@ def game():
                             range1 = bullet1.getRange()
                             alturamaxima1 = bullet1.getMaxHeight()
                             if bullet1.returnHit() == 1:
-                                winScreen.drawWinner(turno)
+                                ganador = turno
+                                actualScreen = 3
                                 end = True
                             elif bullet1.returnHit() == 2:
-                                winScreen.drawWinner(turno)
+                                ganador = turno
+                                actualScreen = 3
                                 end = True
                             else:
                                 deleteBullet.delete(
@@ -271,11 +269,13 @@ def game():
                             range2 = bullet2.getRange() * -1
                             alturamaxima2 = bullet2.getMaxHeight()
                             if bullet2.returnHit() == 1:
-                                winScreen.drawWinner(turno)
+                                ganador = turno
+                                actualScreen = 3
                                 end = True
 
                             elif bullet2.returnHit() == 2:
-                                winScreen.drawWinner(turno)
+                                ganador = turno
+                                actualScreen = 3
                                 end = True
                             else:
                                 deleteBullet2.delete(
@@ -302,17 +302,20 @@ def game():
                     llenado = min(tiempo_presion * 20, 200)  # Ajustamos el llenado
                     pygame.draw.rect(window, "red", (50, 50, llenado, 20))
                 elif end:
-                    winScreen.drawWinner(1)
+                    ganador = turno
+                    actualScreen = 3
                 elif end:
-                    winScreen.drawWinner(1)
+                    ganador = turno
+                    actualScreen = 3
                 if presionado:
                     potencia_actual = min(tiempo_presion * 20, 200)
                     texto_potencia_actual = fuente.render(
                         f"POWER NOW: {potencia_actual:.1f}", True, "black"
                     )
                     window.blit(texto_potencia_actual, (50, 70))
-                elif end:
-                    winScreen.drawWinner(1)
+                elif end: 
+                    ganador = turno
+                    actualScreen = 3
 
                 clock.tick(60)
                 pygame.display.update()
