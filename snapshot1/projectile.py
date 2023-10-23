@@ -6,7 +6,7 @@ FPS = 60
 class Projectile():
     def __init__(self, position, typeBullet,power, theta,window):
         super(Projectile, self).__init__()
-
+        #('se crea')
         self.typeBullet = typeBullet
         self.quantity = 0
         self.dmg = 0
@@ -32,7 +32,8 @@ class Projectile():
             self.dmg = 30
             self.explosionArea = self.size*2 - self.size/3
         elif self.typeBullet == 5: #no quedan
-            print('endgame')
+            self.size = 0
+            #('endgame')
             #('no hay mas')
         else: #standard 60mm
             self.size = 6
@@ -86,6 +87,7 @@ class Projectile():
         return x * math.tan(self.theta) - self.f * x ** 2
     
     def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints,gameInstance):
+        #('dispara')
         self.yNew = self.y-self.ch
         tempWindow = gameInstance.copy()
 

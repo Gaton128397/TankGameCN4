@@ -40,8 +40,9 @@ class TerrenoVariado:
                 y = self.interpolate(x1, y1, x2, y2, x)
                 self.points.append((x, int(y)))
                 self.yPoints.append(int(y))
-            #print(self.points[x])
+            ##(self.points[x])
     # Dibuja el terreno
+    
     def drawTerrain(self):
         surf = self.window.copy()
         drawFunctions.backgroundDraw(surf)

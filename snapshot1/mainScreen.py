@@ -1,8 +1,8 @@
-from winnerdisplay import drawWinner
+from endDisplay import drawEnd
 from newMenu import draw_menu
 from instrucciones import draw_instrucciones
 from random import randint
-from barravida import BarraVida
+# from barravida import BarraVida
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
 
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
@@ -21,14 +21,17 @@ def game():
     pygame.init()
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((WIDTH, HEIGHT))
-
-
-
+    
     pygame.display.set_caption("Tank v Tank")
+
     fuente = pygame.font.Font(None, 30)
     fuente2 = pygame.font.Font(None, 60)
     
     ganador = 0
+
+    
+
+    
 
     superficies = []
     actualScreen = 0
@@ -40,7 +43,7 @@ def game():
 
     listaBotones = draw_menu(surfaceMenu, WIDTH, HEIGHT)
     listaBotones.append(draw_instrucciones(surfaceControles, WIDTH, HEIGHT))
-    listaBotones.append(drawWinner(surfaceWinner, WIDTH, HEIGHT, ganador))
+    
 
     superficies.append(surfaceMenu)
     superficies.append(surfaceControles)
@@ -48,7 +51,7 @@ def game():
     superficies.append(surfaceWinner)
 
     #variables globales para la potencia
-    global potencia, tiempo_presionado, tiempo_anterior, presionado,falling
+    global potencia, tiempo_presionado, tiempo_anterior, presionado,seconds,minutes
 
 
     #variables de informacion impresa
@@ -57,25 +60,20 @@ def game():
     chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
     chooseMenu2 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
-    #terreno
-    terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
-    terrain.getTerrain()
-    terrainYpoints = terrain.yPoint()
-    terrainPoints = terrain.getPoints()
+    
+
+    
     
     #crear Jugadores
 
 
-    player1 = tank.Tank((randint(20,WIDTH*0.5),10), "blue", 1, surfaceJuego,terrainPoints)
-    player2 = tank.Tank((randint(WIDTH*0.5,WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
+    
 
-    #crear hitbox jugadores
-    player1Hitbox = player1.hitBox()
-    player2Hitbox = player2.hitBox()
+    
     
     #variables municion jugadores
-    ammoPlayer1 = [3, 10, 3]
-    ammoPlayer2 = [3, 10, 3]
+    ammoPlayer1 = [1, 10, 3]
+    ammoPlayer2 = [1, 10, 3]
     typeBullet = 1
     bulletTypePlayer1 = typeBullet
     bulletTypePlayer2 = typeBullet
@@ -88,42 +86,83 @@ def game():
     somebodyWon = False
     shoot = True
     turno = 1
-    falling = 1
     end = False
     run = True
     start = 0
-
-    playersInGame = []
-    playersInGame.append(player1)
-    playersInGame.append(player2)
-
-    LAYERS = [] #indice 0 terreno y background, indice 1 jugadores
-    LAYERS.append(terrain.drawTerrain())
-    LAYERS.append(playersInGame)
+    #timer
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
     
-    surfaceJuego.blit(LAYERS[0],(0,0))
-    if falling !=0:
-        LAYERS[1][0].draw_tank(False)
-        LAYERS[1][1].draw_tank(False)
+    surfaceTimer = pygame.Surface((80, 25))
+    surfaceTimer.fill((255, 255, 255))
+    font = pygame.font.SysFont('Consolas', 28)
+    minutes = 5#10
+    seconds = 59#59
+
+
     
+    # terrain.drawTerrain()
+
+    def creaLayer(surfaceJuego,pos1,pos2):
+        LAYERS = [] #indice 0 terreno y background, indice 1 jugadores
+        #terreno
+        terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
+        terrain.getTerrain()
+
+        terrainYpoints = terrain.yPoint()
+        terrainPoints = terrain.getPoints()
+        
+        player1 = tank.Tank((0,0), "blue", 1, surfaceJuego,terrainPoints)
+        player2 = tank.Tank((0,0), "red", 0, surfaceJuego,terrainPoints)
+
+        positionTank1 = (randint(20,WIDTH*0.5),10)
+        positionTank2 = (randint(WIDTH*0.5,WIDTH),10)
+        
+        # position =[positionTankX,positionTankY]
+        
+        playersInGame = []
+        playersInGame.append(player1)
+        playersInGame.append(player2)
+        
+        
+        LAYERS.append(terrain) #0
+        LAYERS.append(playersInGame) #1
+
+        
+        surfaceJuego.blit(LAYERS[0].drawTerrain(),(0,0))
+
         tempWindows = []
-        tempWindows.append(surfaceJuego.copy())
-        tempWindows.append(surfaceJuego.copy())
-        tempWindows.append(surfaceJuego.copy())
+        tempWindows.append(LAYERS[0].drawTerrain())
+        tempWindows.append(LAYERS[1])
+        # tempWindows.append(LAYERS[1])
+        # tempWindows.append(playersInGame)
 
-        LAYERS[1][0].draw_tank(True)
-        LAYERS[1][1].draw_tank(True)
-    
-    
-    
+        # LAYERS.append(tempWindows)
+        
+        LAYERS[1][0].draw_tank(pos1,False)
+        LAYERS[1][1].draw_tank(pos2,False)
+        tempWindows.append(surfaceJuego)
+        LAYERS.append(tempWindows)
+
+        LAYERS[1][0].draw_tank(pos1,True)
+        LAYERS[1][1].draw_tank(pos2,True)
+        # LAYERS[2][1][0].draw_tank(positionTank1,True)
         
 
-
-    #draw objetcs
-    terrain.drawTerrain()
-    #chooseMenu1.choosing(1,surfaceJuego)
-    #pygame.draw.rect(window, (255, 213, 158), (0, HEIGHT * 0.7, WIDTH, HEIGHT * 0.3))
+        return LAYERS
     
+    #crear nueva partida
+    
+    positionTank1 = (randint(20,WIDTH*0.5),10)
+    positionTank2 = (randint(WIDTH*0.5,WIDTH),10)
+    layer1 = creaLayer(surfaceJuego,positionTank1,positionTank2)
+    hitbox1 = layer1[1][0].creaHitBox()
+    hitbox2 = layer1[1][1].creaHitBox()
+    
+    # #(hitbox1)
+    
+    # terrainYpoints = layer1[0].yPoint()
+    
+    terrainPoints = layer1[0].getPoints()
     infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1,)
     infoPlayer2.drawInfoBlock(surfaceJuego,potencia, angleBullet2 + 180, lastPower2, lastAngulo2, range2, alturamaxima2)
     chooseState = []
@@ -134,25 +173,53 @@ def game():
         try:
             window.blit(superficies[actualScreen], (0,0))
             pygame.display.update()
-            if actualScreen ==2:
+            
+            if actualScreen ==2 and minutes >-1:
+
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
                 chooseMenu1.drawChooseMenu(surfaceJuego,0)
+                #vida
+                layer1[1][0].drawDibujarVida(surfaceJuego,(0,0),25,WIDTH*0.5-40)
+                layer1[1][1].drawDibujarVida(surfaceJuego,(WIDTH*0.5+40,0),25,WIDTH*0.5)
+                #correr temporizador
+                if seconds < 10:
+                    timerText = font.render(f"{minutes}:0{seconds}", True, "black")
+                    if minutes <10:
+                        timerText = font.render(f"0{minutes}:0{seconds}", True, "black")
+                else:
+                    timerText = font.render(f"{minutes}:{seconds}", True, "black")
+                    if minutes <10:
+                        timerText = font.render(f"0{minutes}:{seconds}", True, "black")
+                surfaceJuego.blit(surfaceTimer, (WIDTH//2-40, 0))
+                surfaceJuego.blit(timerText, (WIDTH//2-38, 0))
+                pygame.display.update()
+                #actualizar barra de vida
+                
                 if turno == 1:
+
                     #mover el cañon 1
-                    LAYERS[1][0].moveCannon(tempWindows)
-                    angleBullet1 = LAYERS[1][0].getAngle()
+                    layer1[1][0].moveCannon(layer1[2])
+                    layer1[2][1][0].draw_tank(positionTank1,True)
+                    layer1[2][1][1].draw_tank(positionTank2,True)
+                    angleBullet1 = layer1[1][0].getAngle()
                     infoPlayer1.deleteLast(surfaceJuego)
                     # escrbir informacion jugador 1
+                    infoPlayer2.deleteLast(surfaceJuego)
                     infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1)
+                    infoPlayer2.drawInfoBlock(surfaceJuego,potencia,angleBullet2,lastPower2,lastAngulo2,range2,alturamaxima2)
                     chooseMenu1.drawChooseMenu(surfaceJuego,chooseState[0])
                     
                 elif turno == 2:
                     #mover el cañon 2
-                    LAYERS[1][1].moveCannon(tempWindows)
-                    angleBullet2 =180- LAYERS[1][1].getAngle()
+                    layer1[1][1].moveCannon(layer1[2])
+                    layer1[2][1][1].draw_tank(positionTank2,True)
+                    layer1[2][1][0].draw_tank(positionTank1,True)
+                    angleBullet2 =180- layer1[1][1].getAngle()
+                    infoPlayer1.deleteLast(surfaceJuego)
                     infoPlayer2.deleteLast(surfaceJuego)
                     #escrbir informacion jugador 2
+                    infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1)
                     infoPlayer2.drawInfoBlock(surfaceJuego,potencia,angleBullet2,lastPower2,lastAngulo2,range2,alturamaxima2)
                     chooseMenu2.drawChooseMenu(surfaceJuego,chooseState[1])
                     
@@ -160,6 +227,18 @@ def game():
                     
             for event in pygame.event.get():
                 
+                if event.type == pygame.USEREVENT:
+                    if actualScreen == 2:    
+                        seconds-=1
+                        if seconds <=0:
+                            minutes -=1
+                            seconds = 59
+                        if minutes <0:
+                            actualScreen = 3
+                            minutes = 5
+                            seconds = 59
+                            listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, 0))
+                    
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     run = False
@@ -191,18 +270,24 @@ def game():
                             #vuelve al menu
                             actualScreen = 0
                             
-                    elif actualScreen == 2:
-                        start =1
-                        #('a')
+                    
                     elif actualScreen == 3:
-                        #('aaaaaaaaaaaaaaaaaaa')
+
                         if listaBotones[4].collidepoint(event.pos):
-                            #vuelve al menu
-                            #('a')
                             actualScreen = 0
-                            terrain.resetTerrain()
-                            end = False
+                            layer1[1][0].setHealth(100)
+                            layer1[1][1].setHealth(100)
+                            ammoPlayer1 = [3, 10, 3]
+                            ammoPlayer2 = [3, 10, 3]
+                            chooseState = [0,0]
                             turno = 1
+                            
+                            
+                            
+                            
+
+                            
+
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_1:#boton 1
@@ -255,9 +340,10 @@ def game():
                             else:
                                 #('no quedan')
                                 bulletTypePlayer1 = 5 #5 es que no quedan
-                            bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window,)
+                                turno == 2
+                            bullet1 = projectile.Projectile(layer1[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window)
                             
-                            bullet1.shoot(terrainPoints, player1Hitbox, player2Hitbox,surfaceJuego)
+                            bullet1.shoot(terrainPoints, hitbox1, hitbox2,surfaceJuego)
                             ammoPlayer1[bulletTypePlayer1 - 1] -= 1
                             lastAngulo1 = angleBullet1
                             lastPower1 = potencia
@@ -265,8 +351,9 @@ def game():
                             range1 = bullet1.getRange()
                             alturamaxima1 = bullet1.getMaxHeight()
                             alturamaxima1 = bullet1.getMaxHeight()
-                            if player2.getHeath() <= 0:  
-                                ganador = turno
+                            
+                            if layer1[1][1].getHeath() <= 0:  
+                                listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, turno))
                                 actualScreen = 3
                                 end = True
                             else:
@@ -276,27 +363,27 @@ def game():
                                     actualScreen = 3
                                     end = True
                                     """
-                                    print("el enemigo aun tiene vida!")
+                                    #("el enemigo aun tiene vida!")
                                     if bulletTypePlayer1 == 1:
-                                        player2.loseHealth(1)
-                                        print("-50")
+                                        layer1[1][1].loseHealth(1)
+                                        #("-50")
                                         turno = 2
                                     elif bulletTypePlayer1 == 2:
-                                        player2.loseHealth(2)
-                                        print("-40")
+                                        layer1[1][1].loseHealth(2)
+                                        #("-40")
                                         turno = 2
                                     elif bulletTypePlayer1 == 3:
-                                        player2.loseHealth(3)
-                                        print("-30")
+                                        layer1[1][1].loseHealth(3)
+                                        #("-30")
                                         turno = 2
 
-                                    if player2.getHeath() <= 0:
-                                        ganador = 1
+                                    if layer1[1][1].getHeath() <= 0:
+                                        listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, 1))
                                         actualScreen = 3
                                         end = True
                                         
                                 elif bullet1.returnHit() == 2:
-                                    ganador = turno
+                                    listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, turno))
                                     actualScreen = 3
                                     end = True
 
@@ -308,11 +395,12 @@ def game():
                                 bulletTypePlayer2 = typeBullet
                             else:
                                 #('no quedan')
+                                turno == 1
                                 bulletTypePlayer2 = 5
                             
-                            bullet2 = projectile.Projectile(LAYERS[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window,)
+                            bullet2 = projectile.Projectile(layer1[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window,)
                             
-                            bullet2.shoot(terrainPoints, player2Hitbox, player1Hitbox,surfaceJuego)
+                            bullet2.shoot(terrainPoints, hitbox2, hitbox1,surfaceJuego)
                             
                             ammoPlayer2[bulletTypePlayer2 - 1] -= 1
                             lastAngulo2 = 180 - angleBullet2 
@@ -325,39 +413,34 @@ def game():
                             
                             alturamaxima2 = bullet2.getMaxHeight()
                             
-                            if player1.getHeath() <= 0:
-                                ganador = turno
+                            if layer1[1][0].getHeath() <= 0:
+                                listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, turno))
                                 actualScreen = 3
                                 end = True
                                 
                             else:
                                 if bullet2.returnHit() == 1:
-                                    """
-                                    ganador = turno
-                                    actualScreen = 3
-                                    end = True
-                                    """
-                                    print("el enemigo aun tiene vida!")
+                                    #("el enemigo aun tiene vida!")
                                     if bulletTypePlayer2 == 1:
-                                        player1.loseHealth(1)
-                                        print("-50")
+                                        layer1[1][0].loseHealth(1)
+                                        #("-50")
                                         turno = 1
                                     elif bulletTypePlayer2 == 2:
-                                        player1.loseHealth(2)
-                                        print("-40")
+                                        layer1[1][0].loseHealth(2)
+                                        #("-40")
                                         turno = 1
                                     elif bulletTypePlayer2 == 3:
-                                        player1.loseHealth(3)
-                                        print("-30")
+                                        layer1[1][0].loseHealth(3)
+                                        #("-30")
                                         turno = 1
                                     
-                                    if player1.getHeath() <= 0:
-                                        ganador = 2
+                                    if layer1[1][0].getHeath() <= 0:
+                                        listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, 2))
                                         actualScreen = 3
                                         end = True
 
                                 elif bullet2.returnHit() == 2:
-                                    ganador = turno
+                                    listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, turno))
                                     actualScreen = 3
                                     end = True
 
@@ -384,21 +467,20 @@ def game():
                     tiempo_presion = tiempo_actual - tiempo_presionado
                     llenado = min(tiempo_presion * 20, 200)  # Ajustamos el llenado
                     pygame.draw.rect(surfaceJuego, "red", (WIDTH*0.4, 600, llenado, 20))
-                elif end:
-                    ganador = turno
-                    actualScreen = 3
-                elif end:
-                    ganador = turno
-                    actualScreen = 3
+                # elif end:
+                #     ganador = turno
+                #     actualScreen = 3
+                # elif end:
+                #     ganador = turno
+                #     actualScreen = 3
                 if presionado:
                     potencia_actual = min(tiempo_presion * 20, 200)
-                    texto_potencia_actual = fuente.render(
-                        f"POWER NOW: {potencia_actual:.1f}", True, "black"
-                    )
+                    texto_potencia_actual = fuente.render(f"POWER NOW: {potencia_actual:.1f}", True, "black")
                     surfaceJuego.blit(texto_potencia_actual, (WIDTH*0.4, 620))
-                elif end: 
-                    ganador = turno
-                    actualScreen = 3
+                # elif end: 
+                #     ganador = turno
+                #     actualScreen = 3
+                
                 clock.tick(60)
                 pygame.display.update()
 
