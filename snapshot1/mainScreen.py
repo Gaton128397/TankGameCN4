@@ -68,8 +68,8 @@ def game():
     player2Hitbox = player2.hitBox()
     
     #variables municion jugadores
-    ammoPlayer1 = [1, 10, 3]
-    ammoPlayer2 = [1, 10, 3]
+    ammoPlayer1 = [3, 10, 3]
+    ammoPlayer2 = [3, 10, 3]
     typeBullet = 1
     bulletTypePlayer1 = typeBullet
     bulletTypePlayer2 = typeBullet
@@ -100,9 +100,9 @@ def game():
     LAYERS[1][1].draw_tank(False)
     
     tempWindows = []
-    tempWindows.append(window.copy())
-    tempWindows.append(window.copy())
-    tempWindows.append(window.copy())
+    tempWindows.append(surfaceJuego.copy())
+    tempWindows.append(surfaceJuego.copy())
+    tempWindows.append(surfaceJuego.copy())
     
     LAYERS[1][0].draw_tank(True)
     LAYERS[1][1].draw_tank(True)
@@ -115,7 +115,7 @@ def game():
 
     #draw objetcs
     terrain.drawTerrain()
-    # chooseMenu1.choosing(1)
+    chooseMenu1.choosing(1)
     #pygame.draw.rect(window, "white", (0, HEIGHT * 0.7, WIDTH, HEIGHT * 0.3))
     #infoPlayer1.drawInfoBlock(potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1,)
     #infoPlayer2.drawInfoBlock(potencia, angleBullet2 + 180, lastPower2, lastAngulo2, range2, alturamaxima2)
@@ -125,10 +125,10 @@ def game():
         try:
             window.blit(superficies[actualScreen], (0,0))
             pygame.display.update()
-            if start ==1:
+            if actualScreen ==2:
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
-                # chooseMenu1.drawChooseMenu(window)
+                chooseMenu1.drawChooseMenu(window)
                 if turno == 1:
                     #mover el cañon 1
                     LAYERS[1][0].moveCannon(tempWindows)
@@ -139,7 +139,7 @@ def game():
                 elif turno == 2:
                     #mover el cañon 2
                     LAYERS[1][1].moveCannon(tempWindows)
-                    angleBullet1 = LAYERS[1][1].getAngle()
+                    angleBullet2 =180- LAYERS[1][1].getAngle()
                     
                     #infoPlayer2.deleteLast()
                     #escrbir informacion jugador 2
@@ -177,45 +177,48 @@ def game():
                     elif actualScreen == 2:
                         start =1
                         print('a')
-
+                    elif actualScreen == 3:
+                        if listaBotones[4].collidepoint(event.pos):
+                            #vuelve al menu
+                            actualScreen = 0
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_1:#boton 1
                         if turno == 1:
                             if ammoPlayer1[0] > 0: #revisa que queden
-                                #chooseMenu1.choosing(1) #dibuja un cuadrado al rededor del tipo de proyectil
+                                chooseMenu1.choosing(1) #dibuja un cuadrado al rededor del tipo de proyectil
                                 typeBullet = 1 #cambia el proyectil al tipo 1 que es 100mm
                                 bulletTypePlayer1 = typeBullet
                             
                         elif turno == 2:
                             if ammoPlayer2[0] > 0:
-                                #chooseMenu1.choosing(1)
+                                chooseMenu1.choosing(1)
                                 typeBullet = 1
                                 bulletTypePlayer2 = typeBullet
                             
                     if event.key == pygame.K_2:#boton 2
                         if turno == 1:
                             if ammoPlayer1[1] > 0:
-                                #chooseMenu1.choosing(2)
+                                chooseMenu1.choosing(2)
                                 typeBullet = 2
                                 bulletTypePlayer1 = typeBullet
                             
                         elif turno == 2:
                             if ammoPlayer2[1] > 0:
-                                #chooseMenu1.choosing(2)
+                                chooseMenu1.choosing(2)
                                 typeBullet = 2
                                 bulletTypePlayer2 = typeBullet
                             
                     if event.key == pygame.K_3:#boton 3
                         if turno == 1:
                             if ammoPlayer1[2] > 0:
-                                #chooseMenu1.choosing(3)
+                                chooseMenu1.choosing(3)
                                 typeBullet = 3
                                 bulletTypePlayer1 = typeBullet
                             
                         elif turno == 2:
                             if ammoPlayer2[2] > 0:
-                                #chooseMenu1.choosing(3)
+                                chooseMenu1.choosing(3)
                                 typeBullet = 3
                                 bulletTypePlayer2 = typeBullet
                             
