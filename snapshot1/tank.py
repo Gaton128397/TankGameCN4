@@ -107,3 +107,16 @@ class Tank:
     def getAngle(self):
         
         return self.angulo
+    
+    def getHeath(self):
+        return self.health
+    
+    def loseHealth(self, type):
+        if type == 1:
+            self.health -= 50
+        elif type == 2:
+            self.health -= 40
+        elif type == 3:
+            self.health -= 30
+        return self.health
+         
