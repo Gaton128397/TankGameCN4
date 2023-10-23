@@ -92,13 +92,13 @@ class Projectile():
         while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew < terrainPoints[int(self.x)][1]) and not self.hit:
             if(self.x >= otherHitboxPoints[0][0]  and self.x <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
                 if(self.yNew >= otherHitboxPoints[0][1]  and self.yNew <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
-
+                    
                     self.hit = True
             if(self.x >= selfhitboxPts[0][0]  and self.x <=selfhitboxPts[len(selfhitboxPts)-1][0]):
                 if(self.yNew >= selfhitboxPts[0][1]  and self.yNew <=selfhitboxPts[len(selfhitboxPts)-1][1]):
 
                     self.hitYourself = True
-            
+            getColisionPoint = (self.x,terrainPoints[int(self.x)][1])
             self.x += self.dx 
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.path.append((self.x, self.y-(self.ch)))
@@ -109,6 +109,16 @@ class Projectile():
             pygame.draw.circle(self.win,self.color, self.path[-1], self.size)
             pygame.display.update()
             self.win.blit(tempWindow,(0,0))
+        print(getColisionPoint)
+        print(terrainPoints[(int(self.x)-self.size)][1])
+        terrainPoints[(int(self.x)-self.size)][1] = 1
+        print(terrainPoints[(int(self.x)-self.size)][1])
+        # for i in range(self.size):
+        #     terrainPoints[(int(self.x)-self.size)+i][1] = terrainPoints[int(self.x)][1]-i
+        # for i in range(self.size):
+        #     diffVariable = self.size-i
+        #     terrainPoints[int(self.x)+i][1] =terrainPoints[int(self.x)][1] - diffVariable
+        #newTempSurf = pygame,
         self.win.blit(tempWindow,(0,0))
         pygame.display.update()
         

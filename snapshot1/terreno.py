@@ -23,8 +23,8 @@ class TerrenoVariado:
             x = int(i * (self.width / (self.num_points - 1)))
             y = random.randint(self.height // 5, self.height - 200)
             if 0 <= x <= 1300:
-                self.points.append((x, y))
-                self.yPoints.append(y)
+                self.points.append([x, y])
+                self.yPoints.append([y])
 
         # interpolar los puntos faltantes
         for x in range(0, 1301):
@@ -38,8 +38,8 @@ class TerrenoVariado:
 
                 # interpolar valor de y en los puntos faltantes
                 y = self.interpolate(x1, y1, x2, y2, x)
-                self.points.append((x, int(y)))
-                self.yPoints.append(int(y))
+                self.points.append([x, int(y)])
+                self.yPoints.append([int(y)])
             #print(self.points[x])
     # Dibuja el terreno
     def drawTerrain(self):

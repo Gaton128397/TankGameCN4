@@ -1,4 +1,4 @@
-import pygame,sys
+import pygame,params,sys
 pygame.init()
 WIDTH = 1300
 HEIGHT = 700
@@ -16,7 +16,7 @@ def draw_menu(surfaceMenu,width,height):
     listaBotones = [buttonPlay,buttonControls,buttonExit]
 
     #dibuja bg
-    background = pygame.image.load("Background.jpg")
+    background = pygame.image.load(params.BackGroundIMG)
     background = pygame.transform.scale(background, (width,height))
     surfaceMenu.blit(background, (0, 0))
     

@@ -108,8 +108,6 @@ def game():
     
         tempWindows = []
         tempWindows.append(surfaceJuego.copy())
-        tempWindows.append(surfaceJuego.copy())
-        tempWindows.append(surfaceJuego.copy())
 
         LAYERS[1][0].draw_tank(True)
         LAYERS[1][1].draw_tank(True)
