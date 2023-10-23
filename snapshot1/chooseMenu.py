@@ -4,11 +4,6 @@ class ChooseMenu:
         self.window = window
         self.width = width
         self.height = height
-        # positionX = width/2
-        # positionY = height/628
-        # widthSquare = width/21
-        # heightSquare = height/23
-        # radius = width/130
         self.pos=[width*0.41,height*0.7,40,40,10]
         self.pos2=[width*0.41+50,height*0.7,40,40,8]
         self.pos3=[width*0.41+100,height*0.7,40,40,6]

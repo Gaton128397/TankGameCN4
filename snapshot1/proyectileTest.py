@@ -120,6 +120,7 @@ class Projectile():
             return 1
         else:
             return 0
+        
 def game():
     run = True
     clock = pygame.time.Clock()
@@ -135,4 +136,3 @@ def game():
         clock.tick(5)
         pygame.display.update()
 game()
-

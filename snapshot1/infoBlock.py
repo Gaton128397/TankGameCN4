@@ -16,8 +16,6 @@ class InfoBlock:
         self.lastRange = maxRange
         self.lastHeight = maxHeight
 
-
-
     def drawInfoBlock(self,surfaceInfoBlock,power,angle,lastPower,lastAngle,lastRange,maxHeight):
 
         self.angle = angle
@@ -27,9 +25,7 @@ class InfoBlock:
         self.lastRange = lastRange
         self.lastHeight = maxHeight
 
-        #nueva info
-        
-        
+        #nueva info       
         textoAngulo = self.font.render(f'ACTUAL ANGLE PLAYER  {self.player}: {self.angle:.1f}', True, 'black')
         textoPotencia = self.font.render(f'ACTUAL POWER PLAYER  {self.player}: {self.power:.1f}', True, 'black')
         textoAltura = self.font.render(f'MAX HEIGHT PLAYER  {self.player}: {self.lastHeight:.1f}', True, 'black')
@@ -60,6 +56,7 @@ class InfoBlock:
             surfaceInfoBlock.blit(textoLastRange,(20 + self.width*0.7,self.height*0.7 +150))
             surfaceInfoBlock.blit(textoLastHeight,(20 + self.width*0.7,self.height*0.7 +180))
             #pygame.draw.rect(surfaceInfoBlock, 'white', (20,self.height*0.7,self.width,self.height*0.3))    
+    
     def deleteLast(self,surfaceInfoBlock):
         if self.player ==1:
             pygame.draw.rect(surfaceInfoBlock, (255, 213, 158), (20,self.height*0.7,self.width//2,self.height*0.3))

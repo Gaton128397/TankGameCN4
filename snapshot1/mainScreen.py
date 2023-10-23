@@ -3,6 +3,7 @@ from newMenu import draw_menu
 from instrucciones import draw_instrucciones
 from random import randint
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
+
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
 hills = []
 canyons = []
@@ -12,12 +13,14 @@ tiempo_anterior = 0
 presionado = False
 
 
+
 def game():
 
     #informacion pygame
     pygame.init()
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((WIDTH, HEIGHT))
+
 
 
     pygame.display.set_caption("Tank v Tank")
@@ -44,7 +47,7 @@ def game():
     superficies.append(surfaceWinner)
 
     #variables globales para la potencia
-    global potencia, tiempo_presionado, tiempo_anterior, presionado
+    global potencia, tiempo_presionado, tiempo_anterior, presionado,falling
 
 
     #variables de informacion impresa
@@ -56,13 +59,16 @@ def game():
     #terreno
     terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
+    terrainYpoints = terrain.yPoint()
     terrainPoints = terrain.getPoints()
     
-
     #crear Jugadores
-    player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
-    player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
-    
+    # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
+    # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
+
+    player1 = tank.Tank((randint(20,WIDTH*0.5),10), "blue", 1, surfaceJuego,terrainPoints)
+    player2 = tank.Tank((randint(WIDTH*0.5,WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
+
     #crear hitbox jugadores
     player1Hitbox = player1.hitBox()
     player2Hitbox = player2.hitBox()
@@ -78,13 +84,14 @@ def game():
     infoPlayer1 = infoBlock.InfoBlock(surfaceJuego,1,WIDTH,HEIGHT,lastAngulo1,potencia,lastPower1,range1,alturamaxima1,)
     infoPlayer2 = infoBlock.InfoBlock(surfaceJuego,2,WIDTH,HEIGHT,lastAngulo2,potencia,lastPower2,range2,alturamaxima2,)
 
-
     #variables flujo de juego
     somebodyWon = False
     shoot = True
     turno = 1
-
+    falling = 1
     end = False
+    run = True
+    start = 0
 
     playersInGame = []
     playersInGame.append(player1)
@@ -95,19 +102,18 @@ def game():
     LAYERS.append(playersInGame)
     
     surfaceJuego.blit(LAYERS[0],(0,0))
+    if falling !=0:
+        LAYERS[1][0].draw_tank(False)
+        LAYERS[1][1].draw_tank(False)
     
-    LAYERS[1][0].draw_tank(False)
-    LAYERS[1][1].draw_tank(False)
+        tempWindows = []
+        tempWindows.append(surfaceJuego.copy())
+        tempWindows.append(surfaceJuego.copy())
+        tempWindows.append(surfaceJuego.copy())
+
+        LAYERS[1][0].draw_tank(True)
+        LAYERS[1][1].draw_tank(True)
     
-    tempWindows = []
-    tempWindows.append(surfaceJuego.copy())
-    tempWindows.append(surfaceJuego.copy())
-    tempWindows.append(surfaceJuego.copy())
-    
-    LAYERS[1][0].draw_tank(True)
-    LAYERS[1][1].draw_tank(True)
-    run = True
-    start = 0
     
     
         
@@ -184,13 +190,19 @@ def game():
                         if listaBotones[3].collidepoint(event.pos):
                             #vuelve al menu
                             actualScreen = 0
+                            
                     elif actualScreen == 2:
                         start =1
                         print('a')
                     elif actualScreen == 3:
+                        print('aaaaaaaaaaaaaaaaaaa')
                         if listaBotones[4].collidepoint(event.pos):
                             #vuelve al menu
+                            print('a')
                             actualScreen = 0
+                            terrain.resetTerrain()
+                            end = False
+                            turno = 1
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_1:#boton 1
@@ -232,7 +244,6 @@ def game():
                                 typeBullet = 3
                                 bulletTypePlayer2 = typeBullet
                             
-
                     if event.key == pygame.K_SPACE:
                         tiempo_presionado = tiempo_actual
                         presionado = True
@@ -254,21 +265,26 @@ def game():
                             range1 = bullet1.getRange()
                             alturamaxima1 = bullet1.getMaxHeight()
                             if bullet1.returnHit() == 1:
+                                """
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
                                 """
                                 if player2.getHeath() <= 0: # revisar get health o type bullet primero?¿...
-                                    winScreen.drawWinner(turno)
+                                    ganador = 1
+                                    actualScreen = 3
                                     end = True
-                                
-                                if bulletTypePlayer1 == 1:
-                                    player2.loseHealth(1)
-                                elif bulletTypePlayer1 == 2:
-                                    player2.loseHealth(2)
-                                elif bulletTypePlayer1 == 3:
-                                    player2.loseHealth(3)
-                                """
+                                else:
+                                    print("el enemigo aun tiene vida!")
+                                    if bulletTypePlayer1 == 1:
+                                        player2.loseHealth(1)
+                                        print("-50")
+                                    elif bulletTypePlayer1 == 2:
+                                        player2.loseHealth(2)
+                                        print("-40")
+                                    elif bulletTypePlayer1 == 3:
+                                        player2.loseHealth(3)
+                                        print("-30")
 
                             elif bullet1.returnHit() == 2:
                                 ganador = turno
@@ -301,15 +317,34 @@ def game():
                             alturamaxima2 = bullet2.getMaxHeight()
                             
                             if bullet2.returnHit() == 1:
+                                """
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
+                                """
+                                if player1.getHeath() <= 0: # revisar get health o type bullet primero?¿...
+                                    ganador = 2
+                                    actualScreen = 3
+                                    end = True
+                                else:
+                                    print("el enemigo aun tiene vida!")
+                                    if bulletTypePlayer2 == 1:
+                                        player1.loseHealth(1)
+                                        print("-50")
+                                    elif bulletTypePlayer2 == 2:
+                                        player1.loseHealth(2)
+                                        print("-40")
+                                    elif bulletTypePlayer2 == 3:
+                                        player1.loseHealth(3)
+                                        print("-30")
+
                             elif bullet2.returnHit() == 2:
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
                             else:
                                 turno = 1
+
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_SPACE:
                         if (
@@ -322,6 +357,7 @@ def game():
                             )
                         tiempo_anterior = tiempo_actual
                         presionado = False
+
             if actualScreen ==2:
                 pygame.draw.rect(surfaceJuego, (255, 213, 158), (WIDTH*0.4, 620, 200, 40))
                 pygame.draw.rect(surfaceJuego, "grey", (WIDTH*0.4, 600, 200, 20))
@@ -346,8 +382,8 @@ def game():
                     actualScreen = 3
                 clock.tick(60)
                 pygame.display.update()
+
         except (ZeroDivisionError, UnboundLocalError,AttributeError,IndexError):
             textoError = fuente.render("Espera tu turno", True, "black")
-
 
 game()
