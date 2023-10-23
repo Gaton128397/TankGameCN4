@@ -54,9 +54,9 @@ def game():
 
 
     #terreno
-    terrain = terreno.terrenoCoseno(surfaceJuego, WIDTH, HEIGHT)
+    terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
-    terrainPoints = terrain.getCosPoints()
+    terrainPoints = terrain.getPoints()
     
 
     #crear Jugadores
@@ -246,10 +246,24 @@ def game():
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
+                                """
+                                if player2.getHeath() <= 0: # revisar get health o type bullet primero?¿...
+                                    winScreen.drawWinner(turno)
+                                    end = True
+                                
+                                if bulletTypePlayer1 == 1:
+                                    player2.loseHealth(1)
+                                elif bulletTypePlayer1 == 2:
+                                    player2.loseHealth(2)
+                                elif bulletTypePlayer1 == 3:
+                                    player2.loseHealth(3)
+                                """
+
                             elif bullet1.returnHit() == 2:
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
+                         
                             else:
                                 
                                 turno = 2
