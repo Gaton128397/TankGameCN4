@@ -32,7 +32,8 @@ class Projectile():
             self.dmg = 30
             self.explosionArea = self.size*2 - self.size/3
         elif self.typeBullet == 5: #no quedan
-            print('no hay mas')
+            print('endgame')
+            #('no hay mas')
         else: #standard 60mm
             self.size = 6
             self.quantity = 3

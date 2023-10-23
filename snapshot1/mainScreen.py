@@ -193,12 +193,12 @@ def game():
                             
                     elif actualScreen == 2:
                         start =1
-                        print('a')
+                        #('a')
                     elif actualScreen == 3:
-                        print('aaaaaaaaaaaaaaaaaaa')
+                        #('aaaaaaaaaaaaaaaaaaa')
                         if listaBotones[4].collidepoint(event.pos):
                             #vuelve al menu
-                            print('a')
+                            #('a')
                             actualScreen = 0
                             terrain.resetTerrain()
                             end = False
@@ -253,7 +253,7 @@ def game():
                             if ammoPlayer1[bulletTypePlayer1 - 1] > 0:
                                 bulletTypePlayer1 = typeBullet
                             else:
-                                print('no quedan')
+                                #('no quedan')
                                 bulletTypePlayer1 = 5 #5 es que no quedan
                             bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window,)
                             
@@ -307,7 +307,7 @@ def game():
                             if ammoPlayer2[bulletTypePlayer2 - 1] > 0:
                                 bulletTypePlayer2 = typeBullet
                             else:
-                                print('no quedan')
+                                #('no quedan')
                                 bulletTypePlayer2 = 5
                             
                             bullet2 = projectile.Projectile(LAYERS[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window,)
