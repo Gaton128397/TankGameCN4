@@ -4,14 +4,14 @@ class ChooseMenu:
         self.window = window
         self.width = width
         self.height = height
-        positionX = width/2
-        positionY = height/628
-        widthSquare = width/21
-        heightSquare = height/23
-        radius = width/130
-        self.pos=[610,30,40,40,10]
-        self.pos2=[660,30,40,40,8]
-        self.pos3=[710,30,40,40,6]
+        # positionX = width/2
+        # positionY = height/628
+        # widthSquare = width/21
+        # heightSquare = height/23
+        # radius = width/130
+        self.pos=[width*0.41,height*0.7,40,40,10]
+        self.pos2=[width*0.41+50,height*0.7,40,40,8]
+        self.pos3=[width*0.41+100,height*0.7,40,40,6]
 
         self.matrizPos=[self.pos,self.pos2,self.pos3]
         self.typeBullet=1
@@ -21,26 +21,26 @@ class ChooseMenu:
         pygame.draw.line(screen, rect_color, (rect_position[0] + rect_size[0], rect_position[1] + rect_size[1]), (rect_position[0], rect_position[1] + rect_size[1]), 2)
         pygame.draw.line(screen, rect_color, (rect_position[0], rect_position[1] + rect_size[1]), rect_position, 2)
                 
-    def options(self,window,position): 
-        pygame.draw.circle(window, 'black',(position[0]+self.width/65,position[1]+self.width/65),position[4])
+    def options(self,surfaceChooseMenu,position): 
+        pygame.draw.circle(surfaceChooseMenu, 'black',(position[0]+self.width/65,position[1]+self.width/65),position[4])
         # pygame.draw.rect(window, 'white', (position[0],position[1]+self.width/28.8,position[2], position[3]))
         #("llega aqui")
         pygame.display.update()
 
-    def choose(self,window,position):
-        self.noFillingRectangle(window,'red',(position[0],position[1]),(position[2],position[3])) 
+    def choose(self,surfaceChooseMenu,position):
+        self.noFillingRectangle(surfaceChooseMenu,'red',(position[0],position[1]),(position[2],position[3])) 
 
 
-    def delOpBef(self,window,position):
-        self.noFillingRectangle(window,'lightblue',(position[0],position[1]),(position[2],position[3]))  
+    def delOpBef(self,surfaceChooseMenu,position):
+        self.noFillingRectangle(surfaceChooseMenu,(255, 213, 158),(position[0],position[1]),(position[2],position[3]))  
 
-    def drawChooseMenu(self,window):
-        self.options(self.window,self.matrizPos[0])
-        self.options(self.window,self.matrizPos[1])
-        self.options(self.window,self.matrizPos[2])
+    def drawChooseMenu(self,surfaceChooseMenu):
+        self.options(surfaceChooseMenu,self.matrizPos[0])
+        self.options(surfaceChooseMenu,self.matrizPos[1])
+        self.options(surfaceChooseMenu,self.matrizPos[2])
         # self.choose(self.window,self.matrizPos[0])
 
-    def choosing(self,typeBullet):
+    def choosing(self,typeBullet,surfaceChooseMenu):
         self.typeBullet = typeBullet
         
 
@@ -48,21 +48,21 @@ class ChooseMenu:
 
         if self.typeBullet==1:
 
-            self.choose(self.window,self.matrizPos[0])
-            self.delOpBef(self.window,self.matrizPos[1])
-            self.delOpBef(self.window,self.matrizPos[2])
+            self.choose(surfaceChooseMenu,self.matrizPos[0])
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[1])
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[2])
 
 
         if self.typeBullet == 2:
 
-            self.choose(self.window,self.matrizPos[1])
-            self.delOpBef(self.window,self.matrizPos[2])
-            self.delOpBef(self.window,self.matrizPos[0])
+            self.choose(surfaceChooseMenu,self.matrizPos[1])
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[2])
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[0])
 
 
         if self.typeBullet == 3:
-            self.choose(self.window,self.matrizPos[2])
-            self.delOpBef(self.window,self.matrizPos[0])
-            self.delOpBef(self.window,self.matrizPos[1])
+            self.choose(surfaceChooseMenu,self.matrizPos[2])
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[0])
+            self.delOpBef(surfaceChooseMenu,self.matrizPos[1])
 
             
