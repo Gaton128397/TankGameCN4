@@ -12,28 +12,32 @@ class Projectile():
         self.dmg = 0
         self.power = power
         self.size = 0
+        self.explosionArea = 0
         if self.typeBullet == 1: #105mm
             self.color = 'green'
             self.size = 15
             self.quantity = 3
             self.dmg = 50
+            self.explosionArea = self.size*2 - self.size/3
         elif self.typeBullet == 2: #80mm
             self.color = 'blue'
             self.size = 8
             self.quantity = 10
             self.dmg = 40
+            self.explosionArea = self.size*2 - self.size/3
         elif self.typeBullet == 3: #60mm
             self.color = 'red'
             self.size = 6
             self.quantity = 3
             self.dmg = 30
+            self.explosionArea = self.size*2 - self.size/3
         elif self.typeBullet == 5: #no quedan
             print('no hay mas')
         else: #standard 60mm
             self.size = 6
             self.quantity = 3
             self.dmg = 30
-        
+            self.explosionArea = self.size*2 - self.size/2
         self.origin = (position[0],position[1])
 
 
@@ -58,8 +62,10 @@ class Projectile():
         self.oldPath = []
         self.hit = False
         self.hitYourself = False
+    def explosion(self):
+        self.damageArea = self.size*1.5
+
     def timeOfFlight(self):
-        
         return round((2 * self.power * math.sin(self.theta)) / g, 2)
 
     def getRange(self):
@@ -83,15 +89,15 @@ class Projectile():
     def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints,gameInstance):
         self.yNew = self.y-self.ch
         tempWindow = gameInstance.copy()
-        #contador = 0
+
         while (self.x >0 and self.x <= 1300) and (self.yNew > -2000 and self.yNew < terrainPoints[int(self.x)][1]) and not self.hit:
             if(self.x >= otherHitboxPoints[0][0]  and self.x <=otherHitboxPoints[len(otherHitboxPoints)-1][0]):
                 if(self.yNew >= otherHitboxPoints[0][1]  and self.yNew <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
-                    #print("hit!")
+
                     self.hit = True
             if(self.x >= selfhitboxPts[0][0]  and self.x <=selfhitboxPts[len(selfhitboxPts)-1][0]):
                 if(self.yNew >= selfhitboxPts[0][1]  and self.yNew <=selfhitboxPts[len(selfhitboxPts)-1][1]):
-                    #print("hit!")
+
                     self.hitYourself = True
             
             self.x += self.dx 
@@ -102,7 +108,6 @@ class Projectile():
             pygame.draw.circle(self.win, 'darkgrey', self.path[-1], self.size-5)
             tempWindow.blit(self.win,(0,0))
             pygame.draw.circle(self.win,self.color, self.path[-1], self.size)
-            #pygame.draw.circle(self.win, 'black', self.path[-1], self.size-2)
             pygame.display.update()
             self.win.blit(tempWindow,(0,0))
         self.win.blit(tempWindow,(0,0))

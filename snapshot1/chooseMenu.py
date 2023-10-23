@@ -4,11 +4,6 @@ class ChooseMenu:
         self.window = window
         self.width = width
         self.height = height
-        # positionX = width/2
-        # positionY = height/628
-        # widthSquare = width/21
-        # heightSquare = height/23
-        # radius = width/130
         self.pos=[width*0.41,height*0.7,40,40,10]
         self.pos2=[width*0.41+50,height*0.7,40,40,8]
         self.pos3=[width*0.41+100,height*0.7,40,40,6]
@@ -25,7 +20,7 @@ class ChooseMenu:
         pygame.draw.circle(surfaceChooseMenu, 'black',(position[0]+self.width/65,position[1]+self.width/65),position[4])
         # pygame.draw.rect(window, 'white', (position[0],position[1]+self.width/28.8,position[2], position[3]))
         #("llega aqui")
-        pygame.display.update()
+        # pygame.display.update()
 
     def choose(self,surfaceChooseMenu,position):
         self.noFillingRectangle(surfaceChooseMenu,'red',(position[0],position[1]),(position[2],position[3])) 

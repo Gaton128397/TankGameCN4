@@ -3,6 +3,7 @@ from newMenu import draw_menu
 from instrucciones import draw_instrucciones
 from random import randint
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
+
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
 hills = []
 canyons = []
@@ -12,12 +13,14 @@ tiempo_anterior = 0
 presionado = False
 
 
+
 def game():
 
     #informacion pygame
     pygame.init()
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((WIDTH, HEIGHT))
+
 
 
     pygame.display.set_caption("Tank v Tank")
@@ -44,7 +47,7 @@ def game():
     superficies.append(surfaceWinner)
 
     #variables globales para la potencia
-    global potencia, tiempo_presionado, tiempo_anterior, presionado
+    global potencia, tiempo_presionado, tiempo_anterior, presionado,falling
 
 
     #variables de informacion impresa
@@ -56,13 +59,17 @@ def game():
     #terreno
     terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
+    terrainYpoints = terrain.yPoint()
     terrainPoints = terrain.getPoints()
     
 
     #crear Jugadores
-    player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
-    player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
-    
+    # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
+    # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
+
+    player1 = tank.Tank((randint(20,WIDTH*0.5),10), "blue", 1, surfaceJuego,terrainPoints)
+    player2 = tank.Tank((randint(WIDTH*0.5,WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
+
     #crear hitbox jugadores
     player1Hitbox = player1.hitBox()
     player2Hitbox = player2.hitBox()
@@ -83,8 +90,10 @@ def game():
     somebodyWon = False
     shoot = True
     turno = 1
-
+    falling = 1
     end = False
+    run = True
+    start = 0
 
     playersInGame = []
     playersInGame.append(player1)
@@ -95,19 +104,18 @@ def game():
     LAYERS.append(playersInGame)
     
     surfaceJuego.blit(LAYERS[0],(0,0))
+    if falling !=0:
+        LAYERS[1][0].draw_tank(False)
+        LAYERS[1][1].draw_tank(False)
     
-    LAYERS[1][0].draw_tank(False)
-    LAYERS[1][1].draw_tank(False)
+        tempWindows = []
+        tempWindows.append(surfaceJuego.copy())
+        tempWindows.append(surfaceJuego.copy())
+        tempWindows.append(surfaceJuego.copy())
+
+        LAYERS[1][0].draw_tank(True)
+        LAYERS[1][1].draw_tank(True)
     
-    tempWindows = []
-    tempWindows.append(surfaceJuego.copy())
-    tempWindows.append(surfaceJuego.copy())
-    tempWindows.append(surfaceJuego.copy())
-    
-    LAYERS[1][0].draw_tank(True)
-    LAYERS[1][1].draw_tank(True)
-    run = True
-    start = 0
     
     
         
@@ -130,6 +138,7 @@ def game():
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
                 chooseMenu1.drawChooseMenu(window)
+                # falling = 1
                 if turno == 1:
                     #mover el cañon 1
                     LAYERS[1][0].moveCannon(tempWindows)
@@ -179,13 +188,19 @@ def game():
                         if listaBotones[3].collidepoint(event.pos):
                             #vuelve al menu
                             actualScreen = 0
+                            
                     elif actualScreen == 2:
                         start =1
                         print('a')
                     elif actualScreen == 3:
+                        print('aaaaaaaaaaaaaaaaaaa')
                         if listaBotones[4].collidepoint(event.pos):
                             #vuelve al menu
+                            print('a')
                             actualScreen = 0
+                            terrain.resetTerrain()
+                            end = False
+                            turno = 1
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_1:#boton 1
