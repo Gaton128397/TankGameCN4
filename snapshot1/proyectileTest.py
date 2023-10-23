@@ -87,14 +87,14 @@ class Projectile():
         
                 if(self.yNew +self.radio>= otherHitboxPoints[0][1]  and self.yNew + self.radio <=otherHitboxPoints[len(otherHitboxPoints)-1][1]):
         
-                    #print("hit!")
+                    ##("hit!")
                     collide = True
         
             if(self.x +self.radio >= selfhitboxPts[0][0]  and self.x +self.radio <=selfhitboxPts[len(selfhitboxPts)-1][0]):
         
                 if(self.yNew +self.radio>= selfhitboxPts[0][1]  and self.yNew +self.radio<=selfhitboxPts[len(selfhitboxPts)-1][1]):
         
-                    #print("hit!")
+                    ##("hit!")
                     collide = True
 
             self.x += self.dx 

@@ -76,7 +76,7 @@ class Tank:
         if 0 < self.angulo:
             keys1 = pygame.key.get_pressed()        
             if keys1[pygame.K_DOWN]:
-                    print("algo abajo")
+                    #("algo abajo")
                     self.angulo -= 1
                     self.surface.blit(temp[0],(0,0))
                     pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
@@ -92,17 +92,17 @@ class Tank:
             for j in range(hitboxHeight):
                 hitboxPoints.append((hitboxInitialX + i, hitboxInitialY + j))
 
-        #print(hitboxPoints[0])
+        ##(hitboxPoints[0])
         return hitboxPoints
     # def chooseAmmo(self):
     #     for event in pygame.event.get():
     #          if event.type == pygame.KEYDOWN:
     #             if event.key == pygame.K_1:
-    #                 print(1)
+    #                 #(1)
     #             if event.key == pygame.K_2:
-    #                 print(2)
+    #                 #(2)
     #             if event.key == pygame.K_3:
-    #                 print(3)
+    #                 #(3)
               
     def getAngle(self):
         
