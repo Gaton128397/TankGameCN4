@@ -58,22 +58,23 @@ class Tank:
             self.xCanon2 = self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo))
             self.yCanon2 = self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo))
             self.end = (self.xCanon2,self.yCanon2)
+            
     def moveCannon(self,temp):
         self.actualizar(self.LoR)
-        keys = pygame.key.get_pressed()
+        
         if 90 > self.angulo:
-            if keys[pygame.K_UP]:
-                #print("algo")
+            keys1 = pygame.key.get_pressed()
+            if keys1[pygame.K_UP]:
+
                 self.angulo += 1
                 self.surface.blit(temp[0],(0,0))
                 pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
                 
-                
-                
-                
 
-        if 0 < self.angulo:        
-            if keys[pygame.K_DOWN]:
+        if 0 < self.angulo:
+            keys1 = pygame.key.get_pressed()        
+            if keys1[pygame.K_DOWN]:
+                    print("algo abajo")
                     self.angulo -= 1
                     self.surface.blit(temp[0],(0,0))
                     pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
