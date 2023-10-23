@@ -8,7 +8,7 @@ class Winner:
         
         self.ARENA_COLOR = (244, 164, 96)
 
-        self.buttonRePlay = pygame.Rect(550, 520, 200, 50) 
+        self.buttonRePlay = pygame.Rect(550, 520, 275, 75) 
 
         self.font = pygame.font.Font(None, 36)
         self.big_font = pygame.font.Font(None, 72)
@@ -21,9 +21,7 @@ class Winner:
         self.screen.blit(textoGanar, (self.width//2-200, self.height//2))
         
         # Dibujar el botón "Volver a jugar"
-        pygame.draw.rect(self.screen, self.ARENA_COLOR, self.buttonVolver)  
-        text = self.font.render("Volver a jugar", True, 'white')
-        text_rect = text.get_rect(center=self.buttonVolver.center)
+        pygame.draw.rect(self.screen, self.ARENA_COLOR, self.buttonRePlay)  
+        text = self.big_font.render("Volver a jugar", True, 'white')
+        text_rect = text.get_rect(center=self.buttonRePlay.center)
         self.screen.blit(text, text_rect)
-
-drawWinner()
