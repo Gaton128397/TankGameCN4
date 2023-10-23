@@ -346,8 +346,8 @@ def game():
                         turno = 1
                         # newPosTank1 = (randint(20,WIDTH*0.4),10)
                         # newPosTank2 = (randint(WIDTH*0.6,WIDTH),10)
-                        positionTank1 = (randint(20,WIDTH*0.4),10)
-                        positionTank2 = (randint(WIDTH*0.6,WIDTH),10)
+                        positionTank1 = (randint(20,int(WIDTH*0.4)),10)
+                        positionTank2 = (randint(int(WIDTH*0.6),WIDTH),10)
                         # layer1 = creaLayer(surfaceJuego,newPosTank1,newPosTank1)
                         layer1 = creaLayer(surfaceJuego,positionTank1,positionTank2)       
                     if event.key == pygame.K_SPACE:
