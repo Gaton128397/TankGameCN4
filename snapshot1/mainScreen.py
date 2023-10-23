@@ -2,6 +2,7 @@ from winnerdisplay import drawWinner
 from newMenu import draw_menu
 from instrucciones import draw_instrucciones
 from random import randint
+from barravida import BarraVida
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
 hills = []
@@ -120,6 +121,7 @@ def game():
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
                 chooseMenu1.drawChooseMenu(window)
+                barra_jugador1 = BarraVida(window, (100, 100), 100, 10)
                 if turno == 1:
                     #mover el cañon 1
                     LAYERS[1][0].moveCannon(tempWindows)
