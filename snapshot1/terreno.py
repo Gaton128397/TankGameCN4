@@ -56,7 +56,6 @@ class TerrenoVariado:
         return surf
         #pygame.display.update()
 
-
     def getPoints(self):
         return self.points
 

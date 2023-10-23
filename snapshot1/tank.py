@@ -37,7 +37,6 @@ class Tank:
         self.xCanon2 = (self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         
-
         self.ammo10mm = 3
         self.ammo8mm = 10
         self.ammo6mm = 3
@@ -74,7 +73,6 @@ class Tank:
                 self.surface.blit(temp[0],(0,0))
                 pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
                 
-
         if 0 < self.angulo:
             keys1 = pygame.key.get_pressed()        
             if keys1[pygame.K_DOWN]:
@@ -83,8 +81,6 @@ class Tank:
                     self.surface.blit(temp[0],(0,0))
                     pygame.draw.line(self.surface,self.color,(self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4)
                     
-                    
-
     def hitBox(self):
         hitboxPoints = []
         hitboxInitialX=self.x-10

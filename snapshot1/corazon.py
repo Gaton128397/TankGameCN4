@@ -5,8 +5,7 @@ class Corazon:
         self.x = x
         self.y = y
         self.rotar = rotar
-
-        
+     
         self.medio_corazon = pygame.image.load('snapshot1/MedioCorazon.png').convert_alpha()
 
         if self.rotar:
@@ -15,6 +14,3 @@ class Corazon:
 
     def draw_corazon(self, superficie):
         superficie.blit(self.medio_corazon, (self.x, self.y))
-
-
-

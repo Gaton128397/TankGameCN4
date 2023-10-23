@@ -55,14 +55,12 @@ def game():
     
     chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
-
     #terreno
     terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
     terrainYpoints = terrain.yPoint()
     terrainPoints = terrain.getPoints()
     
-
     #crear Jugadores
     # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
     # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
@@ -84,7 +82,6 @@ def game():
     #info jugadores
     infoPlayer1 = infoBlock.InfoBlock(surfaceJuego,1,WIDTH,HEIGHT,lastAngulo1,potencia,lastPower1,range1,alturamaxima1,)
     infoPlayer2 = infoBlock.InfoBlock(surfaceJuego,2,WIDTH,HEIGHT,lastAngulo2,potencia,lastPower2,range2,alturamaxima2,)
-
 
     #variables flujo de juego
     somebodyWon = False
@@ -242,7 +239,6 @@ def game():
                                 typeBullet = 3
                                 bulletTypePlayer2 = typeBullet
                             
-
                     if event.key == pygame.K_SPACE:
                         tiempo_presionado = tiempo_actual
                         presionado = True
@@ -264,21 +260,26 @@ def game():
                             range1 = bullet1.getRange()
                             alturamaxima1 = bullet1.getMaxHeight()
                             if bullet1.returnHit() == 1:
+                                """
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
                                 """
                                 if player2.getHeath() <= 0: # revisar get health o type bullet primero?¿...
-                                    winScreen.drawWinner(turno)
+                                    ganador = 1
+                                    actualScreen = 3
                                     end = True
-                                
-                                if bulletTypePlayer1 == 1:
-                                    player2.loseHealth(1)
-                                elif bulletTypePlayer1 == 2:
-                                    player2.loseHealth(2)
-                                elif bulletTypePlayer1 == 3:
-                                    player2.loseHealth(3)
-                                """
+                                else:
+                                    print("el enemigo aun tiene vida!")
+                                    if bulletTypePlayer1 == 1:
+                                        player2.loseHealth(1)
+                                        print("-50")
+                                    elif bulletTypePlayer1 == 2:
+                                        player2.loseHealth(2)
+                                        print("-40")
+                                    elif bulletTypePlayer1 == 3:
+                                        player2.loseHealth(3)
+                                        print("-30")
 
                             elif bullet1.returnHit() == 2:
                                 ganador = turno
@@ -311,15 +312,34 @@ def game():
                             alturamaxima2 = bullet2.getMaxHeight()
                             
                             if bullet2.returnHit() == 1:
+                                """
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
+                                """
+                                if player1.getHeath() <= 0: # revisar get health o type bullet primero?¿...
+                                    ganador = 2
+                                    actualScreen = 3
+                                    end = True
+                                else:
+                                    print("el enemigo aun tiene vida!")
+                                    if bulletTypePlayer2 == 1:
+                                        player1.loseHealth(1)
+                                        print("-50")
+                                    elif bulletTypePlayer2 == 2:
+                                        player1.loseHealth(2)
+                                        print("-40")
+                                    elif bulletTypePlayer2 == 3:
+                                        player1.loseHealth(3)
+                                        print("-30")
+
                             elif bullet2.returnHit() == 2:
                                 ganador = turno
                                 actualScreen = 3
                                 end = True
                             else:
                                 turno = 1
+
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_SPACE:
                         if (
@@ -332,6 +352,7 @@ def game():
                             )
                         tiempo_anterior = tiempo_actual
                         presionado = False
+
             if actualScreen ==2:
                 pygame.draw.rect(surfaceJuego, (255, 213, 158), (WIDTH*0.4, 620, 200, 40))
                 pygame.draw.rect(surfaceJuego, "grey", (WIDTH*0.4, 600, 200, 20))
@@ -356,8 +377,8 @@ def game():
                     actualScreen = 3
                 clock.tick(60)
                 pygame.display.update()
+
         except (ZeroDivisionError, UnboundLocalError,AttributeError,IndexError):
             textoError = fuente.render("Espera tu turno", True, "black")
-
 
 game()

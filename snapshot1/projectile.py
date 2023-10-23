@@ -40,7 +40,6 @@ class Projectile():
             self.explosionArea = self.size*2 - self.size/2
         self.origin = (position[0],position[1])
 
-
         self.theta = toRadian(abs(theta))
 
         self.x, self.y = position[0], position[1]
@@ -52,7 +51,6 @@ class Projectile():
             self.dx = -1
         else:
             self.dx = 1
-
 
         self.f = self.getTrajectory()
 
@@ -123,6 +121,7 @@ class Projectile():
             return 1
         else:
             return 0
+        
 def game():
     run = True
     clock = pygame.time.Clock()
@@ -139,4 +138,3 @@ def game():
         clock.tick(60)
         pygame.display.update()
 # game()
-
