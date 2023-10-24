@@ -12,7 +12,7 @@ class TerrenoVariado:
 
         pygame.init()
         self.window = pygame.display.set_mode((self.width, self.height))
-        pygame.display.set_caption("Terreno Variado")
+        # pygame.display.set_caption("Terreno Variado")
 
     #funcion para interpolar los puntos
     def interpolate(self, x1, y1, x2, y2, x):
