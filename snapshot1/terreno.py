@@ -12,7 +12,7 @@ class TerrenoVariado:
 
         pygame.init()
         self.window = pygame.display.set_mode((self.width, self.height))
-        # pygame.display.set_caption("Terreno Variado")
+        pygame.display.set_caption("Terreno Variado")
 
     #funcion para interpolar los puntos
     def changeTerrain(self,newWindow):
@@ -44,7 +44,6 @@ class TerrenoVariado:
                 self.yPoints.append([int(y)])
             #print(self.points[x])
     # Dibuja el terreno
-    
     def drawTerrain(self):
         surf = self.window.copy()
         drawFunctions.backgroundDraw(surf)
