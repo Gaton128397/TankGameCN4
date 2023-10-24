@@ -48,8 +48,11 @@ class Tank:
         
 
         # self.surface.blit(temp[0],(0,0))
-        while self.y < self.terrainPoints[int(self.x+self.width*0.5)][1]-20:
-            self.y += 0.1
+        try:
+            while self.y <= self.terrainPoints[int(self.x+self.width*0.5)][1]-20:
+                self.y += 0.1
+        except IndexError:
+            self.y +=10
         self.xCanon1 =(self.x + self.width/2)  #coordenadas del cañon
         self.yCanon1  = (self.y - self.height/3)
         self.xCanon2 = (self.xCanon1 + self.a*self.longitud * math.cos(math.radians(self.angulo)))
@@ -127,7 +130,7 @@ class Tank:
         return self.angulo
     
     #funcion para obtener la vida del tanque
-    def getHeath(self):
+    def getHealth(self):
         return self.health
     
     #funcion para restar vida al tanque
