@@ -7,8 +7,6 @@ from shop import Shop
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
 
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
-hills = []
-canyons = []
 potencia = 0
 tiempo_presionado = 0
 tiempo_anterior = 0
@@ -80,6 +78,22 @@ def game():
     chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
     chooseMenu2 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
+    #terreno
+    terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
+    terrain.getTerrain()
+    terrainYpoints = terrain.yPoint()
+    terrainPoints = terrain.getPoints()
+    
+    #crear Jugadores
+    # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
+    # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
+
+    player1 = tank.Tank((randint(20,int(WIDTH*0.5)),10), "blue", 1, surfaceJuego,terrainPoints)
+    player2 = tank.Tank((randint(int(WIDTH*0.5),WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
+
+    #crear hitbox jugadores
+    player1Hitbox = player1.hitBox()
+    player2Hitbox = player2.hitBox()
     
     #variables municion jugadores
     ammoPlayer1 = [3, 10, 3]
@@ -176,6 +190,7 @@ def game():
     chooseState.append(1)
     chooseState.append(1)
     #comienzo juego
+    
     while run:
         try:
             if actualScreen != 4:
@@ -188,24 +203,9 @@ def game():
 
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
-                chooseMenu1.drawChooseMenu(surfaceJuego,0,ammoPlayer1)
-                #vida
-                layer1[1][0].drawDibujarVida(surfaceJuego,(0,0),25,WIDTH*0.5-40)
-                layer1[1][1].drawDibujarVida(surfaceJuego,(WIDTH*0.5+40,0),25,WIDTH*0.5)
-                #correr temporizador
-                if seconds < 10:
-                    timerText = font.render(f"{minutes}:0{seconds}", True, "black")
-                    if minutes <10:
-                        timerText = font.render(f"0{minutes}:0{seconds}", True, "black")
-                else:
-                    timerText = font.render(f"{minutes}:{seconds}", True, "black")
-                    if minutes <10:
-                        timerText = font.render(f"0{minutes}:{seconds}", True, "black")
-                surfaceJuego.blit(surfaceTimer, (WIDTH//2-40, 0))
-                surfaceJuego.blit(timerText, (WIDTH//2-38, 0))
-                pygame.display.update()
-                #actualizar barra de vida
+                #chooseMenu1.drawChooseMenu(surfaceJuego,0)
                 
+                #pygame.display.update()
                 if turno == 1:
 
                     #mover el cañon 1
@@ -379,28 +379,38 @@ def game():
                             tiempo_presionado = tiempo_actual
                             presionado = True
 
-                        if event.key == pygame.K_RETURN:
-                            if turno == 1:
-                                if ammoPlayer1[bulletTypePlayer1 - 1] > 0:
-                                    bulletTypePlayer1 = typeBullet
-                                else:
-                                    #('no quedan')
-                                    bulletTypePlayer1 = 5 #5 es que no quedan
-                                    turno == 2
-                                bullet1 = projectile.Projectile(layer1[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window)
-                                
-                                bullet1.shoot(layer1[0].getPoints(), layer1[1][0].creaHitBox(), layer1[1][1].creaHitBox(),surfaceJuego)
-                                ammoPlayer1[bulletTypePlayer1 - 1] -= 1
-                                lastAngulo1 = angleBullet1
-                                lastPower1 = potencia
-                                potencia = 0
-                                range1 = bullet1.getRange()
-                                alturamaxima1 = bullet1.getMaxHeight()
-                                alturamaxima1 = bullet1.getMaxHeight()
-                                
-                                if layer1[1][1].getHealth() <= 0:  
-                                    # listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, turno)) 
-                                    ganador = 1
+                    if event.key == pygame.K_RETURN:
+                        if turno == 1:
+                            if ammoPlayer1[bulletTypePlayer1 - 1] > 0:
+                                bulletTypePlayer1 = typeBullet
+                            else:
+                                #('no quedan')
+                                bulletTypePlayer1 = 5 #5 es que no quedan
+                            bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window)
+                           
+                            bullet1.shoot(terrainPoints, player1Hitbox, player2Hitbox,surfaceJuego,LAYERS,tempWindows)
+                            
+                            
+                            #newSurfaceJuego = terrain.drawTerrain()
+                            #surfaceJuego.blit(newSurfaceJuego,(0,0))
+                            
+                            #surfaceJuego.blit(newSurfaceJuego,(0,0))
+                            #tempWindows[0].blit(surfaceJuego,(0,0))
+                            ammoPlayer1[bulletTypePlayer1 - 1] -= 1
+                            lastAngulo1 = angleBullet1
+                            lastPower1 = potencia
+                            potencia = 0
+                            range1 = bullet1.getRange()
+                            alturamaxima1 = bullet1.getMaxHeight()
+                            alturamaxima1 = bullet1.getMaxHeight()
+                            if player2.getHeath() <= 0:  
+                                ganador = turno
+                                actualScreen = 3
+                                end = True
+                            else:
+                                if bullet1.returnHit() == 1:
+                                    """
+                                    ganador = turno
                                     actualScreen = 3
                                     end = True
                                 else:
@@ -435,20 +445,19 @@ def game():
                                     else:
                                         turno = 2
 
-                            elif turno == 2:
-                                if ammoPlayer2[bulletTypePlayer2 - 1] > 0:
-                                    bulletTypePlayer2 = typeBullet
-                                else:
-                                    #('no quedan')
-                                    turno == 1
-                                    bulletTypePlayer2 = 5
-                                
-                                bullet2 = projectile.Projectile(layer1[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window,)
-                                
-                                bullet2.shoot(layer1[0].getPoints(), layer1[1][1].creaHitBox(), layer1[1][0].creaHitBox(),surfaceJuego)
-                                
-                                ammoPlayer2[bulletTypePlayer2 - 1] -= 1
-                                lastAngulo2 = 180 - angleBullet2 
+                        elif turno == 2:
+                            if ammoPlayer2[bulletTypePlayer2 - 1] > 0:
+                                bulletTypePlayer2 = typeBullet
+                            else:
+                                #('no quedan')
+                                bulletTypePlayer2 = 5
+                            
+                            bullet2 = projectile.Projectile(LAYERS[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window)
+                            
+                            bullet2.shoot(terrainPoints, player2Hitbox, player1Hitbox,surfaceJuego,LAYERS, tempWindows)
+                            
+                            ammoPlayer2[bulletTypePlayer2 - 1] -= 1
+                            lastAngulo2 = 180 - angleBullet2 
 
                                 lastPower2 = potencia
                                 

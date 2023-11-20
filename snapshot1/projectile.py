@@ -1,4 +1,4 @@
-import math,pygame,params
+import math,pygame,params, drawFunctions
 from functions import *
 g = 9.8
 FPS = 60
@@ -86,8 +86,7 @@ class Projectile():
 
         return x * math.tan(self.theta) - self.f * x ** 2
     
-    def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints,gameInstance):
-        #('dispara')
+    def shoot(self,terrainPoints,selfhitboxPts,otherHitboxPoints,gameInstance,layers,temp):
         self.yNew = self.y-self.ch
         tempWindow = gameInstance.copy()
 
@@ -111,16 +110,25 @@ class Projectile():
             pygame.draw.circle(self.win,self.color, self.path[-1], self.size)
             pygame.display.update()
             self.win.blit(tempWindow,(0,0))
-        # for i in range(self.size+100):
-        #     terrainPoints[(int(self.x)-self.size)+i][1] = terrainPoints[int(self.x)-self.size+i][1]+i
-        #     #print(terrainPoints[(int(self.x)-self.size)+i][1])
-        # for i in range(self.size+100):
-        #     diffVariable = self.size-i
-        #     terrainPoints[int(self.x)+i][1] =terrainPoints[int(self.x)+1][1] + diffVariable
-        #     print(terrainPoints[(int(self.x)-self.size)+i][1])
+        #print(getColisionPoint)
+        #print(terrainPoints[(int(self.x)-self.size+1)][1])
+        #print(terrainPoints[(int(self.x)-self.size+1)][1])
+        for i in range(self.size+100):
+            terrainPoints[(int(self.x)-self.size)+i][1] = terrainPoints[int(self.x)-self.size+i][1]+i
+            #print(terrainPoints[(int(self.x)-self.size)+i][1])
+        for i in range(self.size+100):
+            diffVariable = self.size-i
+            terrainPoints[int(self.x)+i][1] =terrainPoints[int(self.x)+1][1] + diffVariable
+            #print(terrainPoints[(int(self.x)-self.size)+i][1])
+        pygame.draw.circle(layers[0],(255,0,255),(getColisionPoint),100)
+        #self.win.blit(tempWindow,(0,0))
+        
+        drawFunctions.backgroundDraw(temp[0])
+        temp[0].blit(layers[0],(0,0))
+        gameInstance.blit(temp[0],(0,0))
         self.win.blit(tempWindow,(0,0))
         pygame.display.update()
-        
+        print("hola")
     def getBulletPosition(self):
         return(self.x,self.yNew)
     
