@@ -64,8 +64,8 @@ def game():
     # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
     # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
 
-    player1 = tank.Tank((randint(20,WIDTH*0.5),10), "blue", 1, surfaceJuego,terrainPoints)
-    player2 = tank.Tank((randint(WIDTH*0.5,WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
+    player1 = tank.Tank((randint(20,int(WIDTH*0.5)),10), "blue", 1, surfaceJuego,terrainPoints)
+    player2 = tank.Tank((randint(int(WIDTH*0.5),WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
 
     #crear hitbox jugadores
     player1Hitbox = player1.hitBox()
@@ -126,6 +126,7 @@ def game():
     chooseState.append(0)
     chooseState.append(0)
     #comienzo juego
+    
     while run:
         try:
             window.blit(superficies[actualScreen], (0,0))
@@ -133,7 +134,9 @@ def game():
             if actualScreen ==2:
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
-                chooseMenu1.drawChooseMenu(surfaceJuego,0)
+                #chooseMenu1.drawChooseMenu(surfaceJuego,0)
+                
+                #pygame.display.update()
                 if turno == 1:
                     #mover el cañon 1
                     LAYERS[1][0].moveCannon(tempWindows)
@@ -251,9 +254,11 @@ def game():
                             else:
                                 #('no quedan')
                                 bulletTypePlayer1 = 5 #5 es que no quedan
-                            bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window,)
+                            bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window)
                            
-                            bullet1.shoot(terrainPoints, player1Hitbox, player2Hitbox,surfaceJuego)
+                            bullet1.shoot(terrainPoints, player1Hitbox, player2Hitbox,surfaceJuego,LAYERS,tempWindows)
+                            
+                            
                             #newSurfaceJuego = terrain.drawTerrain()
                             #surfaceJuego.blit(newSurfaceJuego,(0,0))
                             
@@ -311,9 +316,9 @@ def game():
                                 #('no quedan')
                                 bulletTypePlayer2 = 5
                             
-                            bullet2 = projectile.Projectile(LAYERS[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window,)
+                            bullet2 = projectile.Projectile(LAYERS[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window)
                             
-                            bullet2.shoot(terrainPoints, player2Hitbox, player1Hitbox,surfaceJuego)
+                            bullet2.shoot(terrainPoints, player2Hitbox, player1Hitbox,surfaceJuego,LAYERS, tempWindows)
                             
                             ammoPlayer2[bulletTypePlayer2 - 1] -= 1
                             lastAngulo2 = 180 - angleBullet2 
