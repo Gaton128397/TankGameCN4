@@ -5,8 +5,6 @@ from random import randint
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
 
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
-hills = []
-canyons = []
 potencia = 0
 tiempo_presionado = 0
 tiempo_anterior = 0

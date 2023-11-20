@@ -46,7 +46,7 @@ class TerrenoVariado:
     # Dibuja el terreno
     def drawTerrain(self):
         surf = self.window.copy()
-        drawFunctions.backgroundDraw(surf)
+        surf.fill((255,0,255))
         
         x_interp = np.linspace(0, self.width, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
@@ -55,6 +55,8 @@ class TerrenoVariado:
 
         pygame.draw.polygon(surf, (255, 213, 158), [(0, self.height)] + points_interp + [(self.width, self.height)])
         pygame.draw.lines(surf, (139, 69, 19), False, points_interp, 5)
+        surf.set_alpha()
+        surf.set_colorkey((255,0,255))
         return surf
         #pygame.display.update()
     # Devuelve los puntos del terreno
