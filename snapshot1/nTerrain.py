@@ -8,6 +8,8 @@ class TerrenoVariado:
         self.num_points = 15
         self.points = []
         self.yPoints = []
+        self.hitPoints = {}
+        
         
         for i in range(self.num_points):
             x = int(i * (self.width / (self.num_points - 1)))

@@ -31,16 +31,17 @@ class gameLogic:
         for i in range(params.playersNumber):
             self.listaJugadores.append(nTank.Tank((randint(contador,contador+splitPos),100),"blue",randint(1,2),self.surfaceJugadores,self.terrain.getPoints()))
             contador += splitPos
-            print(contador)
+            #print(contador)
             
     def updPlayers(self):
         for i in range(len(self.listaJugadores)):
             self.listaJugadores[i].draw_tank(True)
         self.screen.blit(self.surfaceJugadores,(0,0))
         
-    def unUpdate(self):
+    def unUpdate(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.surfaceTerrain,(0,0))
+        self.updPlayers()
         
     def pauseScreen(self):
         print("pause state")
