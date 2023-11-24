@@ -28,9 +28,10 @@ class gameLogic:
     def setPlayers(self):
         splitPos = params.WIDTH//params.playersNumber
         contador = 0
-        for i in range(params.playersNumber-1):
+        for i in range(params.playersNumber):
             self.listaJugadores.append(nTank.Tank((randint(contador,contador+splitPos),100),"blue",randint(1,2),self.surfaceJugadores,self.terrain.getPoints()))
             contador += splitPos
+            print(contador)
             
     def updPlayers(self):
         for i in range(len(self.listaJugadores)):
