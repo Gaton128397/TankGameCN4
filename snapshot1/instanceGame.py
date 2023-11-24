@@ -14,6 +14,7 @@ class gameLogic:
         #Terreno
         self.terrain = nTerrain.TerrenoVariado(params.WIDTH, params.HEIGHT)
         self.surfaceTerrain = self.terrain.drawTerrain()
+        #print(self.terrain.getPoints())
         self.screen.blit(self.surfaceTerrain,(0,0))
         
         #players
@@ -59,9 +60,12 @@ class gameLogic:
                     return playerWinner
                     running = False
                 if pygame.mouse.get_pressed()[0]:
-                    pygame.draw.circle(self.surfaceTerrain, (255, 0, 255), pygame.mouse.get_pos(), 100)
-                    print("hit")
-                    self.unUpdate()
+                    if pygame.mouse.get_pos() in self.terrain.getDiccionary():
+                    #pygame.draw.circle(self.surfaceTerrain, (255, 0, 255), pygame.mouse.get_pos(), 100)
+                        print("hit")
+                    else:
+                        print("not hit")
+                    #self.unUpdate()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_1:
                         playerWinner = 1
@@ -72,7 +76,7 @@ class gameLogic:
             pygame.display.update()
         
         
-def tstgm():
+def tstgm():#Logica de mainScreen()
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     playerWon = None

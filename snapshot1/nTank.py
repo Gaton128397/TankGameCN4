@@ -6,13 +6,13 @@ class Tank:
 
         self.health = 100
 
-        self.x = position[0] - 15
-        self.y = position[1] - 25
+        self.x = position[0]
+        self.y = position[1]
         self.width = 50
         self.height = 20
         self.color = color
         self.terrainPoints = terrainPoints
-        self.origin = (position[0] + 25, position[1] - 6.5)
+        #eliminar: self.origin = (position[0] + 25, position[1] - 6.5)
 
         self.angulo = 0
         self.longitud = 25 #largo del cañon
@@ -40,10 +40,11 @@ class Tank:
         self.ammo10mm = 3
         self.ammo8mm = 10
         self.ammo6mm = 3
-        while self.y < self.terrainPoints[int(self.x+self.width*0.5)][1]-20:
+        while self.y < self.terrainPoints[int(self.x+self.width*0.5)][1]-20:#ERROR CORREGIR ESTO, NO SE POR QUE MOTIVO PONEN COSAS EN LOS INDICES SI NO ES NECESARIO
             self.y += 0.1
             self.yCanon1 += 0.1
             self.yCanon2 += 0.1
+        
     def draw_tank(self,staticCan):
         pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
         pygame.draw.rect(self.surface, self.color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
@@ -53,6 +54,7 @@ class Tank:
             self.y += 0.1
         if(staticCan):
             pygame.draw.line(self.surface, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4) #cañon
+            
     def actualizar(self,a):
             
             if self.LoR == 0:

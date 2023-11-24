@@ -1,4 +1,4 @@
-import pygame,math,random,drawFunctions
+import pygame,math,random,drawFunctions, params
 import numpy as np
 
 class TerrenoVariado:
@@ -31,13 +31,23 @@ class TerrenoVariado:
                 # interpolar valor de y en los puntos faltantes
                 y = self.interpolate(x1, y1, x2, y2, x)
                 self.points.append([x, int(y)])
-                self.yPoints.append([int(y)])
-    #funcion para interpolar los puntos
-    
+                self.yPoints.append([int(y)])#????????????????????????
+        
+        self.points.sort()
+        print(self.points[len(self.points)-1][0])
+        
+        for i in range(params.WIDTH):
+            #print("hola")
+            for j in range(self.points[i][1],params.WIDTH+1):
+                self.hitPoints[(i,j)]=True
+        
     def changeTerrain(self,newWindow):
         self.window = newWindow
+        
+    #funcion para interpolar los puntos
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
+    
     # Genera el terreno
     def drawTerrain(self):
         surf = pygame.Surface((self.width,self.height))
@@ -55,10 +65,16 @@ class TerrenoVariado:
         return surf
         #pygame.display.update()
     # Devuelve los puntos del terreno
+    
+    def getDiccionary(self):
+        return self.hitPoints
+    
     def getPoints(self):
         return self.points
+    
     # Devuelve los valores de y
     def yPoint(self):
+
         return self.yPoints
     # Reinicia el terreno
     def restart(self):
