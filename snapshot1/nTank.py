@@ -6,8 +6,17 @@ class Tank:
 
         self.health = 100
 
-        self.x = position[0]
-        self.y = position[1]
+        self.x = position
+        self.y = 0
+        while not ((self.x,self.y) in terrainPoints):
+            #print("do")
+            self.y += 1
+            
+        #valores de la hitbox. Cambiar esto por llamar a la funcion 
+        self.y = self.y-20
+        #self.x = self.x - 70
+        #tambien cambiar n magicos por % de pantalla para el reescalado
+        
         self.width = 50
         self.height = 20
         self.color = color
@@ -40,18 +49,15 @@ class Tank:
         self.ammo10mm = 3
         self.ammo8mm = 10
         self.ammo6mm = 3
-        while self.y < self.terrainPoints[int(self.x+self.width*0.5)][1]-20:#ERROR CORREGIR ESTO, NO SE POR QUE MOTIVO PONEN COSAS EN LOS INDICES SI NO ES NECESARIO
-            self.y += 0.1
-            self.yCanon1 += 0.1
-            self.yCanon2 += 0.1
+        contador = 0 
+        
         
     def draw_tank(self,staticCan):
         pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
         pygame.draw.rect(self.surface, self.color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
         pygame.draw.circle(self.surface, self.color, ((self.x, self.y + self.height/2)), self.height/2) #circunferencia de la derecha
         pygame.draw.circle(self.surface, self.color, ((self.x + self.width, self.y + self.height/2)), self.height/2) #rectangulo donde estara el cañon
-        while self.y < self.terrainPoints[int(self.x+self.width*0.5)][1]-20:
-            self.y += 0.1
+       
         if(staticCan):
             pygame.draw.line(self.surface, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4) #cañon
             

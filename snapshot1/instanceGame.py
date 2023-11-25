@@ -13,9 +13,9 @@ class gameLogic:
         
         #Terreno
         self.terrain = nTerrain.TerrenoVariado(params.WIDTH, params.HEIGHT)
-        self.surfaceTerrain = self.terrain.drawTerrain()
+        
         #print(self.terrain.getPoints())
-        self.screen.blit(self.surfaceTerrain,(0,0))
+        self.screen.blit(self.terrain.surfTerrain,(0,0))
         
         #players
         self.surfaceJugadores = pygame.Surface((params.WIDTH,params.HEIGHT))
@@ -30,7 +30,7 @@ class gameLogic:
         splitPos = params.WIDTH//params.playersNumber
         contador = 0
         for i in range(params.playersNumber):
-            self.listaJugadores.append(nTank.Tank((randint(contador,contador+splitPos),100),"blue",randint(1,2),self.surfaceJugadores,self.terrain.getPoints()))
+            self.listaJugadores.append(nTank.Tank((randint(contador,contador+splitPos)),"blue",randint(0,1),self.surfaceJugadores,self.terrain.getDiccionary()))
             contador += splitPos
             #print(contador)
             
@@ -41,7 +41,7 @@ class gameLogic:
         
     def unUpdate(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
-        self.screen.blit(self.surfaceTerrain,(0,0))
+        self.screen.blit(self.terrain.surfTerrain,(0,0))
         self.updPlayers()
         
     def pauseScreen(self):
@@ -60,7 +60,7 @@ class gameLogic:
                     return playerWinner
                     running = False
                 if pygame.mouse.get_pressed()[2]:
-                    self.terrain.updateImpact(pygame.mouse.get_pos(),100,self.surfaceTerrain)
+                    self.terrain.updateImpact(pygame.mouse.get_pos(),100)
                     self.unUpdate()
                 elif pygame.mouse.get_pressed()[0]:
                     if pygame.mouse.get_pos() in self.terrain.getDiccionary():

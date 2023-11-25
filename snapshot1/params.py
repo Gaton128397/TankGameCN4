@@ -1,5 +1,5 @@
 import pygame
-WIDTH = 1300
-HEIGHT = 700
+WIDTH = 1280
+HEIGHT = 720
 BackGroundIMG = "snapshot1/Background.jpg"
 playersNumber = 6
