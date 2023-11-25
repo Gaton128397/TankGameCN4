@@ -41,8 +41,16 @@ class TerrenoVariado:
             for j in range(self.points[i][1],params.WIDTH+1):
                 self.hitPoints[(i,j)]=True
         
-    def changeTerrain(self,newWindow):
-        self.window = newWindow
+    def updateImpact(self,pos,radius,surface):
+        # Dibuja el círculo en la superficie
+        pygame.draw.circle(surface, (255, 0, 255), pos, radius)
+
+        # Actualiza la hitbox
+        for i in range(pos[0] - radius, pos[0] + radius):
+            for j in range(pos[1] - radius, pos[1] + radius):
+                if (i - pos[0]) ** 2 + (j - pos[1]) ** 2 <= radius ** 2:
+                    if(((i, j)) in self.hitPoints):
+                        del self.hitPoints[(i, j)]
         
     #funcion para interpolar los puntos
     def interpolate(self, x1, y1, x2, y2, x):

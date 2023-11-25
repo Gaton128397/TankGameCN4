@@ -59,7 +59,10 @@ class gameLogic:
                     pygame.quit()
                     return playerWinner
                     running = False
-                if pygame.mouse.get_pressed()[0]:
+                if pygame.mouse.get_pressed()[2]:
+                    self.terrain.updateImpact(pygame.mouse.get_pos(),100,self.surfaceTerrain)
+                    self.unUpdate()
+                elif pygame.mouse.get_pressed()[0]:
                     if pygame.mouse.get_pos() in self.terrain.getDiccionary():
                     #pygame.draw.circle(self.surfaceTerrain, (255, 0, 255), pygame.mouse.get_pos(), 100)
                         print("hit")
