@@ -79,6 +79,7 @@ def game():
     chooseMenu2 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
     #terreno
+    drawFunctions.backgroundDraw(surfaceJuego)
     terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
     terrain.getTerrain()
     terrainYpoints = terrain.yPoint()
@@ -231,10 +232,7 @@ def game():
                     #escrbir informacion jugador 2
                     infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1)
                     infoPlayer2.drawInfoBlock(surfaceJuego,potencia,angleBullet2,lastPower2,lastAngulo2,range2,alturamaxima2)
-                    chooseMenu2.drawChooseMenu(surfaceJuego,chooseState[1],ammoPlayer2)
-                    
-                
-                    
+                    chooseMenu2.drawChooseMenu(surfaceJuego,chooseState[1])     
             for event in pygame.event.get():
                 
                 if event.type == pygame.USEREVENT:
