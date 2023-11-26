@@ -2,6 +2,7 @@ from winnerdisplay import drawWinner
 from newMenu import draw_menu
 from instrucciones import draw_instrucciones
 from random import randint
+from barravida import BarraVida
 import pygame,projectile,tank,terreno,time,sys,chooseMenu, params, drawFunctions,  infoBlock
 
 WIDTH,HEIGHT = params.WIDTH,params.HEIGHT
