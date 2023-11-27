@@ -16,8 +16,8 @@ def drawEnd(endSurface,width,height,event):
         endSurface.blit(textoEnd, (width//2-200, height//2))
     
     # Dibujar el botón "Volver a jugar"
-    pygame.draw.rect(endSurface, ARENA_COLOR, buttonRePlay)  
-    text = font.render("Volver a jugar", True, 'white')
-    text_rect = text.get_rect(center=buttonRePlay.center)
-    endSurface.blit(text, text_rect)
+    textSalir = font.render("'esc' para volver", True, 'black')
+    textReiniciar = font.render("'r' para reiniciar", True, 'black')
+    endSurface.blit(textReiniciar, (width*0.4, height*0.6))
+    endSurface.blit(textSalir, (width*0.4, height*0.8))
     return buttonRePlay
