@@ -1,8 +1,9 @@
-import pygame,sys,params
+import pygame
+import sys
 
 
 def draw_instrucciones(surfaceInstrucciones,width,heihgt):
-    background = pygame.image.load(params.BackGroundIMG)
+    background = pygame.image.load("Background.jpg")
     background = pygame.transform.scale(background, (width, heihgt))
 
     ARENA_COLOR = (255, 204, 153) 
@@ -21,7 +22,7 @@ def draw_instrucciones(surfaceInstrucciones,width,heihgt):
     "5. Tienes que estar atento a las municiones de cada bala.",
     "6. Debes estar atento a tu vida, si llega a 0 perderas la partida.",
     "7.Para reiniciar presiona 'R' ",
-    "8. presiona 'esc' para volver atras"
+    "8. presiona 'esc' para salir del juego"
 
     ]
     
@@ -38,9 +39,9 @@ def draw_instrucciones(surfaceInstrucciones,width,heihgt):
         surfaceInstrucciones.blit(text, text_rect)
     
     # Dibujar el botón "Volver"
-    button = pygame.Rect(width*0.25, heihgt*0.9, 650, 50) 
+    button = pygame.Rect(550, 520, 200, 50) 
     pygame.draw.rect(surfaceInstrucciones, ARENA_COLOR, button)  
-    text = font.render("'esc' para volver", True, 'white')
+    text = font.render("Volver", True, 'white')
     text_rect = text.get_rect(center=button.center)
     surfaceInstrucciones.blit(text, text_rect)
     return buttonVolver

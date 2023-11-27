@@ -3,8 +3,15 @@ from functions import *
 
 class Tank:
     def __init__(self,position, color,LoR,surface,terrainPoints):
-
-        self.health = 100
+        self.health = 0
+        self.dmg = 0
+        self.shield = 0
+        self.bigStone = 0
+        self.smallStone = 0
+        self.mediumStone = 0
+        
+        self.inventory = [self.bigStone,self.mediumStone,self.smallStone]
+        self.stats = [self.health,self.dmg,self.shield]
 
         self.x = position
         self.y = 0
@@ -57,7 +64,7 @@ class Tank:
         pygame.draw.rect(self.surface, self.color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
         pygame.draw.circle(self.surface, self.color, ((self.x, self.y + self.height/2)), self.height/2) #circunferencia de la derecha
         pygame.draw.circle(self.surface, self.color, ((self.x + self.width, self.y + self.height/2)), self.height/2) #rectangulo donde estara el cañon
-       
+        
         if(staticCan):
             pygame.draw.line(self.surface, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4) #cañon
             
@@ -104,16 +111,10 @@ class Tank:
 
         ##(hitboxPoints[0])
         return hitboxPoints
-    # def chooseAmmo(self):
-    #     for event in pygame.event.get():
-    #          if event.type == pygame.KEYDOWN:
-    #             if event.key == pygame.K_1:
-    #                 #(1)
-    #             if event.key == pygame.K_2:
-    #                 #(2)
-    #             if event.key == pygame.K_3:
-    #                 #(3)
-              
+    def openShop(self):
+        print('pantalla nueva')
+        
+        return True
     def getAngle(self):
         
         return self.angulo
@@ -131,4 +132,3 @@ class Tank:
         elif type == 3:
             self.health -= 30
         return self.health
-         
