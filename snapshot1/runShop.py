@@ -1,4 +1,5 @@
-import pygame, sys,button,items
+import pygame, sys, button ,items
+
 
 pygame.init()
 
@@ -6,7 +7,7 @@ x = 100
 width, height = 16*x, 9*x
 screen = pygame.display.set_mode((width, height))
 
-tiendaImg = pygame.image.load('snapshot1\imgs\shop.png')
+tiendaImg = pygame.image.load('snapshot1\shop.png')
 tiendaImg = pygame.transform.scale(tiendaImg,(width,height))
 screen.blit(tiendaImg,(0,0))
 clock = pygame.time.Clock()
@@ -21,8 +22,8 @@ smallStone = items.item('small Stone','piedra chica',100)
 
 
 #botones
-settingButton = button.Button((x*0.1,x*0.1,x*1.2,x*0.9),(0,255,0),'home',False)
-homeButton = button.Button((x*14.5,x*0.15,x*1.2,x*0.9),(255,0,0),'settings',False)
+settingButton = button.Button((x*0.1,x*0.1,x*1.2,x*0.9),(0,255,0),'settings',False)
+homeButton = button.Button((x*14.5,x*0.15,x*1.2,x*0.9),(255,0,0),'home',False)
 item1Button = button.Button((x*1.4,x*2,x*0.9,x*1),(255,0,0),shield,False)
 item2Button = button.Button((x*3.7,x*2,x*1.15,x*1.1),(255,0,0),dmg,False)
 item3Button = button.Button((x*6.1,x*2,x*1.15,x*1.1),(255,0,0),health,False)
