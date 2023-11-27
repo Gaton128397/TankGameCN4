@@ -12,11 +12,9 @@ class TerrenoVariado:
 
         pygame.init()
         self.window = pygame.display.set_mode((self.width, self.height))
-        # pygame.display.set_caption("Terreno Variado")
+        pygame.display.set_caption("Terreno Variado")
 
     #funcion para interpolar los puntos
-    def changeTerrain(self,newWindow):
-        self.window = newWindow
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     # Genera el terreno
@@ -25,8 +23,8 @@ class TerrenoVariado:
             x = int(i * (self.width / (self.num_points - 1)))
             y = random.randint(self.height // 5, self.height - 200)
             if 0 <= x <= 1300:
-                self.points.append([x, y])
-                self.yPoints.append([y])
+                self.points.append((x, y))
+                self.yPoints.append(y)
 
         # interpolar los puntos faltantes
         for x in range(0, 1301):
@@ -47,7 +45,7 @@ class TerrenoVariado:
     
     def drawTerrain(self):
         surf = self.window.copy()
-        surf.fill((255,0,255))
+        drawFunctions.backgroundDraw(surf)
         
         x_interp = np.linspace(0, self.width, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
@@ -56,8 +54,6 @@ class TerrenoVariado:
 
         pygame.draw.polygon(surf, (255, 213, 158), [(0, self.height)] + points_interp + [(self.width, self.height)])
         pygame.draw.lines(surf, (139, 69, 19), False, points_interp, 5)
-        surf.set_alpha()
-        surf.set_colorkey((255,0,255))
         return surf
         #pygame.display.update()
     # Devuelve los puntos del terreno
