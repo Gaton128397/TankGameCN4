@@ -12,7 +12,7 @@ screen.blit(tiendaImg,(0,0))
 clock = pygame.time.Clock()
 
 #items
-shield = items.item('shield','+1 escudo',100)
+shield = items.item('shield','+1 escudo',100,"imgs\shield.png"")
 dmg = items.item('dmg','+10 dmg',100)
 health = items.item('health','+10 vida',100)
 bigStone = items.item('big Stone','piedra grande',100)
@@ -36,10 +36,12 @@ finishButton = button.Button((x*12.5,x*7.5,x*3,x*1.1),(255,0,255),'finish',False
 
 botonesTienda = [settingButton,homeButton,buyButton,sellButton,finishButton]
 botonesItems = [item1Button,item2Button,item3Button,item4Button,item5Button,item6Button]
+
 #variables
 itemActual = -1
 playerMoney = 1000
 playerItemAvailable = 1
+showItem = False
 def buy(player,item):
     if player.inventory[0] == 0:
         player.inventory[0] +=1 #compra piedra grande
@@ -80,12 +82,13 @@ while True:
     for itemButton in botonesItems:
         if itemButton.check_click(event):
             itemActual = itemButton.item
-    if itemActual != 0 and itemActual != -1:
+
+    if itemActual != 0 and itemActual != -1: #muestra el item
         
         texto = pygame.font.Font(None, 30)
         texto = texto.render('hola', True, (0, 0, 0))
         screen.blit(texto,(x*5.5,x*4))
-        print('.')
+        
         
     if itemActual == 1:
         pygame.draw.rect(screen,((164, 164, 164)),(x*4.38,x*3.73,x*7.27,x*3.25))# se borra al dar continuar

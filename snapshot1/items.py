@@ -5,4 +5,5 @@ class item:
         self.nombre = nombre
         self.descripcion = descripcion
         self.precio = precio
-    
+    def showItem(self,screen):
+        pass
