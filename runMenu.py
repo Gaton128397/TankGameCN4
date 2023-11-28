@@ -9,7 +9,7 @@ def run_menu():
     width, height = 16*x, 9*x
     screen = pygame.display.set_mode((width, height))
 
-    menu_background = pygame.image.load('snapshot1/Menu.png')  
+    menu_background = pygame.image.load('imgs/Menu.png')  
     menu_background = pygame.transform.scale(menu_background, (width, height))
     screen.blit(menu_background, (0, 0))
 
