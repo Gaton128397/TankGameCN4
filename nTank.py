@@ -1,17 +1,17 @@
 import pygame, sys, math, random
-from functions import *
+# from functions import *
 
 class Tank:
     def __init__(self,position, color,LoR,surface,terrainPoints):
+        self.money = 10000
         self.health = 0
         self.dmg = 0
         self.shield = 0
         self.bigStone = 0
         self.smallStone = 0
         self.mediumStone = 0
-        
-        self.inventory = [self.bigStone,self.mediumStone,self.smallStone]
-        self.stats = [self.health,self.dmg,self.shield]
+
+        self.inventory = [self.health,self.dmg,self.shield,self.bigStone,self.mediumStone,self.smallStone]
 
         self.x = position
         self.y = 0
@@ -58,7 +58,10 @@ class Tank:
         self.ammo6mm = 3
         contador = 0 
         
-        
+    def showInventory(self): #va a ser una mini pantalla con los items y sus cantidades
+        print(self.inventory)
+        print(self.money)
+
     def draw_tank(self,staticCan):
         pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
         pygame.draw.rect(self.surface, self.color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
