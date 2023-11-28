@@ -88,19 +88,22 @@ def tstgm():#Logica de mainScreen()
     playerWon = None
     run = True
     while run:
-        for event in pygame.event.get():
-            game = gameLogic(window)
-            playerWon = game.run(clock)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                run = False
-            elif playerWon == -1:
-                pygame.quit()
-                run = False
-            if playerWon == 1:
-                print("l")
-                
-        print("not reach")
-        clock.tick(60)
-        pygame.display.update()
+        try:
+            for event in pygame.event.get():
+                game = gameLogic(window)
+                playerWon = game.run(clock)
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    run = False
+                elif playerWon == -1:
+                    pygame.quit()
+                    run = False
+                if playerWon == 1:
+                    print("l")
+                    
+            print("not reach")
+            clock.tick(60)
+            pygame.display.update()
+        except (KeyboardInterrupt, SystemExit): #manejar los errores
+            return True
 tstgm()

@@ -3,8 +3,15 @@ from functions import *
 
 class Tank:
     def __init__(self,position, color,LoR,surface,terrainPoints):
-
-        self.health = 100
+        self.health = 0
+        self.dmg = 0
+        self.shield = 0
+        self.bigStone = 0
+        self.smallStone = 0
+        self.mediumStone = 0
+        
+        self.inventory = [self.bigStone,self.mediumStone,self.smallStone]
+        self.stats = [self.health,self.dmg,self.shield]
 
         self.x = position
         self.y = 0
@@ -141,4 +148,3 @@ class Tank:
         elif type == 3:
             self.health -= 30
         return self.health
-         

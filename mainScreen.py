@@ -78,23 +78,6 @@ def game():
     chooseMenu1 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
     chooseMenu2 = chooseMenu.ChooseMenu(surfaceJuego, WIDTH, HEIGHT)
 
-    #terreno
-    drawFunctions.backgroundDraw(surfaceJuego)
-    terrain = terreno.TerrenoVariado(surfaceJuego, WIDTH, HEIGHT)
-    terrain.getTerrain()
-    terrainYpoints = terrain.yPoint()
-    terrainPoints = terrain.getPoints()
-    
-    #crear Jugadores
-    # player1 = tank.Tank(terrainPoints[randint(0, WIDTH - 700)], "blue", 1, surfaceJuego)
-    # player2 = tank.Tank(terrainPoints[randint(WIDTH - 300, WIDTH - 300)], "red", 0, surfaceJuego)
-
-    player1 = tank.Tank((randint(20,int(WIDTH*0.5)),10), "blue", 1, surfaceJuego,terrainPoints)
-    player2 = tank.Tank((randint(int(WIDTH*0.5),WIDTH),10), "red", 0, surfaceJuego,terrainPoints)
-
-    #crear hitbox jugadores
-    player1Hitbox = player1.hitBox()
-    player2Hitbox = player2.hitBox()
     
     #variables municion jugadores
     ammoPlayer1 = [3, 10, 3]
@@ -377,38 +360,28 @@ def game():
                             tiempo_presionado = tiempo_actual
                             presionado = True
 
-                    if event.key == pygame.K_RETURN:
-                        if turno == 1:
-                            if ammoPlayer1[bulletTypePlayer1 - 1] > 0:
-                                bulletTypePlayer1 = typeBullet
-                            else:
-                                #('no quedan')
-                                bulletTypePlayer1 = 5 #5 es que no quedan
-                            bullet1 = projectile.Projectile(LAYERS[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window)
-                           
-                            bullet1.shoot(terrainPoints, player1Hitbox, player2Hitbox,surfaceJuego,LAYERS,tempWindows)
-                            
-                            
-                            #newSurfaceJuego = terrain.drawTerrain()
-                            #surfaceJuego.blit(newSurfaceJuego,(0,0))
-                            
-                            #surfaceJuego.blit(newSurfaceJuego,(0,0))
-                            #tempWindows[0].blit(surfaceJuego,(0,0))
-                            ammoPlayer1[bulletTypePlayer1 - 1] -= 1
-                            lastAngulo1 = angleBullet1
-                            lastPower1 = potencia
-                            potencia = 0
-                            range1 = bullet1.getRange()
-                            alturamaxima1 = bullet1.getMaxHeight()
-                            alturamaxima1 = bullet1.getMaxHeight()
-                            if player2.getHeath() <= 0:  
-                                ganador = turno
-                                actualScreen = 3
-                                end = True
-                            else:
-                                if bullet1.returnHit() == 1:
-                                    """
-                                    ganador = turno
+                        if event.key == pygame.K_RETURN:
+                            if turno == 1:
+                                if ammoPlayer1[bulletTypePlayer1 - 1] > 0:
+                                    bulletTypePlayer1 = typeBullet
+                                else:
+                                    #('no quedan')
+                                    bulletTypePlayer1 = 5 #5 es que no quedan
+                                    turno == 2
+                                bullet1 = projectile.Projectile(layer1[1][0].end,bulletTypePlayer1,potencia,angleBullet1,window)
+                                
+                                bullet1.shoot(layer1[0].getPoints(), layer1[1][0].creaHitBox(), layer1[1][1].creaHitBox(),surfaceJuego)
+                                ammoPlayer1[bulletTypePlayer1 - 1] -= 1
+                                lastAngulo1 = angleBullet1
+                                lastPower1 = potencia
+                                potencia = 0
+                                range1 = bullet1.getRange()
+                                alturamaxima1 = bullet1.getMaxHeight()
+                                alturamaxima1 = bullet1.getMaxHeight()
+                                
+                                if layer1[1][1].getHealth() <= 0:  
+                                    # listaBotones.append(drawEnd(surfaceWinner, WIDTH, HEIGHT, turno)) 
+                                    ganador = 1
                                     actualScreen = 3
                                     end = True
                                 else:
@@ -443,19 +416,20 @@ def game():
                                     else:
                                         turno = 2
 
-                        elif turno == 2:
-                            if ammoPlayer2[bulletTypePlayer2 - 1] > 0:
-                                bulletTypePlayer2 = typeBullet
-                            else:
-                                #('no quedan')
-                                bulletTypePlayer2 = 5
-                            
-                            bullet2 = projectile.Projectile(LAYERS[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window)
-                            
-                            bullet2.shoot(terrainPoints, player2Hitbox, player1Hitbox,surfaceJuego,LAYERS, tempWindows)
-                            
-                            ammoPlayer2[bulletTypePlayer2 - 1] -= 1
-                            lastAngulo2 = 180 - angleBullet2 
+                            elif turno == 2:
+                                if ammoPlayer2[bulletTypePlayer2 - 1] > 0:
+                                    bulletTypePlayer2 = typeBullet
+                                else:
+                                    #('no quedan')
+                                    turno == 1
+                                    bulletTypePlayer2 = 5
+                                
+                                bullet2 = projectile.Projectile(layer1[1][1].end,bulletTypePlayer2,potencia,angleBullet2,window,)
+                                
+                                bullet2.shoot(layer1[0].getPoints(), layer1[1][1].creaHitBox(), layer1[1][0].creaHitBox(),surfaceJuego)
+                                
+                                ammoPlayer2[bulletTypePlayer2 - 1] -= 1
+                                lastAngulo2 = 180 - angleBullet2 
 
                                 lastPower2 = potencia
                                 
