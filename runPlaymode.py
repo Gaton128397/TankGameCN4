@@ -9,7 +9,7 @@ def run_play_mode():
     width, height = 16*x, 9*x
     screen = pygame.display.set_mode((width, height))
 
-    play_mode_background = pygame.image.load('snapshot1/playmode.png')  
+    play_mode_background = pygame.image.load('playmode.png')  
     play_mode_background = pygame.transform.scale(play_mode_background, (width, height))
     screen.blit(play_mode_background, (0, 0))
 

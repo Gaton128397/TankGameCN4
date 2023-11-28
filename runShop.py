@@ -6,7 +6,7 @@ x = 100
 width, height = 16*x, 9*x
 screen = pygame.display.set_mode((width, height))
 
-tiendaImg = pygame.image.load('snapshot1/shop.png')
+tiendaImg = pygame.image.load('shop.png')
 tiendaImg = pygame.transform.scale(tiendaImg,(width,height))
 screen.blit(tiendaImg,(0,0))
 clock = pygame.time.Clock()

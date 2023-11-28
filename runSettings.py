@@ -9,7 +9,7 @@ def run_settings():
     width, height = 16*x, 9*x
     screen = pygame.display.set_mode((width, height))
 
-    settings_background = pygame.image.load('snapshot1/settings.png')  
+    settings_background = pygame.image.load('settings.png')  
     settings_background = pygame.transform.scale(settings_background, (width, height))
     screen.blit(settings_background, (0, 0))
 
