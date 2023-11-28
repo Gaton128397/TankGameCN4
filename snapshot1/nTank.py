@@ -1,4 +1,4 @@
-import pygame, sys, math, random
+import pygame, sys, math, random, params
 from functions import *
 
 class Tank:
@@ -8,23 +8,25 @@ class Tank:
 
         self.x = position
         self.y = 0
+        
         while not ((self.x,self.y) in terrainPoints):
             #print("do")
             self.y += 1
             
         #valores de la hitbox. Cambiar esto por llamar a la funcion 
-        self.y = self.y-20
+        #self.y = self.y-20
         #self.x = self.x - 70
         #tambien cambiar n magicos por % de pantalla para el reescalado
         
-        self.width = 50
-        self.height = 20
+        #numeros magicos eliminados, ahora son un 3% aprox del ancho y alto de la pantalla
+        self.width = params.WIDTH*0.03 #ancho del tanque
+        self.height = params.HEIGHT*0.02 #alto del tanque
         self.color = color
         self.terrainPoints = terrainPoints
         #eliminar: self.origin = (position[0] + 25, position[1] - 6.5)
 
         self.angulo = 0
-        self.longitud = 25 #largo del cañon
+        self.longitud = params.WIDTH*0.02 #largo del cañon
 
         self.surface = surface
         self.LoR = LoR
@@ -40,8 +42,8 @@ class Tank:
         if self.LoR == 0:
             a = -1
 
-        self.xCanon1 =(self.x + self.width/2)  #coordenadas del cañon
-        self.yCanon1  = (self.y - self.height/3)
+        self.xCanon1 =self.x
+        self.yCanon1  = (self.y - self.height) - self.height/4
 
         self.xCanon2 = (self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
@@ -49,14 +51,15 @@ class Tank:
         self.ammo10mm = 3
         self.ammo8mm = 10
         self.ammo6mm = 3
-        contador = 0 
+        
         
         
     def draw_tank(self,staticCan):
-        pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height)) #rectangulo inicial
-        pygame.draw.rect(self.surface, self.color, (self.x + self.width/4, self.y - self.height/5, self.width/2, self.height/2)) #circunferencia de la izquierda
-        pygame.draw.circle(self.surface, self.color, ((self.x, self.y + self.height/2)), self.height/2) #circunferencia de la derecha
-        pygame.draw.circle(self.surface, self.color, ((self.x + self.width, self.y + self.height/2)), self.height/2) #rectangulo donde estara el cañon
+
+        pygame.draw.polygon(self.surface, self.color, ((self.x, self.y), (self.x - self.width/2, self.y), (self.x - self.width/2, self.y - self.height),(self.x + self.width/2, self.y - self.height),(self.x + self.width/2, self.y),(self.x, self.y))) #rectangulo inicial
+        pygame.draw.polygon(self.surface, self.color, ((self.x, self.y - self.height), (self.x - self.width/3, self.y - self.height), (self.x - self.width/3, (self.y- self.height) - self.height/3),(self.x + self.width/3, (self.y- self.height) - self.height/3),(self.x + self.width/3, (self.y- self.height)))) #rectangulo donde estara el cañon
+        pygame.draw.circle(self.surface, self.color, ((self.x - self.width/2, self.y+1 - self.height/2)), self.height/2 + 1) #circunferencia de la izquierda
+        pygame.draw.circle(self.surface, self.color, ((self.x + self.width/2, self.y+1 - self.height/2)), self.height/2 + 1) #circunferencia de la derecha
        
         if(staticCan):
             pygame.draw.line(self.surface, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), 4) #cañon
@@ -104,6 +107,13 @@ class Tank:
 
         ##(hitboxPoints[0])
         return hitboxPoints
+    
+    def updatePos(self):
+        self.y += 1
+        self.yCanon1 += 1
+        self.draw_tank(self)
+        return 0
+
     # def chooseAmmo(self):
     #     for event in pygame.event.get():
     #          if event.type == pygame.KEYDOWN:
