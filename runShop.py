@@ -6,7 +6,7 @@ x = 100
 width, height = 16*x, 9*x
 screen = pygame.display.set_mode((width, height))
 
-tiendaImg = pygame.image.load('snapshot1\imgs\shop.png')
+tiendaImg = pygame.image.load('shop.png')
 tiendaImg = pygame.transform.scale(tiendaImg,(width,height))
 screen.blit(tiendaImg,(0,0))
 clock = pygame.time.Clock()
@@ -94,5 +94,4 @@ while True:
         pygame.draw.rect(screen,((164, 164, 164)),(x*4.38,x*3.73,x*7.27,x*3.25))# se borra al dar continuar
     pygame.display.flip()
     clock.tick(60)
-
 
