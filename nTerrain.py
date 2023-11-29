@@ -1,4 +1,4 @@
-import pygame,math,random,drawFunctions, params
+import pygame,math,random, params
 import numpy as np
 
 class TerrenoVariado:

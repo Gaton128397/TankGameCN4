@@ -2,51 +2,46 @@ import pygame
 import sys
 import button
 
-def run_ganador1():
-    pygame.init()
+class Ganador1:
+    def __init__(self,screen):
+        self.screen = screen
+        self.x = 100
+        self.width, self.height = 16*self.x, 9*self.x
+        self.screen = pygame.display.set_mode((self.width, self.height))
 
-    x = 100
-    width, height = 16*x, 9*x
-    screen = pygame.display.set_mode((width, height))
+        self.ganador1_background = pygame.image.load('imgs/ganador1.png')  
+        self.ganador1_background = pygame.transform.scale(self.ganador1_background, (self.width, self.height))
+        
 
-    ganador1_background = pygame.image.load('ganador1.png')  
-    ganador1_background = pygame.transform.scale(ganador1_background, (width, height))
-    screen.blit(ganador1_background, (0, 0))
+        self.clock = pygame.time.Clock()
 
-    clock = pygame.time.Clock()
+        self.home_button = button.Button((self.x*0.5 - 10, self.x*0.5 - 20, 100, 100), (255, 0, 0), 'Home', False)
+        self.settings_button = button.Button((self.width - self.x*1.5 +15, self.x*0.5 - 25, 100, 100), (255, 0, 0), 'Settings', False)
+        self.iniciar_partida_button = button.Button((self.x*5 - 475, self.x*6 + 175, self.x*3, self.x*0.75), (0, 255, 0), 'Iniciar Partida', False)
+        self.terminar_juego_button = button.Button((self.width - self.x*3.5, self.height - self.x*1.25, self.x*3, self.x*0.75), (255, 255, 0), 'Terminar Juego', False)
 
-    home_button = button.Button((x*0.5 - 10, x*0.5 - 20, 100, 100), (255, 0, 0), 'Home', False)
-    settings_button = button.Button((width - x*1.5 +15, x*0.5 - 25, 100, 100), (255, 0, 0), 'Settings', False)
-    iniciar_partida_button = button.Button((x*5 - 475, x*6 + 175, x*3, x*0.75), (0, 255, 0), 'Iniciar Partida', False)
-    terminar_juego_button = button.Button((width - x*3.5, height - x*1.25, x*3, x*0.75), (255, 255, 0), 'Terminar Juego', False)
-
-    buttons = [home_button, settings_button, iniciar_partida_button, terminar_juego_button]
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        for btn in buttons:
-            if btn.check_click(event):
-                if btn.item == 'Home':
-                    print('Ir a la pantalla de inicio')
-                elif btn.item == 'Settings':
-                    print('Ir a la configuración')
-                elif btn.item == 'Iniciar Partida':
-                    print('Iniciar partida')
-                elif btn.item == 'Terminar Juego':
+        self.buttons = [self.home_button, self.settings_button, self.iniciar_partida_button, self.terminar_juego_button]
+    
+    def runGanador2(self):
+        pygame.init()
+        self.screen.blit(self.ganador1_background, (0, 0))
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
-        # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2) 
+                for btn in self.buttons:
+                    if btn.check_click(event):
+                        if btn.item == 'Home':
+                            print('Ir a la pantalla de inicio')
+                        elif btn.item == 'Settings':
+                            print('Ir a la configuración')
+                        elif btn.item == 'Iniciar Partida':
+                            print('Iniciar partida')
+                        elif btn.item == 'Terminar Juego':
+                            pygame.quit()
+                            sys.exit()
+                pygame.display.flip()
+                self.clock.tick(60)
 
-        pygame.display.flip()
-        clock.tick(60)
-
-if __name__ == "__main__":
-    run_ganador1()

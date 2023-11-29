@@ -1,5 +1,5 @@
-import math,pygame,params, drawFunctions
-from functions import *
+import math,pygame,params
+# from functions import *
 g = 9.8
 FPS = 60
 
@@ -42,7 +42,7 @@ class Projectile():
             self.explosionArea = self.size*2 - self.size/2
         self.origin = (position[0],position[1])
 
-        self.theta = toRadian(abs(theta))
+        # self.theta = toRadian(abs(theta))
 
         self.x, self.y = position[0], position[1]
 
