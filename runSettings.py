@@ -9,22 +9,21 @@ def run_settings():
     width, height = 16*x, 9*x
     screen = pygame.display.set_mode((width, height))
 
-    settings_background = pygame.image.load('settings.png')  
+    settings_background = pygame.image.load('imgs/settings.png')  
     settings_background = pygame.transform.scale(settings_background, (width, height))
     screen.blit(settings_background, (0, 0))
 
     clock = pygame.time.Clock()
 
     home_button = button.Button((x*0.5 - 10, x*0.5 - 20, 100, 100), (255, 0, 0), 'Home', False)
-    settings_button = button.Button((width - x*1.5 +15, x*0.5 - 25, 100, 100), (255, 0, 0), 'Settings', False)
+    confirmar_button = button.Button((width - x*1.5 - 250, x*0.5 - 25, 300, 100), (255, 0, 0), 'Settings', False)
     mas_player_button = button.Button((width // 2 + 510, height // 2 - 120, 100, 75), (0, 255, 0), 'MasPlayer', False)
     menos_player_button = button.Button((width // 2 + 210, height // 2 - 120, 100, 75), (0, 255, 0), 'MenosPlayer', False)
-
     mas_ronda_button = button.Button((width // 2 + 510, height // 2 + 275, 100, 75), (0, 255, 0), 'MasRonda', False)
     menos_ronda_button = button.Button((width // 2 + 210, height // 2 + 275, 100, 75), (0, 255, 0), 'MenosRonda', False)
 
 
-    buttons = [home_button, settings_button, mas_player_button, menos_player_button, mas_ronda_button, menos_ronda_button]
+    buttons = [home_button, confirmar_button, mas_player_button, menos_player_button, mas_ronda_button, menos_ronda_button]
 
     while True:
         for event in pygame.event.get():
@@ -39,7 +38,7 @@ def run_settings():
                     pygame.quit()
                     sys.exit()
                 elif btn.item == 'Settings':
-                    print('boton config')
+                    print('confirmar')
                     pygame.quit()
                     sys.exit()
                 elif btn.item == 'MasPlayer':

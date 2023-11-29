@@ -9,7 +9,7 @@ def run_ganador1():
     width, height = 16*x, 9*x
     screen = pygame.display.set_mode((width, height))
 
-    ganador1_background = pygame.image.load('ganador1.png')  
+    ganador1_background = pygame.image.load('imgs/ganador1.png')  
     ganador1_background = pygame.transform.scale(ganador1_background, (width, height))
     screen.blit(ganador1_background, (0, 0))
 
