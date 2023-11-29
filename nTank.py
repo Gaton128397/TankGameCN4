@@ -3,16 +3,6 @@ import pygame, sys, math, random
 
 class Tank:
     def __init__(self,position, color,LoR,surface,terrainPoints):
-        self.money = 10000
-        self.health = 0
-        self.dmg = 0
-        self.shield = 0
-        self.bigStone = 0
-        self.smallStone = 0
-        self.mediumStone = 0
-
-        self.inventory = [self.health,self.dmg,self.shield,self.bigStone,self.mediumStone,self.smallStone]
-
         self.x = position
         self.y = 0
         while not ((self.x,self.y) in terrainPoints):

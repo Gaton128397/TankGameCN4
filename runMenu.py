@@ -1,53 +1,50 @@
-import pygame
-import sys
-import button
+import pygame,sys,button,params
 
-def run_menu():
-    pygame.init()
+class Menu:
+    def __init__(self,screen):
+        self.x = params.size
+        self.width, self.height = 16*self.x, 9*self.x
+        self.screen = pygame.display.set_mode((self.width, self.height))
 
-    x = 100
-    width, height = 16*x, 9*x
-    screen = pygame.display.set_mode((width, height))
+        self.menu_background = pygame.image.load('imgs/Menu.png')  
+        self.menu_background = pygame.transform.scale(self.menu_background, (self.width, self.height))
+        
 
-    menu_background = pygame.image.load('imgs/Menu.png')  
-    menu_background = pygame.transform.scale(menu_background, (width, height))
-    screen.blit(menu_background, (0, 0))
+        self.clock = pygame.time.Clock()
 
-    clock = pygame.time.Clock()
+        self.play_button = button.Button((self.x*2, self.height // 2 - self.x*0.45, self.x*4, self.x*0.75 + 20), (0, 255, 0), 'Play', False)
+        self.settings_button = button.Button((self.x, self.height - self.x*1.25, self.x*4 + 10, self.x*0.75), (255, 0, 0), 'Settings', False)
+        self.controls_button = button.Button((self.x*5 + 75, self.x*6 + 175, self.x*3, self.x*0.75), (0, 0, 255), 'Controls', False)
+        self.exit_button = button.Button((self.width - self.x*3.5, self.height - self.x*1.25, self.x*3, self.x*0.75), (255, 255, 0), 'Exit', False)
 
-    play_button = button.Button((x*2, height // 2 - x*0.45, x*4, x*0.75 + 20), (0, 255, 0), 'Play', False)
-    settings_button = button.Button((x, height - x*1.25, x*4 + 10, x*0.75), (255, 0, 0), 'Settings', False)
-    controls_button = button.Button((x*5 + 75, x*6 + 175, x*3, x*0.75), (0, 0, 255), 'Controls', False)
-    exit_button = button.Button((width - x*3.5, height - x*1.25, x*3, x*0.75), (255, 255, 0), 'Exit', False)
-
-    buttons = [play_button, settings_button, controls_button, exit_button]
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        for btn in buttons:
-            if btn.check_click(event):
-                if btn.item == 'Play':
-                    print('jugar')
-                elif btn.item == 'Settings':
-                    print('opciones')
-                elif btn.item == 'Controls':
-                    print('controles')
-                elif btn.item == 'Exit':
+        self.buttons = [self.play_button, self.settings_button, self.controls_button, self.exit_button]
+    def runMenu(self):
+        pygame.init()
+        self.screen.blit(self.menu_background, (0, 0))
+        
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
-        # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2) 
-
-        pygame.display.flip()
-        clock.tick(60)
-
-if __name__ == "__main__":
-    run_menu()
+                for btn in self.buttons:
+                    if btn.check_click(event):
+                        if btn.item == 'Play': #start choosing who to play against
+                            return 1
+                        elif btn.item == 'Settings':
+                            return 4
+                        elif btn.item == 'Controls':
+                            print("nothing yet")
+                            # return 3
+                        elif btn.item == 'Exit':
+                            pygame.quit()
+                            running =  False
+                            sys.exit()
+                            
+                
+                pygame.display.flip()
+            self.clock.tick(60)
+            # return False #salir
 
