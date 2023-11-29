@@ -4,8 +4,8 @@ class infoBlock:
     def __init__(self, proporcion):
         self.bloque = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
         self.alphaColor = (255,255,255)
-        #self.bloque.set_alpha()
-        #self.bloque.set_colorkey(self.alphaColor)
+        self.bloque.set_alpha()
+        self.bloque.set_colorkey(self.alphaColor)
         
         self.bloque.fill(self.alphaColor)
         self.actualizarTitulo()
@@ -22,6 +22,7 @@ class infoBlock:
         self.bloque.blit(imagen_escalada, (int(self.bloque.get_width() *posicion[0]),int(self.bloque.get_height() *posicion[1])))
 
     def actualizarAngulo(self, texto):
+        texto = str(texto)
         self.borrarAngulo()
         texto = '°'+ texto
         fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
@@ -29,6 +30,7 @@ class infoBlock:
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.2), int(self.bloque.get_width() *0.05)))
         
     def actualizarDistancia(self, texto):
+        texto = str(texto)
         self.borrarDistancia()
         texto = texto + " m"
         fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
@@ -36,6 +38,7 @@ class infoBlock:
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_width() *0.17)))
         
     def actualizarBotellas(self, texto):
+        texto = str(texto)
         self.borrarBotellas()
         texto = "x"+texto
         fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
@@ -62,6 +65,7 @@ class infoBlock:
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.7), int(self.bloque.get_width() *0.05)))
         
     def actualizarTipoBala(self,texto):
+        texto = str(texto)
         self.borrarTipoBala()
         texto = texto + "mm"
         fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
@@ -69,6 +73,7 @@ class infoBlock:
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.5)))
     
     def actualizarCantidadBalas(self,texto):
+        texto = str(texto)
         self.borrarCantidadBala()
         texto = "x"+texto
         fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
@@ -131,13 +136,13 @@ while ejecutando:
         direccion_x *= -1
     if contador_y <= 0 or contador_y >= params.HEIGHT - int(info.bloque.get_height()*0.9):
         direccion_y *= -1
-    info.actualizarDmg(conds[random.randint(0,1)])
-    info.actualizarEscudo(conds[random.randint(0,1)])
-    info.actualizarAngulo(str(random.randint(0,180)))
-    info.actualizarDistancia(str(random.randint(0,5000)))
-    info.actualizarBotellas(str(random.randint(0,100)))
-    info.actualizarTipoBala(str(random.randint(0,200)))
-    info.actualizarCantidadBalas(str(random.randint(0,50)))
+    #info.actualizarDmg(conds[random.randint(0,1)])
+    #info.actualizarEscudo(conds[random.randint(0,1)])
+    info.actualizarAngulo(random.randint(0,180))
+    info.actualizarDistancia(random.randint(0,5000))
+    info.actualizarBotellas(random.randint(0,100))
+    info.actualizarTipoBala(random.randint(0,200))
+    info.actualizarCantidadBalas(random.randint(0,50))
     window.blit(bg,(0,0))
     window.blit(info.bloque, (0+contador_x, 0+contador_y))
     pygame.display.flip()
