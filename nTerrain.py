@@ -35,7 +35,7 @@ class TerrenoVariado:
                 self.yPoints.append([int(y)])#????????????????????????
         
         self.points.sort()
-        print(self.points[len(self.points)-1][0])
+        print(self.points[0][1])
         
         for i in range(params.WIDTH):
             #print("hola")
@@ -46,7 +46,6 @@ class TerrenoVariado:
     def updateImpact(self,pos,radius):
         # Dibuja el círculo en la superficie
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
-
         # Actualiza la hitbox
         for i in range(pos[0] - radius, pos[0] + radius):
             for j in range(pos[1] - radius, pos[1] + radius):
