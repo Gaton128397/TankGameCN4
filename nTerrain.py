@@ -15,12 +15,12 @@ class TerrenoVariado:
         for i in range(self.num_points):
             x = int(i * (self.width / (self.num_points - 1)))
             y = random.randint(self.height // 5, self.height - 200)
-            if 0 <= x <= 1300:
+            if 0 <= x <= params.WIDTH:
                 self.points.append([x, y])
                 self.yPoints.append([y])
 
         # interpolar los puntos faltantes
-        for x in range(0, 1301):
+        for x in range(0, params.WIDTH+1):
             if not any(point[0] == x for point in self.points):
                 # encontrar los puntos mas cercanos
                 for i in range(len(self.points) - 1):

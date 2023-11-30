@@ -2,10 +2,12 @@ import pygame, sys, math, random, params, drawFunctions, nTerrain
 from functions import *
 
 class Tank:
-    def __init__(self,color,LoR):
+    def __init__(self,color,LoR, terrainPoints, window):
         self.xpos = 0
         self.ypos = 0
         self.hitBox = {}
+        self.window = window
+        
         
             
         #valores de la hitbox. Cambiar esto por llamar a la funcion 
@@ -15,10 +17,10 @@ class Tank:
         
         
         self.color = color
-        #self.terrainPoints = terrainPoints
+        self.terrainPoints = terrainPoints
         #eliminar: self.origin = (position[0] + 25, position[1] - 6.5)
 
-        self.angulo =90
+        self.angulo =0
         
 
         #self.surface = surface
@@ -48,8 +50,8 @@ class Tank:
         self.height = int(self.surfaceTank.get_height()*0.14)
         
         self.surfaceTank.fill((255,0,255))
-        #self.surfaceTank.set_alpha()
-        #self.surfaceTank.set_colorkey((255,0,255))
+        self.surfaceTank.set_alpha()
+        self.surfaceTank.set_colorkey((255,0,255))
         self.longitud = int(self.surfaceTank.get_width()*0.12) #largo del cañon
         self.xCanon1 =self.x #coordenadas del cañon
         self.yCanon1  = (self.y - self.height) - self.height/4
@@ -57,6 +59,7 @@ class Tank:
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         self.draw_tank(True)
         self.getFallPoint()
+        self.getHitBox()
         
     def draw_tank(self,staticCan):
         pygame.draw.polygon(self.surfaceTank, self.color, ((self.x, self.y), (self.x - self.width/2, self.y), (self.x - self.width/2, self.y - self.height),(self.x + self.width/2, self.y - self.height),(self.x + self.width/2, self.y),(self.x, self.y))) #rectangulo inicial
@@ -70,7 +73,45 @@ class Tank:
         return (self.xpos, self.ypos)
     
     def getFallPoint(self):
-        pygame.draw.circle(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.4),self.getPos()[1]+int(self.surfaceTank.get_height()*0.7)), 1)
+        #pygame.draw.circle(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.4),self.getPos()[1]+int(self.surfaceTank.get_height()*0.7)), 1)
+        return (int(self.getPos()[0]+int(self.surfaceTank.get_width()*0.4)),int(self.getPos()[1]+int(self.surfaceTank.get_height()*0.7)))
+
+    def getHitBox(self):
+        puntoOrigenHB = (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25),self.getPos()[1]+int(self.surfaceTank.get_height()*0.54))
+        HitLarge = int(self.width*1.36)
+        HitHeight = int(self.height*1.24)
+        print(puntoOrigenHB)
+        for i in range(puntoOrigenHB[0], puntoOrigenHB[0]+HitLarge):
+            for j in range(puntoOrigenHB[1], puntoOrigenHB[1]+HitHeight):
+                self.hitBox[(i,j)] = True
+        #pygame.draw.rect(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25),self.getPos()[1]+int(self.surfaceTank.get_height()*0.54),self.width*1.36,self.height*1.24), 1)
+
+    def fallTank(self, terrainPoints, matriz):
+        if not (self.getFallPoint() in terrainPoints):
+            falling = True
+            while falling:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        falling = False
+                        pygame.quit()
+                self.ypos += 0.5
+                self.window.blit(matriz[0],(0,0))
+                self.window.blit(matriz[1],(0,0))
+                self.window.blit(self.surfaceTank,self.getPos())
+                pygame.display.flip()
+                if self.getFallPoint() in terrainPoints:
+                    self.ypos = int(self.ypos)
+                    falling = False
+                    self.hitBox = {}
+                    print(self.ypos)
+                    self.getHitBox()
+                if self.ypos > params.HEIGHT:
+                    falling = False
+                    self.ypos = params.HEIGHT
+                    self.hitBox = {}
+                    self.getHitBox()
+                    print(self.ypos)
+                    
         
     def setPos(self,posicion):
         self.xpos = posicion[0]
@@ -87,24 +128,34 @@ def testPlayer():
     terrain = nTerrain.TerrenoVariado(params.WIDTH, params.HEIGHT)
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
-    player = Tank("blue",1)
+    player = Tank("blue",1, terrain.getDiccionary, window)
     clock = pygame.time.Clock()
     #clock.tick(60)
     drawFunctions.backgroundDraw(bg)
-    player.setPos((300,-70))
+    player.setPos((200,int(10)))
+    player.getHitBox()
+    matriz = [bg, terrain.surfTerrain]
     contador = 0
     ejecutando = True
     while ejecutando:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 ejecutando = False
+            player.fallTank(terrain.getDiccionary(), matriz)
             if pygame.mouse.get_pressed()[2]:
-                print("xd")
+                terrain.updateImpact(pygame.mouse.get_pos(),100)
+                player.fallTank(terrain.getDiccionary(), matriz)
+                if player.getFallPoint()[1] > params.HEIGHT:
+                    print("se muricio")
+                print("PUM!!!")
             elif pygame.mouse.get_pressed()[0]:
-                print("dx")
+                if pygame.mouse.get_pos() in player.hitBox:
+                    print("xd")
+                else:
+                    print("no xd")
         #contador += 0.1
         window.blit(bg,(0,0))
-        player.setPos((100,int(100)))
+        
         window.blit(terrain.surfTerrain,(0,0))
         window.blit(player.surfaceTank,player.getPos())
         clock.tick(60)

@@ -40,11 +40,10 @@ class TerrenoVariado:
 
                 # interpolar valor de y en los puntos faltantes
                 y = self.interpolate(x1, y1, x2, y2, x)
-                self.points.append((x, int(y)))
-                self.yPoints.append(int(y))
-            ##(self.points[x])
+                self.points.append([x, int(y)])
+                self.yPoints.append([int(y)])
+            #print(self.points[x])
     # Dibuja el terreno
-    
     def drawTerrain(self):
         surf = self.window.copy()
         surf.fill((255,0,255))
