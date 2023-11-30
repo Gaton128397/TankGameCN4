@@ -94,7 +94,7 @@ class Tank:
                     if event.type == pygame.QUIT:
                         falling = False
                         pygame.quit()
-                self.ypos += 0.1
+                self.ypos += 0.5
                 self.window.blit(matriz[0],(0,0))
                 self.window.blit(matriz[1],(0,0))
                 self.window.blit(self.surfaceTank,self.getPos())
@@ -105,9 +105,13 @@ class Tank:
                     self.hitBox = {}
                     print(self.ypos)
                     self.getHitBox()
-                
-
-                
+                if self.ypos > params.HEIGHT:
+                    falling = False
+                    self.ypos = params.HEIGHT
+                    self.hitBox = {}
+                    self.getHitBox()
+                    print(self.ypos)
+                    
         
     def setPos(self,posicion):
         self.xpos = posicion[0]
@@ -139,7 +143,11 @@ def testPlayer():
                 ejecutando = False
             player.fallTank(terrain.getDiccionary(), matriz)
             if pygame.mouse.get_pressed()[2]:
-                print("aaaaaaa")
+                terrain.updateImpact(pygame.mouse.get_pos(),100)
+                player.fallTank(terrain.getDiccionary(), matriz)
+                if player.getFallPoint()[1] > params.HEIGHT:
+                    print("se muricio")
+                print("PUM!!!")
             elif pygame.mouse.get_pressed()[0]:
                 if pygame.mouse.get_pos() in player.hitBox:
                     print("xd")

@@ -83,6 +83,7 @@ class gameLogic:
         
         
 def tstgm():#Logica de mainScreen()
+    print("hola")
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     playerWon = None
