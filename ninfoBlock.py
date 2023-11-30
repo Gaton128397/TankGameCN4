@@ -101,50 +101,51 @@ class infoBlock:
     def borrarCantidadBala(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
 
-pygame.init()
-window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
-bg = pygame.Surface((params.WIDTH, params.HEIGHT))
-drawFunctions.backgroundDraw(bg)
-info = infoBlock(0.5)
-info.actualizarAngulo('180')
-info.actualizarDistancia("1920")
-info.actualizarEscudo(True)
-info.actualizarDmg(True)
-info.actualizarBotellas("100")
-info.actualizarTipoBala("105")
-info.actualizarCantidadBalas("10")
-#info.actualizarAngulo('50')
-contador = 0
-contador_x = 0
-contador_y = 0
-velocidad = 5
-direccion_x = 1
-direccion_y = 1
-conds = [True,False]
-ejecutando = True
-while ejecutando:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            ejecutando = False
-        if pygame.mouse.get_pressed()[2]:
-            print("xd")
-        elif pygame.mouse.get_pressed()[0]:
-            print("dx")
-    contador_x += velocidad * direccion_x
-    contador_y += velocidad * direccion_y
-    if contador_x <= 0 or contador_x >= params.WIDTH - int(info.bloque.get_width()*0.9):
-        direccion_x *= -1
-    if contador_y <= 0 or contador_y >= params.HEIGHT - int(info.bloque.get_height()*0.9):
-        direccion_y *= -1
-    #info.actualizarDmg(conds[random.randint(0,1)])
-    #info.actualizarEscudo(conds[random.randint(0,1)])
-    info.actualizarAngulo(random.randint(0,180))
-    info.actualizarDistancia(random.randint(0,5000))
-    info.actualizarBotellas(random.randint(0,100))
-    info.actualizarTipoBala(random.randint(0,200))
-    info.actualizarCantidadBalas(random.randint(0,50))
-    window.blit(bg,(0,0))
-    window.blit(info.bloque, (0+contador_x, 0+contador_y))
-    pygame.display.flip()
-
-pygame.quit()
+def testInfoBlock():
+    pygame.init()
+    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
+    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
+    drawFunctions.backgroundDraw(bg)
+    info = infoBlock(0.5)
+    info.actualizarAngulo('180')
+    info.actualizarDistancia("1920")
+    info.actualizarEscudo(True)
+    info.actualizarDmg(True)
+    info.actualizarBotellas("100")
+    info.actualizarTipoBala("105")
+    info.actualizarCantidadBalas("10")
+    #info.actualizarAngulo('50')
+    contador = 0
+    contador_x = 0
+    contador_y = 0
+    velocidad = 5
+    direccion_x = 1
+    direccion_y = 1
+    conds = [True,False]
+    ejecutando = True
+    while ejecutando:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                ejecutando = False
+            if pygame.mouse.get_pressed()[2]:
+                print("xd")
+            elif pygame.mouse.get_pressed()[0]:
+                print("dx")
+        contador_x += velocidad * direccion_x
+        contador_y += velocidad * direccion_y
+        if contador_x <= 0 or contador_x >= params.WIDTH - int(info.bloque.get_width()*0.9):
+            direccion_x *= -1
+        if contador_y <= 0 or contador_y >= params.HEIGHT - int(info.bloque.get_height()*0.9):
+            direccion_y *= -1
+        #info.actualizarDmg(conds[random.randint(0,1)])
+        #info.actualizarEscudo(conds[random.randint(0,1)])
+        info.actualizarAngulo(random.randint(0,180))
+        info.actualizarDistancia(random.randint(0,5000))
+        info.actualizarBotellas(random.randint(0,100))
+        info.actualizarTipoBala(random.randint(0,200))
+        info.actualizarCantidadBalas(random.randint(0,50))
+        window.blit(bg,(0,0))
+        window.blit(info.bloque, (0+contador_x, 0+contador_y))
+        pygame.display.flip()
+    pygame.quit()
+#testInfoBlock()
