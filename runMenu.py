@@ -12,9 +12,9 @@ class Menu:
 
         self.clock = pygame.time.Clock()
 
-        self.play_button = button.Button((self.x*2, self.height // 2 - self.x*0.45, self.x*4, self.x*0.75 + 20), (0, 255, 0), 'Play', False)
-        self.settings_button = button.Button((self.x, self.height - self.x*1.25, self.x*4 + 10, self.x*0.75), (255, 0, 0), 'Settings', False)
-        self.controls_button = button.Button((self.x*5 + 75, self.x*6 + 175, self.x*3, self.x*0.75), (0, 0, 255), 'Controls', False)
+        self.play_button = button.Button((self.x*2, self.height // 2 - self.x*0.45, self.x*4, self.x*0.75 + params.size*0.2), (0, 255, 0), 'Play', False)
+        self.settings_button = button.Button((self.x, self.height - self.x*1.25, self.x*4 + params.size*0.1, self.x*0.75), (255, 0, 0), 'Settings', False)
+        self.controls_button = button.Button((self.x*5 + params.size*0.75, self.x*6 + params.size*1.75, self.x*3, self.x*0.75), (0, 0, 255), 'Controls', False)
         self.exit_button = button.Button((self.width - self.x*3.5, self.height - self.x*1.25, self.x*3, self.x*0.75), (255, 255, 0), 'Exit', False)
 
         self.buttons = [self.play_button, self.settings_button, self.controls_button, self.exit_button]

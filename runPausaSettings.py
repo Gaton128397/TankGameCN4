@@ -13,12 +13,12 @@ class settings:
 
         self.clock = pygame.time.Clock()
 
-        self.home_button = button.Button((self.x*0.5 - 10, self.x*0.5 - 20, 100, 100), (255, 0, 0), 'Home', False)
-        self.confirmar_button = button.Button((self.width - self.x*1.5 - 250, self.x*0.5 - 25, 300, 100), (255, 0, 0), 'Settings', False)
-        # self.mas_player_button = button.Button((self.width // 2 + 510, self.height // 2 - 120, 100, 75), (0, 255, 0), 'MasPlayer', False)
-        # self.menos_player_button = button.Button((self.width // 2 + 210, self.height // 2 - 120, 100, 75), (0, 255, 0), 'MenosPlayer', False)
-        # self.mas_ronda_button = button.Button((self.width // 2 + 510, self.height // 2 + 275, 100, 75), (0, 255, 0), 'MasRonda', False)
-        # self.menos_ronda_button = button.Button((self.width // 2 + 210, self.height // 2 + 275, 100, 75), (0, 255, 0), 'MenosRonda', False)
+        self.home_button = button.Button((self.x*0.5 - params.size*0.1, self.x*0.5 - params.size*0.2, 100, 100), (255, 0, 0), 'Home', False)
+        self.confirmar_button = button.Button((self.width - self.x*1.5 - params.size*2.5, self.x*0.5 - params.size*0.25, 300, 100), (255, 0, 0), 'Settings', False)
+        # self.mas_player_button = button.Button((self.width // 2 + params.size*5.1, self.height // 2 - params.size*1.2, 100, 75), (0, 255, 0), 'MasPlayer', False)
+        # self.menos_player_button = button.Button((self.width // 2 + params.size*2.1, self.height // 2 - params.size*1.2, 100, 75), (0, 255, 0), 'MenosPlayer', False)
+        # self.mas_ronda_button = button.Button((self.width // 2 + params.size*5.1, self.height // 2 + params.size*2.75, 100, 75), (0, 255, 0), 'MasRonda', False)
+        # self.menos_ronda_button = button.Button((self.width // 2 + params.size*2.1, self.height // 2 + params.size*2.75, 100, 75), (0, 255, 0), 'MenosRonda', False)
 
 
         self.buttons = [self.home_button, self.confirmar_button, self.mas_player_button, self.menos_player_button, self.mas_ronda_button, self.menos_ronda_button]
