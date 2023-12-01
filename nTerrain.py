@@ -43,15 +43,39 @@ class TerrenoVariado:
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
-    def updateImpact(self,pos,radius):
-        # Dibuja el círculo en la superficie
+    def updateImpact(self,pos,radius,lista):
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
-        # Actualiza la hitbox
+        tanquesDañadosIzquierda = {}
+        tanquesDañadosDerecha= {}
+        puntosImpactoIzquierda = {}
+        puntosImpactoDerecha = {}
         for i in range(pos[0] - radius, pos[0] + radius):
             for j in range(pos[1] - radius, pos[1] + radius):
                 if (i - pos[0]) ** 2 + (j - pos[1]) ** 2 <= radius ** 2:
                     if(((i, j)) in self.hitPoints):
                         del self.hitPoints[(i, j)]
+                    for z in range(len(lista)):
+                        if i < pos[0]:
+                            if (i,j) in lista[z].hitBox:
+                                tanquesDañadosIzquierda[z] = True
+                                puntosImpactoIzquierda[z] = (i, j)
+                        if i > pos[0]:
+                            if (i,j) in lista[z].hitBox:
+                                if z not in tanquesDañadosIzquierda:
+                                    tanquesDañadosDerecha[z] = True
+                                    if z not in puntosImpactoDerecha:
+                                        puntosImpactoDerecha[z] = (i, j) 
+                    #if(((i, j)) in self.hitPoints):
+                    #    del self.hitPoints[(i, j)]
+       
+        # Imprime los puntos de impacto
+        print("Puntos de impacto en la izquierda:")
+        for z, punto in puntosImpactoIzquierda.items():
+            print(f"Tanque {z}: {punto}")
+
+        print("Puntos de impacto en la derecha:")
+        for z, punto in puntosImpactoDerecha.items():
+            print(f"Tanque {z}: {punto}")
         
     #funcion para interpolar los puntos
     def interpolate(self, x1, y1, x2, y2, x):

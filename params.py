@@ -1,7 +1,7 @@
 WIDTH = 1300
 HEIGHT = 700
 gravityConstant = 9.8
-playersNumber = 2
+playersNumber = 6
 BackGroundIMG = "imgs/Background.jpg"
 backgroundShopIMG = "imgs/backgroundShop.jpg"
 shopBannerIMG = "imgs/shopBanner.png"
