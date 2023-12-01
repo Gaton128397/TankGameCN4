@@ -187,24 +187,9 @@ def game():
 
                 #inicia el juego
                 tiempo_actual = pygame.time.get_ticks() / 1000.0
-                chooseMenu1.drawChooseMenu(surfaceJuego,0,ammoPlayer1)
-                #vida
-                layer1[1][0].drawDibujarVida(surfaceJuego,(0,0),25,WIDTH*0.5-40)
-                layer1[1][1].drawDibujarVida(surfaceJuego,(WIDTH*0.5+40,0),25,WIDTH*0.5)
-                #correr temporizador
-                if seconds < 10:
-                    timerText = font.render(f"{minutes}:0{seconds}", True, "black")
-                    if minutes <10:
-                        timerText = font.render(f"0{minutes}:0{seconds}", True, "black")
-                else:
-                    timerText = font.render(f"{minutes}:{seconds}", True, "black")
-                    if minutes <10:
-                        timerText = font.render(f"0{minutes}:{seconds}", True, "black")
-                surfaceJuego.blit(surfaceTimer, (WIDTH//2-40, 0))
-                surfaceJuego.blit(timerText, (WIDTH//2-38, 0))
-                pygame.display.update()
-                #actualizar barra de vida
+                #chooseMenu1.drawChooseMenu(surfaceJuego,0)
                 
+                #pygame.display.update()
                 if turno == 1:
 
                     #mover el cañon 1
@@ -230,10 +215,7 @@ def game():
                     #escrbir informacion jugador 2
                     infoPlayer1.drawInfoBlock(surfaceJuego,potencia,angleBullet1,lastPower1,lastAngulo1,range1,alturamaxima1)
                     infoPlayer2.drawInfoBlock(surfaceJuego,potencia,angleBullet2,lastPower2,lastAngulo2,range2,alturamaxima2)
-                    chooseMenu2.drawChooseMenu(surfaceJuego,chooseState[1],ammoPlayer2)
-                    
-                
-                    
+                    chooseMenu2.drawChooseMenu(surfaceJuego,chooseState[1])     
             for event in pygame.event.get():
                 
                 if event.type == pygame.USEREVENT:
