@@ -1,15 +1,15 @@
 import pygame
 import sys
-import button
+import button,params
 
 class Ganador1:
     def __init__(self,screen):
         self.screen = screen
         self.x = 100
-        self.width, self.height = 16*self.x, 9*self.x
+        self.width, self.height = params.WIDTH, params.HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height))
 
-        self.ganador1_background = pygame.image.load('imgs/imgs/ganador1.png')  
+        self.ganador1_background = pygame.image.load('imgs/startEnd/ganador1.png')  
         self.ganador1_background = pygame.transform.scale(self.ganador1_background, (self.width, self.height))
         
 

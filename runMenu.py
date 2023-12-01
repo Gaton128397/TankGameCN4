@@ -3,10 +3,10 @@ import pygame,sys,button,params
 class Menu:
     def __init__(self,screen):
         self.x = params.size
-        self.width, self.height = 16*self.x, 9*self.x
+        self.width, self.height = params.WIDTH, params.HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height))
 
-        self.menu_background = pygame.image.load('imgs/Menu.png')  
+        self.menu_background = pygame.image.load('imgs/startEnd/Menu.png')  
         self.menu_background = pygame.transform.scale(self.menu_background, (self.width, self.height))
         
 
@@ -36,8 +36,8 @@ class Menu:
                         elif btn.item == 'Settings':
                             return 4
                         elif btn.item == 'Controls':
-                            print("nothing yet")
-                            # return 3
+                            # print("nothing yet")
+                            return 3
                         elif btn.item == 'Exit':
                             pygame.quit()
                             running =  False

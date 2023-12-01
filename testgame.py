@@ -1,4 +1,4 @@
-import pygame,random,sys,player,runShop,params,runMenu,runSettings,runGanador1,runGanador2,runPausa,runPlaymode
+import pygame,random,sys,player,runShop,params,runMenu,runSettings,runGanador1,runGanador2,runPausa,runPlaymode,runControles,runDificultad,runPausaSettings
 
 def tstgm():#Logica de mainScreen()
     jugadorTest = player.Player()
@@ -17,6 +17,7 @@ def tstgm():#Logica de mainScreen()
     ganador1 = runGanador1.Ganador1(window)#crea el ganador1
     ganador2 = runGanador2.Ganador2(window)#crea el ganador2
     pausa = runPausa.Pausa(window)#crea la pausa
+    controles = runControles.Controles(window)#crea los controles
     screen = 0
     run = True
     while run:
@@ -30,8 +31,12 @@ def tstgm():#Logica de mainScreen()
             print('shop')
             screen = shop.openShop(listaJugadores)
         if screen == 3:
-            print('pausa')
-            screen = pausa.runPausa()
+            print('controles')
+            screen = controles.runControles()
+        if screen == 3.5:
+            print('pausa Settings')
+            screen = pausa.runPausaSettings()
+
         if screen == 4:
             print('settings')
             screen = settings.runSettings()
@@ -43,4 +48,11 @@ def tstgm():#Logica de mainScreen()
             screen = ganador2.runGanador2()
         if screen == 7:
             print('running game')
+        if screen == 8:
+            screen = pausa.runPausa()
+        if screen == 10:
+            img = params.bgMapas
+            window.blit(img,(0,0))
+            pygame.display.flip()
+            
 tstgm()

@@ -1,13 +1,13 @@
 import pygame
 import sys
-import button
+import button,params
 class Pausa:
     def __init__(self,screen):
         self.x = 100
-        self.width, self.height = 16*self.x, 9*self.x
+        self.width, self.height = params.WIDTH, params.HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height))
 
-        self.pausa_background = pygame.image.load('imgs/pausa.png')  
+        self.pausa_background = pygame.image.load('imgs/pausa/pausa.png')  
         self.pausa_background = pygame.transform.scale(self.pausa_background, (self.width, self.height))
         
 

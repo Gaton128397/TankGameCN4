@@ -1,44 +1,41 @@
 import pygame
 import sys
-import button
+import button,params
 
-def run_settings():
-    pygame.init()
+class Controles():
+    def __init__(self,screen):
+        self.x = 100
+        self.width, self.height = params.WIDTH, params.HEIGHT
+        self.screen = pygame.display.set_mode((self.width, self.height))
 
-    x = 100
-    width, height = 16*x, 9*x
-    screen = pygame.display.set_mode((width, height))
+        self.settings_background = params.controlesImg 
+        
 
-    settings_background = pygame.image.load('imgs/controles.png')  
-    settings_background = pygame.transform.scale(settings_background, (width, height))
-    screen.blit(settings_background, (0, 0))
+        self.clock = pygame.time.Clock()
 
-    clock = pygame.time.Clock()
+        self.home_button = button.Button((self.x*0.5 - params.size*0.1, self.x*0.5 - params.size*0.2, params.size, params.size), (255, 0, 0), 'Home', False)
 
-    home_button = button.Button((x*0.5 - 10, x*0.5 - 20, 100, 100), (255, 0, 0), 'Home', False)
+        self.buttons = [self.home_button]
+    def runControles(self):
+        pygame.init()
 
-    buttons = [home_button]
+        
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        for btn in buttons:
-            if btn.check_click(event):
-                if btn.item == 'Home':
-                    print('boton home')
+        while True:
+            self.screen.blit(self.settings_background, (0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     pygame.quit()
-                    sys.exit()                   
+                    sys.exit()
 
-        # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2) 
+                for btn in self.buttons:
+                    btn.draw(self.screen)
+                    if btn.check_click(event):
+                        if btn.item == 'Home':
+                            return 0              
+                pygame.display.flip()
+                self.clock.tick(60)
 
-        pygame.display.flip()
-        clock.tick(60)
-
-if __name__ == "__main__":
-    run_settings()
+# # if __name__ == "__main__":
+# controles = Controles()
+# controles.runControles()

@@ -10,10 +10,10 @@ class Shop:
     def __init__(self,window):
 
         '''SCREEN'''
-        self.width, self.height = 16*params.size, 9*params.size
-        self.tiendaIni = pygame.image.load('imgs\shopIni.png')
-        self.tiendaMid = pygame.image.load('imgs\shopMid.png')
-        self.tiendaEnd = pygame.image.load('imgs\shopFin.png')
+        self.width, self.height = params.WIDTH, params.HEIGHT
+        self.tiendaIni = pygame.image.load('imgs\shop/shopIni.png')
+        self.tiendaMid = pygame.image.load('imgs\shop/shopMid.png')
+        self.tiendaEnd = pygame.image.load('imgs\shop/shopFin.png')
         self.tiendaIni = pygame.transform.scale(self.tiendaIni,(self.width,self.height))
         self.tiendaMid = pygame.transform.scale(self.tiendaMid,(self.width,self.height))
         self.tiendaEnd = pygame.transform.scale(self.tiendaEnd,(self.width,self.height))
@@ -197,7 +197,7 @@ class Shop:
                         player -=1
                         self.actualItem = None
                     elif self.finishButton.check_click(event):
-                        running = False #sale de la tienda
+                        return 10 #sale de la tienda
                 else:
                     self.window.blit(self.tiendaMid,(0,0))
                     if self.nextButton.check_click(event):
