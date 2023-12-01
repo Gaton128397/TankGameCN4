@@ -1,4 +1,4 @@
-import pygame, sys, math, random, params, drawFunctions, nTerrain
+import pygame, sys, math, random, params, drawFunctions, nTerrain, threading
 from functions import *
 
 class Tank:
@@ -86,31 +86,63 @@ class Tank:
                 self.hitBox[(i,j)] = True
         #pygame.draw.rect(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25),self.getPos()[1]+int(self.surfaceTank.get_height()*0.54),self.width*1.36,self.height*1.24), 1)
 
-    def fallTank(self, terrainPoints, matriz):
+    def fallTank(self,listaJugadores,parach, terrainPoints, surface):
+        clock = pygame.time.Clock()
         if not (self.getFallPoint() in terrainPoints):
-            falling = True
-            while falling:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
+            if not parach:
+                falling = True
+                while falling:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            falling = False
+                            pygame.quit()
+                    self.ypos += params.gravityConstant
+                    self.window.blit(surface,(0,0))
+                    for i in listaJugadores:
+                        self.window.blit(i.surfaceTank,i.getPos())
+                    self.window.blit(self.surfaceTank,self.getPos())
+                    clock.tick(60)
+                    pygame.display.flip()
+                    if self.getFallPoint() in terrainPoints:
+                        self.ypos = int(self.ypos)
                         falling = False
-                        pygame.quit()
-                self.ypos += 0.5
-                self.window.blit(matriz[0],(0,0))
-                self.window.blit(matriz[1],(0,0))
-                self.window.blit(self.surfaceTank,self.getPos())
-                pygame.display.flip()
-                if self.getFallPoint() in terrainPoints:
-                    self.ypos = int(self.ypos)
-                    falling = False
-                    self.hitBox = {}
-                    print(self.ypos)
-                    self.getHitBox()
-                if self.ypos > params.HEIGHT:
-                    falling = False
-                    self.ypos = params.HEIGHT
-                    self.hitBox = {}
-                    self.getHitBox()
-                    print(self.ypos)
+                        self.hitBox = {}
+                        print(self.ypos)
+                        self.getHitBox()
+                    if self.ypos > params.HEIGHT:
+                        print("se muricio")
+                        falling = False
+                        self.ypos = params.HEIGHT
+                        self.hitBox = {}
+                        self.getHitBox()
+                        print(self.ypos)
+            else:
+                falling = True
+                copy = self.surfaceTank.copy()
+                drawFunctions.cargarImagen(self.surfaceTank,"props/parachute/parach1.png",0.2,0.5,(0.32,0.03))
+                g = params.gravityConstant//3
+                while falling:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            falling = False
+                            pygame.quit()
+                    self.ypos += g
+                    self.window.blit(surface,(0,0))
+                    for i in listaJugadores:
+                        self.window.blit(i.surfaceTank,i.getPos())
+                    self.window.blit(self.surfaceTank,self.getPos())
+                    clock.tick(60)
+                    pygame.display.flip()
+                    if self.getFallPoint() in terrainPoints:
+                        self.surfaceTank = copy
+                        #self.surfaceTank.blit(self.surfaceTank,(0,0))
+                        self.ypos = int(self.ypos)
+                        falling = False
+                        self.hitBox = {}
+                        print(self.ypos)
+                        self.getHitBox()
+                
+                
                     
         
     def setPos(self,posicion):
@@ -119,9 +151,32 @@ class Tank:
     
     def printTankPost(self):
         print((self.x+self.xpos,self.y+self.ypos))
+        
+def player_fall(cond,listaJugadores,player,terrain,surface):
+    player.fallTank(listaJugadores,cond,terrain.getDiccionary(), surface)
     #funcion para mover el canon del tanque    
+    
+def playerSpawn(listaJugadores,terrain,surface):
+    threadList = []
+    for i in range(len(listaJugadores)):
+        threadList.append(threading.Thread(target=player_fall, args=(True,listaJugadores,listaJugadores[i],terrain,surface)))
+        threadList[i].start()
+    for i in range(len(listaJugadores)):
+        threadList[i].join()
+        
+def playerFall(listaJugadores,terrain,surface):
+    threadList = []
+    for i in range(len(listaJugadores)):
+        threadList.append(threading.Thread(target=player_fall, args=(False,listaJugadores,listaJugadores[i],terrain,surface)))
+        threadList[i].start()
+    for i in range(len(listaJugadores)):
+        threadList[i].join()
 
-    # funcion con hitbox del tanque              
+def returnSurface(matriz):
+    surface = pygame.Surface((params.WIDTH, params.HEIGHT))
+    surface.blit(matriz[0],(0,0))
+    surface.blit(matriz[1],(0,0))
+    return surface
 
 def testPlayer():
     pygame.init()
@@ -129,35 +184,46 @@ def testPlayer():
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
     player = Tank("blue",1, terrain.getDiccionary, window)
+    player2 = Tank("red",0, terrain.getDiccionary, window)
+    player3 = Tank((0,0,0),0, terrain.getDiccionary, window)
+    player4 = Tank("green",0, terrain.getDiccionary, window)
+    listaJugadores = [player, player2,player3,player4]
     clock = pygame.time.Clock()
     #clock.tick(60)
     drawFunctions.backgroundDraw(bg)
-    player.setPos((200,int(10)))
+    player.setPos((200,int(-50)))
+    player2.setPos((500,int(-50)))
+    player3.setPos((800,int(-50)))
+    player4.setPos((1100,int(-50)))
     player.getHitBox()
-    matriz = [bg, terrain.surfTerrain]
-    contador = 0
+    surperficeJuego = [bg, terrain.surfTerrain]
     ejecutando = True
     while ejecutando:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 ejecutando = False
-            player.fallTank(terrain.getDiccionary(), matriz)
+            playerSpawn(listaJugadores,terrain,returnSurface(surperficeJuego))
             if pygame.mouse.get_pressed()[2]:
                 terrain.updateImpact(pygame.mouse.get_pos(),100)
-                player.fallTank(terrain.getDiccionary(), matriz)
-                if player.getFallPoint()[1] > params.HEIGHT:
-                    print("se muricio")
+                playerFall(listaJugadores,terrain,returnSurface(surperficeJuego))
                 print("PUM!!!")
             elif pygame.mouse.get_pressed()[0]:
-                if pygame.mouse.get_pos() in player.hitBox:
-                    print("xd")
-                else:
-                    print("no xd")
+                print("------------------------------------------------------------")
+                for i in listaJugadores:  
+                    
+                    if pygame.mouse.get_pos() in i.hitBox:
+                        print("xd")
+                    else:
+                        print("no xd")
+                print("------------------------------------------------------------")
         #contador += 0.1
         window.blit(bg,(0,0))
         
         window.blit(terrain.surfTerrain,(0,0))
         window.blit(player.surfaceTank,player.getPos())
+        window.blit(player2.surfaceTank,player2.getPos())
+        window.blit(player3.surfaceTank,player3.getPos())
+        window.blit(player4.surfaceTank,player4.getPos())
         clock.tick(60)
         pygame.display.flip()
 testPlayer()

@@ -106,7 +106,7 @@ def testInfoBlock():
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
     drawFunctions.backgroundDraw(bg)
-    info = infoBlock(0.5)
+    info = infoBlock(0.3)
     info.actualizarAngulo('180')
     info.actualizarDistancia("1920")
     info.actualizarEscudo(True)
@@ -137,15 +137,15 @@ def testInfoBlock():
             direccion_x *= -1
         if contador_y <= 0 or contador_y >= params.HEIGHT - int(info.bloque.get_height()*0.9):
             direccion_y *= -1
-        #info.actualizarDmg(conds[random.randint(0,1)])
-        #info.actualizarEscudo(conds[random.randint(0,1)])
+        info.actualizarDmg(conds[random.randint(0,1)])
+        info.actualizarEscudo(conds[random.randint(0,1)])
         info.actualizarAngulo(random.randint(0,180))
         info.actualizarDistancia(random.randint(0,5000))
         info.actualizarBotellas(random.randint(0,100))
         info.actualizarTipoBala(random.randint(0,200))
         info.actualizarCantidadBalas(random.randint(0,50))
         window.blit(bg,(0,0))
-        window.blit(info.bloque, (0+contador_x, 0+contador_y))
+        window.blit(info.bloque, (700, 0))
         pygame.display.flip()
     pygame.quit()
-#testInfoBlock()
+testInfoBlock()
