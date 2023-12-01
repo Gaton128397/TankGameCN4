@@ -1,12 +1,12 @@
 import pygame
 import sys
-import button
+import button,params
 
 def run_dificultad():
     pygame.init()
 
     x = 100
-    width, height = 16*x, 9*x
+    width, height = params.WIDTH, params.HEIGHT
     screen = pygame.display.set_mode((width, height))
 
     dificultad_background = pygame.image.load('imgs/dificultad.png')  
@@ -49,9 +49,9 @@ def run_dificultad():
                     print('Difícil')
 
         # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2) 
+        # square_color = (100, 100, 100)  
+        # for btn in buttons:
+        #     pygame.draw.rect(screen, square_color, btn.rect, 2) 
 
         pygame.display.flip()
         clock.tick(60)

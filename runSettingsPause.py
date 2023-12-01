@@ -1,12 +1,12 @@
 import pygame
 import sys
-import button
+import button,params
 
 def run_settings():
     pygame.init()
 
     x = 100
-    width, height = 16*x, 9*x
+    width, height = params.WIDTH, params.HEIGHT
     screen = pygame.display.set_mode((width, height))
 
     settings_background = pygame.image.load('imgs/settingspause.png')  

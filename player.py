@@ -8,5 +8,10 @@ class Player:
         self.smallStone = 0
         self.mediumStone = 0
         self.inventory=[self.shield,self.dmg,self.health,self.bigStone,self.mediumStone,self.smallStone]
+
+        self.points = 0
+        self.kills = 0
+        self.deaths = 0
+
     def asignTank(self,tank):
         tanque = tank
