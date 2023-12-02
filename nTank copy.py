@@ -1,4 +1,4 @@
-import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, barravida
+import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, nBarraVida
 from functions import *
 
 class Tank:
@@ -10,7 +10,7 @@ class Tank:
 
         #vida del tanque
         self.health = 100
-            
+
         #valores de la hitbox. Cambiar esto por llamar a la funcion 
         #self.y = self.y-20
         #self.x = self.x - 70
@@ -49,10 +49,11 @@ class Tank:
         self.y = int(self.surfaceTank.get_height()*0.7)
         self.width = int(self.surfaceTank.get_width()*0.22)
         self.height = int(self.surfaceTank.get_height()*0.14)
+
         
         self.surfaceTank.fill((255,0,255))
-        self.surfaceTank.set_alpha()
-        self.surfaceTank.set_colorkey((255,0,255))
+        #self.surfaceTank.set_alpha()
+        #self.surfaceTank.set_colorkey((255,0,255))
         self.longitud = int(self.surfaceTank.get_width()*0.12) #largo del cañon
         self.xCanon1 =self.x #coordenadas del cañon
         self.yCanon1  = (self.y - self.height) - self.height/4
@@ -61,6 +62,7 @@ class Tank:
         self.draw_tank(True)
         self.getFallPoint()
         self.getHitBox()
+        self.getLifeBar()
         
     def draw_tank(self,staticCan):
         pygame.draw.polygon(self.surfaceTank, self.color, ((self.x, self.y), (self.x - self.width/2, self.y), (self.x - self.width/2, self.y - self.height),(self.x + self.width/2, self.y - self.height),(self.x + self.width/2, self.y),(self.x, self.y))) #rectangulo inicial
@@ -142,7 +144,13 @@ class Tank:
                         self.hitBox = {}
                         print(self.ypos)
                         self.getHitBox()
-                
+    
+    def getLifeBar(self):
+        lifeBarPos = (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25), self.getPos()[1]+int(self.surfaceTank.get_height()*0.72))
+        lifeHight = self.height*0.7
+        lifeWidth = self.width*1.4
+        LifeBar = nBarraVida.BarraVida(0.2)
+        pygame.draw.rect(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25),self.getPos()[1]+int(self.surfaceTank.get_height()*0.72),self.width*1.4,self.height*0.7), 1)
                 
                     
         
@@ -154,8 +162,10 @@ class Tank:
         print((self.x+self.xpos,self.y+self.ypos))
     
     def getLifeBar(self):
-        barravida.BarraVida(self.surfaceTank, (255,0,0), (self.xpos,self.ypos), 100, 10,1)
-        barravida.drawDibujarVida(self.surfaceTank)
+        lifeBarPos = (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25), self.getPos()[1]+int(self.surfaceTank.get_height()*0.72))
+        lifeHight = self.height*0.7
+        lifeWidth = self.width*1.4
+        pygame.draw.rect(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25),self.getPos()[1]+int(self.surfaceTank.get_height()*0.72),self.width*1.4,self.height*0.7), 1)
         
 def player_fall(cond,listaJugadores,player,terrain,surface):
     player.fallTank(listaJugadores,cond,terrain.getDiccionary(), surface)
@@ -190,17 +200,11 @@ def testPlayer():
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
     player = Tank("blue",1, terrain.getDiccionary, window)
-    player2 = Tank("red",0, terrain.getDiccionary, window)
-    player3 = Tank((0,0,0),0, terrain.getDiccionary, window)
-    player4 = Tank("green",0, terrain.getDiccionary, window)
-    listaJugadores = [player, player2,player3,player4]
     clock = pygame.time.Clock()
     #clock.tick(60)
     drawFunctions.backgroundDraw(bg)
-    player.setPos((200,int(-50)))
-    player2.setPos((500,int(-50)))
-    player3.setPos((800,int(-50)))
-    player4.setPos((1100,int(-50)))
+    player.setPos((500,int(100)))
+
     player.getHitBox()
     surperficeJuego = [bg, terrain.surfTerrain]
     ejecutando = True
@@ -208,28 +212,18 @@ def testPlayer():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 ejecutando = False
-            playerSpawn(listaJugadores,terrain,returnSurface(surperficeJuego))
+
             if pygame.mouse.get_pressed()[2]:
-                terrain.updateImpact(pygame.mouse.get_pos(),100)
-                playerFall(listaJugadores,terrain,returnSurface(surperficeJuego))
-                print("PUM!!!")
+                print("click derecho")
+
             elif pygame.mouse.get_pressed()[0]:
-                print("------------------------------------------------------------")
-                for i in listaJugadores:  
-                    
-                    if pygame.mouse.get_pos() in i.hitBox:
-                        print("xd")
-                    else:
-                        print("no xd")
-                print("------------------------------------------------------------")
+                print("click izquierdo")
+
         #contador += 0.1
         window.blit(bg,(0,0))
         
         window.blit(terrain.surfTerrain,(0,0))
         window.blit(player.surfaceTank,player.getPos())
-        window.blit(player2.surfaceTank,player2.getPos())
-        window.blit(player3.surfaceTank,player3.getPos())
-        window.blit(player4.surfaceTank,player4.getPos())
         clock.tick(60)
         pygame.display.flip()
 testPlayer()
