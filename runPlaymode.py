@@ -37,12 +37,7 @@ def run_play_mode():
                 elif btn.item == 'Confirmar':
                     print('Confirmar')
                     pygame.quit()
-                    sys.exit()
-
-        # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2)  
+                    sys.exit() 
 
         pygame.display.flip()
         clock.tick(60)

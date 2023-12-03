@@ -49,11 +49,6 @@ def run_maps():
                     else:
                         print(f'Seleccionado: Mapa {btn.item}')
 
-        # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2) 
-
         pygame.display.flip()
         clock.tick(60)
 
