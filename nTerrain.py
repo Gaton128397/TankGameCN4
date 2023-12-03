@@ -1,4 +1,4 @@
-import pygame,math,random,drawFunctions, params
+import pygame,math,random,drawFunctions, params, playerPhysics
 import numpy as np
 
 class TerrenoVariado:
@@ -76,8 +76,7 @@ class TerrenoVariado:
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():
             print(f"Tanque {z}: {punto}")
-        
-    #funcion para interpolar los puntos
+    
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     
@@ -96,9 +95,7 @@ class TerrenoVariado:
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))
         
-        #pygame.display.update()
-    # Devuelve los puntos del terreno
-    
+
     def getDiccionary(self):
         return self.hitPoints
     
