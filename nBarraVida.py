@@ -91,4 +91,4 @@ def testLifeBar():
             window.blit(barra.lifeSurface, (0, 0))
         pygame.display.flip()
     pygame.quit()
-testLifeBar()
+#testLifeBar()
