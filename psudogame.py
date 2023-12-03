@@ -8,6 +8,7 @@ listaJugadores = []
 listaJugadores.append(nTank.Tank(300,colores[0],window))
 listaJugadores.append(nTank.Tank(500,colores[1],window))
 listaJugadores.append(nTank.Tank(600,colores[2],window))
+listaJugadores.append(nTank.Tank(700,colores[3],window))
 clock = pygame.time.Clock()
 #clock.tick(60)
 drawFunctions.backgroundDraw(bg)
@@ -43,6 +44,7 @@ while ejecutando:
             print("------------------------------------------------------------")
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
+                del listaJugadores[turno]
                 print("disparando")
                 turno = random.randint(0, len(listaJugadores)-1)
     for key in listaJugadores[turno].listaEventos[0]:
@@ -53,9 +55,8 @@ while ejecutando:
     #contador += 0.1
     window.blit(surperficeJuego[0],(0,0))
     window.blit(surperficeJuego[1],(0,0))
-    window.blit(listaJugadores[0].surfaceTank,listaJugadores[0].getPos())
-    window.blit(listaJugadores[1].surfaceTank,listaJugadores[1].getPos())
-    window.blit(listaJugadores[2].surfaceTank,listaJugadores[2].getPos())
+    for i in range(len(listaJugadores)):
+        window.blit(listaJugadores[i].surfaceTank,listaJugadores[i].getPos())
     window.blit(info.bloque, (870, 0))
     clock.tick(60)
     pygame.display.flip()
