@@ -15,8 +15,8 @@ def run_settings():
 
     clock = pygame.time.Clock()
 
-    home_button = button.Button((x*0.5 - 10, x*0.5 - params.size*0.2, params.size, params.size), (255, 0, 0), 'Home', False)
-    confirmar_button = button.Button((width - x*1.5 - params.size*2.5, x*0.5 + 650, 300, 100), (255, 0, 0), 'Settings', False)
+    home_button = button.Button((x*0.5 - params.size*0.1, x*0.5 - params.size*0.2, 100, 100), (255, 0, 0), 'Home', False)
+    confirmar_button = button.Button((width - x*1.5 - params.size*2.5, x*0.5 + params.size*6.5, 300, 100), (255, 0, 0), 'Settings', False)
 
     buttons = [home_button, confirmar_button]
 
@@ -36,12 +36,7 @@ def run_settings():
                     print('confirmar')
                     pygame.quit()
                     sys.exit()                    
-
-        # Dibuja un cuadrado alrededor de cada botón
-        square_color = (100, 100, 100)  
-        for btn in buttons:
-            pygame.draw.rect(screen, square_color, btn.rect, 2) 
-
+                    
         pygame.display.flip()
         clock.tick(60)
 

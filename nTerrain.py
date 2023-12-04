@@ -15,12 +15,12 @@ class TerrenoVariado:
         for i in range(self.num_points):
             x = int(i * (self.width / (self.num_points - 1)))
             y = random.randint(self.height // 5, self.height - 200)
-            if 0 <= x <= 1300:
+            if 0 <= x <= params.WIDTH:
                 self.points.append([x, y])
                 self.yPoints.append([y])
 
         # interpolar los puntos faltantes
-        for x in range(0, 1301):
+        for x in range(0, params.WIDTH+1):
             if not any(point[0] == x for point in self.points):
                 # encontrar los puntos mas cercanos
                 for i in range(len(self.points) - 1):
@@ -35,7 +35,7 @@ class TerrenoVariado:
                 self.yPoints.append([int(y)])#????????????????????????
         
         self.points.sort()
-        print(self.points[len(self.points)-1][0])
+        print(self.points[0][1])
         
         for i in range(params.WIDTH):
             #print("hola")
@@ -46,7 +46,6 @@ class TerrenoVariado:
     def updateImpact(self,pos,radius):
         # Dibuja el círculo en la superficie
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
-
         # Actualiza la hitbox
         for i in range(pos[0] - radius, pos[0] + radius):
             for j in range(pos[1] - radius, pos[1] + radius):

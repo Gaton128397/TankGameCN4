@@ -43,6 +43,9 @@ class gameLogic:
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
         self.updPlayers()
+    
+    def tankPos(self):
+        return 0
         
     def pauseScreen(self):
         print("pause state")
@@ -80,6 +83,7 @@ class gameLogic:
         
         
 def tstgm():#Logica de mainScreen()
+    print("hola")
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     playerWon = None
