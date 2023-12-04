@@ -1,6 +1,6 @@
 import pygame, random, params, nTerrain, drawFunctions, playerPhysics, nTank, ninfoBlock
 pygame.init()
-terrain = nTerrain.TerrenoVariado(params.WIDTH, params.HEIGHT)
+terrain = nTerrain.TerrenoVariado()
 window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
 bg = pygame.Surface((params.WIDTH, params.HEIGHT))
 colores = [(255,0,0),(0,255,0),(0,0,255),(255,255,0)]
@@ -44,7 +44,7 @@ while ejecutando:
             print("------------------------------------------------------------")
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                del listaJugadores[turno]
+                #del listaJugadores[turno]
                 print("disparando")
                 turno = random.randint(0, len(listaJugadores)-1)
     for key in listaJugadores[turno].listaEventos[0]:

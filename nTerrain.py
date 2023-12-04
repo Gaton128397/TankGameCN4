@@ -2,10 +2,8 @@ import pygame,math,random,drawFunctions, params, playerPhysics
 import numpy as np
 
 class TerrenoVariado:
-    def __init__(self,  width, height):
+    def __init__(self):
         self.surfTerrain = pygame.Surface((params.WIDTH,params.HEIGHT))
-        self.width = width
-        self.height = height
         self.num_points = 15
         self.points = []
         self.yPoints = []
@@ -13,8 +11,8 @@ class TerrenoVariado:
         
         
         for i in range(self.num_points):
-            x = int(i * (self.width / (self.num_points - 1)))
-            y = random.randint(self.height // 5, self.height - 200)
+            x = int(i * (params.WIDTH / (self.num_points - 1)))
+            y = random.randint(params.HEIGHT // 5, params.HEIGHT - 200)
             if 0 <= x <= params.WIDTH:
                 self.points.append([x, y])
                 self.yPoints.append([y])
@@ -82,15 +80,15 @@ class TerrenoVariado:
     
     # Genera el terreno
     def drawTerrain(self):
-        self.surfTerrain = pygame.Surface((self.width,self.height))
+        self.surfTerrain = pygame.Surface((params.WIDTH,params.HEIGHT))
         self.surfTerrain.fill((255,0,255))
         
-        x_interp = np.linspace(0, self.width, 100)
+        x_interp = np.linspace(0, params.WIDTH, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
         points_interp = [(int(x), int(y)) for x, y in zip(x_interp, y_interp)]
         #self.points = points_interp
 
-        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, self.height)] + points_interp + [(self.width, self.height)])
+        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, params.HEIGHT)] + points_interp + [(params.WIDTH, params.HEIGHT)])
         pygame.draw.lines(self.surfTerrain, (139, 69, 19), False, points_interp, 5)
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))
