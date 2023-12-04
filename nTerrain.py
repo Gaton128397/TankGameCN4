@@ -1,4 +1,4 @@
-import pygame,math,random,drawFunctions, params, playerPhysics
+import pygame,math,random,drawFunctions, params, playerPhysics, functions
 import numpy as np
 
 class TerrenoVariado:
@@ -41,7 +41,44 @@ class TerrenoVariado:
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
-    def updateImpact(self,pos,radius,lista):
+    def updateImpact(self,pos,proyectil,lista):
+        pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, proyectil.blastRadius)
+        tanquesDañadosIzquierda = {}
+        tanquesDañadosDerecha= {}
+        puntosImpactoIzquierda = {}
+        puntosImpactoDerecha = {}
+        for i in range(pos[0] - proyectil.blastRadius, pos[0] + proyectil.blastRadius):
+            for j in range(pos[1] - proyectil.blastRadius, pos[1] + proyectil.blastRadius):
+                if (i - pos[0]) ** 2 + (j - pos[1]) ** 2 <= proyectil.blastRadius ** 2:
+                    if(((i, j)) in self.hitPoints):
+                        del self.hitPoints[(i, j)]
+                    for z in range(len(lista)):
+                        if i < pos[0]:
+                            if (i,j) in lista[z].hitBox:
+                                tanquesDañadosIzquierda[z] = True
+                                puntosImpactoIzquierda[z] = (i, j)
+                        if i > pos[0]:
+                            if (i,j) in lista[z].hitBox:
+                                if z not in tanquesDañadosIzquierda:
+                                    tanquesDañadosDerecha[z] = True
+                                    if z not in puntosImpactoDerecha:
+                                        puntosImpactoDerecha[z] = (i, j) 
+                    #if(((i, j)) in self.hitPoints):
+                    #    del self.hitPoints[(i, j)]
+       
+        # Imprime los puntos de impacto
+        
+        print("Puntos de impacto en la izquierda:")
+        for z, punto in puntosImpactoIzquierda.items():
+            print(f"Tanque {z}: {punto}")
+            distancia = functions.calcular_distancia(pos, punto)
+            dano = self.calcularDMG(distancia, proyectil.DMG)
+            print(f"El tanque {z} recibe un daño de {dano}")
+        print("Puntos de impacto en la derecha:")
+        for z, punto in puntosImpactoDerecha.items():
+            print(f"Tanque {z}: {punto}")
+    
+    def testupdateImpact(self,pos,radius,lista):
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
         tanquesDañadosIzquierda = {}
         tanquesDañadosDerecha= {}
@@ -67,14 +104,22 @@ class TerrenoVariado:
                     #    del self.hitPoints[(i, j)]
        
         # Imprime los puntos de impacto
+        
         print("Puntos de impacto en la izquierda:")
         for z, punto in puntosImpactoIzquierda.items():
             print(f"Tanque {z}: {punto}")
-
+            distancia = functions.calcular_distancia(pos, punto)
+            print(distancia)
+            dano = self.calcularDMG(distancia, 50)
+            lista[z].actualizarVida(50)
+            print(f"El tanque {z} recibe un daño de {dano}")
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():
             print(f"Tanque {z}: {punto}")
+            lista[z].actualizarVida(50)
     
+    def interpolate(self, x1, y1, x2, y2, x):
+        return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     
@@ -105,7 +150,7 @@ class TerrenoVariado:
 
         return self.yPoints
     # Reinicia el terreno
-    def restart(self):
-        self.points = []  # Limpia la lista de puntos del terreno
-        self.yPoints = []  # Limpia la lista de valores de y
-        self.getTerrain()  # Genera un nuevo terreno
+    def calcularDMG(self,distancia, dano_maximo):
+    # Esta es solo una fórmula de ejemplo, puedes ajustarla según tus necesidades
+        dano = dano_maximo / (distancia + 1)
+        return dano

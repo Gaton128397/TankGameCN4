@@ -41,7 +41,6 @@ def divideScreenIn9(width,height):
     return listaTercios
 
 def collide(firstObjectPos,SecondObjectPos):
-
     firstObjectPosX = firstObjectPos[0]
     firstObjectPosY = firstObjectPos[1]
     secondObjectPosX = SecondObjectPos[0]
@@ -51,3 +50,9 @@ def collide(firstObjectPos,SecondObjectPos):
         return 1
     else:
         return 0
+    
+def calcular_distancia(punto1, punto2):
+    x1, y1 = punto1
+    x2, y2 = punto2
+    distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    return distancia

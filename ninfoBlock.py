@@ -73,13 +73,19 @@ class infoBlock:
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.5)))
     
     def actualizarCantidadBalas(self,texto):
-        texto = str(texto)
-        self.borrarCantidadBala()
-        texto = "x"+texto
-        fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
-        superficie_texto = fuente.render(texto, True, (0, 0, 0))
-        self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72)))
-        
+        if texto > 0:
+            texto = str(texto)
+            self.borrarCantidadBala(True)
+            texto = "x"+texto
+            fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
+            superficie_texto = fuente.render(texto, True, (0, 0, 0))
+            self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72)))
+        else:
+            self.borrarCantidadBala(False)
+            texto = "OUT OF AMMO"
+            fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.08))
+            superficie_texto = fuente.render(texto, True, (0, 0, 0))
+            self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.18), int(self.bloque.get_height() *0.72)))
     def borrarDmg(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.8), int(self.bloque.get_height() *0.2), int(self.bloque.get_width() *0.1), int(self.bloque.get_height() *0.2)))
         
@@ -98,8 +104,12 @@ class infoBlock:
     def borrarTipoBala(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.5), int(self.bloque.get_width() *0.22), int(self.bloque.get_height() *0.1)))
 
-    def borrarCantidadBala(self):
-        pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
+    def borrarCantidadBala(self,cond):
+        if cond:
+            pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
+        else:
+            pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.18), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.4), int(self.bloque.get_height() *0.1)))
+
 def actualizar(info,conds):
     info.actualizarDmg(conds[random.randint(0,1)])
     info.actualizarEscudo(conds[random.randint(0,1)])
@@ -107,7 +117,6 @@ def actualizar(info,conds):
     info.actualizarDistancia(random.randint(0,5000))
     info.actualizarBotellas(random.randint(0,100))
     info.actualizarTipoBala(random.randint(0,200))
-    info.actualizarCantidadBalas(random.randint(0,50))
 def testInfoBlock():
     pygame.init()
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
@@ -120,7 +129,7 @@ def testInfoBlock():
     info.actualizarDmg(True)
     info.actualizarBotellas("100")
     info.actualizarTipoBala("105")
-    info.actualizarCantidadBalas("10")
+    info.actualizarCantidadBalas(0)
     #info.actualizarAngulo('50')
     contador = 0
     contador_x = 0

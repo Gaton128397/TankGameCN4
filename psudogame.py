@@ -19,7 +19,7 @@ info.actualizarEscudo(False)
 info.actualizarDmg(False)
 info.actualizarBotellas("0")
 info.actualizarTipoBala("105")
-info.actualizarCantidadBalas("0")
+info.actualizarCantidadBalas(0)
 surperficeJuego = [bg, terrain.surfTerrain,info.bloque]
 ejecutando = True
 turno = 0
@@ -31,7 +31,7 @@ while ejecutando:
             ejecutando = False
         playerPhysics.playerSpawn(window,listaJugadores,terrain,drawFunctions.returnSurface(surperficeJuego))
         if pygame.mouse.get_pressed()[2]:#logica de disparo
-            terrain.updateImpact(pygame.mouse.get_pos(),int(params.WIDTH*0.04),listaJugadores)
+            terrain.testupdateImpact(pygame.mouse.get_pos(),int(params.WIDTH*0.07),listaJugadores)
             playerPhysics.fallTanks(window,listaJugadores,terrain.getDiccionary(),drawFunctions.returnSurface(surperficeJuego))
         elif pygame.mouse.get_pressed()[0]:
             print("---------------------------punto{}---------------------------------".format(pygame.mouse.get_pos()))

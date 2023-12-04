@@ -19,35 +19,25 @@ class Projectile():
         self.surf.fill(self.alphaColor)
         self.surf.set_alpha()
         self.surf.set_colorkey(self.alphaColor)
-        cargarProyectil(self.surf,"imgs/projectile1.png",1,1,(0,0))
-        pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
         self.power = power
-        self.size = 0
         self.explosionArea = 0
+        self.blastRadius = 0
+        self.DMG = 0
         if self.typeBullet == 1: #105mm
-            self.color = 'green'
-            self.size = 15
-            self.quantity = 3
-            self.dmg = 50
+            cargarProyectil(self.surf,"imgs/projectile3.png",1,1,(0,0))
+            pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
+            self.blastRadius = int(params.WIDTH*0.07)
+            self.DMG = 50
         elif self.typeBullet == 2: #80mm
-            self.color = 'blue'
-            self.size = 8
-            self.quantity = 10
-            self.dmg = 40
+            cargarProyectil(self.surf,"imgs/projectile2.png",1,1,(0,0))
+            pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
+            self.blastRadius = int(params.WIDTH*0.05)
+            self.DMG = 40
         elif self.typeBullet == 3: #60mm
-            self.color = 'red'
-            self.size = 6
-            self.quantity = 3
-            self.dmg = 30
-        elif self.typeBullet == 5: #no quedan
-            self.size = 0
-            #('endgame')
-            #('no hay mas')
-        else: #standard 60mm
-            self.size = 6
-            self.quantity = 3
-            self.dmg = 30
-            self.explosionArea = self.size*2 - self.size/2
+            cargarProyectil(self.surf,"imgs/projectile1.png",1,1,(0,0))
+            pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
+            self.blastRadius = int(params.WIDTH*0.03)
+            self.DMG = 30
         self.origin = (position[0],position[1])
 
         self.theta = toRadian(abs(theta))
@@ -105,7 +95,6 @@ class Projectile():
             self.x += self.dx 
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.yNew = self.y-self.ch
-            print(int(self.x),int(self.yNew))
             self.win.blit(matriz[0],(0,0))
             self.win.blit(matriz[1],(0,0))
             self.win.blit(matriz[2],(870,0))
@@ -121,7 +110,6 @@ class Projectile():
             clock.tick(200)
             pygame.display.update()
         pygame.display.update()
-        print("hola")
         
 def game():
     pygame.init()
@@ -138,7 +126,7 @@ def game():
     info.actualizarDmg(False)
     info.actualizarBotellas("0")
     info.actualizarTipoBala("105")
-    info.actualizarCantidadBalas("0")
+    info.actualizarCantidadBalas(0)
     listajugador = []
     for i in range(1):
         listajugador.append(nTank.Tank(700,(255,0,0),window))
@@ -155,10 +143,11 @@ def game():
             elif pygame.mouse.get_pressed()[0]:
                 print(pygame.mouse.get_pos())
         bullet = Projectile((100,10),1,random.randint(1,100),60,window,listajugador)
-        terrain.updateImpact(bullet.shoot(matriz,terrain.getDiccionary()),100,listajugador)
+        terrain.updateImpact(bullet.shoot(matriz,terrain.getDiccionary()),bullet,listajugador)
         playerPhysics.fallTanks(window,listajugador,terrain.getDiccionary(),drawFunctions.returnSurface(matriz))
         window.blit(matriz[0],(0,0))
         window.blit(matriz[1],(0,0))
         window.blit(listajugador[0].surfaceTank,listajugador[0].getPos())
+        window.blit(matriz[2],(870,0))
         pygame.display.update()
 game()

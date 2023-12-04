@@ -9,7 +9,7 @@ class Tank:
         self.window = window
         self.listaEventos = [] #indice 0 mover cañon, indice 1 poderes
         self.cargarEventos()
-        
+        self.lifeBar = nBarraVida.BarraVida(0.1)
             
         #valores de la hitbox. Cambiar esto por llamar a la funcion 
         #self.y = self.y-20
@@ -56,7 +56,7 @@ class Tank:
         self.draw_tank()
         self.getFallPoint()
         self.getHitBox()
-        self.getLifeBar()
+        self.surfaceTank.blit(self.lifeBar.lifeSurface,(80,110))
         
     def cargarEventos(self):
         diccionarioEventosCañon = {}
@@ -78,8 +78,12 @@ class Tank:
     def actualizarTanque(self):
         pygame.draw.rect(self.surfaceTank, self.alphaColor, (0,0,self.surfaceTank.get_width(),self.surfaceTank.get_height()))
         self.draw_tank()
-        self.getLifeBar()
+        self.surfaceTank.blit(self.lifeBar.lifeSurface,(80,110))
         
+    def actualizarVida(self,vida):
+        self.lifeBar.actualizarVida(vida)
+        self.actualizarTanque()
+
     def actualizarAngulo(self, event):
         if self.listaEventos[0][event.key] == 1:
             if self.angulo < 180:
@@ -112,14 +116,7 @@ class Tank:
     
     def printTankPost(self):
         print((self.x+self.xpos,self.y+self.ypos))
-
-    def getLifeBar(self):
-        lifeBar = nBarraVida.BarraVida(0.1)
-        #lifeBar.loadImagen('imgs/health/full.png',0.1,0.1,(0,0))
-        self.surfaceTank.blit(lifeBar.lifeSurface,(80,110))
         
-
-
 def actualizar(window,i):
     window.blit(i.surfaceTank,i.getPos())
             
