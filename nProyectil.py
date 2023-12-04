@@ -1,15 +1,16 @@
-import math,pygame,params, drawFunctions, nTerrain, nTank, random
+import math,pygame,params, drawFunctions, nTerrain, nTank, random, playerPhysics, ninfoBlock
 from functions import *
-g = 100
+g = 9.8
 FPS = 60
 def cargarProyectil(surf, imagen, proporcionX, proporcionY, posicion):
     imagen_cargada = pygame.image.load(imagen)
     imagen_escalada = pygame.transform.scale(imagen_cargada, (surf.get_width()*proporcionX, surf.get_height()*proporcionY))
     surf.blit(imagen_escalada, (posicion))
 class Projectile():
-    def __init__(self, position, typeBullet,power, theta,window):
+    def __init__(self, position, typeBullet,power, theta,window,listaJugador):
         super(Projectile, self).__init__()
         #('se crea')
+        self.listaJugador = listaJugador
         self.typeBullet = typeBullet
         self.quantity = 0
         self.dmg = 0
@@ -107,27 +108,45 @@ class Projectile():
             print(int(self.x),int(self.yNew))
             self.win.blit(matriz[0],(0,0))
             self.win.blit(matriz[1],(0,0))
+            self.win.blit(matriz[2],(870,0))
             self.win.blit(self.surf,(int(self.x),int(self.yNew)))
+            self.win.blit(self.listaJugador[0].surfaceTank,self.listaJugador[0].getPos())
             if (int(self.x+puntox),int(self.yNew+puntoy)) in puntosTerreno:
                 return (int(self.x+puntox),int(self.yNew+puntoy))
+            else:
+                for i in range(len(self.listaJugador)):
+                    if (int(self.x+puntox),int(self.yNew+puntoy)) in self.listaJugador[i].hitBox:
+                        print("ouch")
+                        return (int(self.x+puntox),int(self.yNew+puntoy))
             clock.tick(200)
             pygame.display.update()
         pygame.display.update()
         print("hola")
         
 def game():
+    pygame.init()
     run = True
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     terrain = nTerrain.TerrenoVariado()
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
     drawFunctions.backgroundDraw(bg)
+    info = ninfoBlock.infoBlock(0.3)
+    info.actualizarAngulo('10')
+    info.actualizarDistancia("2000")
+    info.actualizarEscudo(False)
+    info.actualizarDmg(False)
+    info.actualizarBotellas("0")
+    info.actualizarTipoBala("105")
+    info.actualizarCantidadBalas("0")
     listajugador = []
     for i in range(1):
-        listajugador.append(nTank.Tank(300,(255,0,0),window))
+        listajugador.append(nTank.Tank(700,(255,0,0),window))
     matriz = []
     matriz.append(bg)
     matriz.append(terrain.surfTerrain)
+    matriz.append(info.bloque)
+    playerPhysics.playerSpawn(window,listajugador,terrain,drawFunctions.returnSurface(matriz))
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -135,9 +154,11 @@ def game():
                 run = False
             elif pygame.mouse.get_pressed()[0]:
                 print(pygame.mouse.get_pos())
-        bullet = Projectile((100,10),1,random.randint(1,100),60,window)
+        bullet = Projectile((100,10),1,random.randint(1,100),60,window,listajugador)
         terrain.updateImpact(bullet.shoot(matriz,terrain.getDiccionary()),100,listajugador)
+        playerPhysics.fallTanks(window,listajugador,terrain.getDiccionary(),drawFunctions.returnSurface(matriz))
         window.blit(matriz[0],(0,0))
         window.blit(matriz[1],(0,0))
+        window.blit(listajugador[0].surfaceTank,listajugador[0].getPos())
         pygame.display.update()
 game()
