@@ -1,11 +1,9 @@
-import pygame,math,random, params
+import pygame,math,random,drawFunctions, params, playerPhysics
 import numpy as np
 
 class TerrenoVariado:
-    def __init__(self,  width, height):
+    def __init__(self):
         self.surfTerrain = pygame.Surface((params.WIDTH,params.HEIGHT))
-        self.width = width
-        self.height = height
         self.num_points = 15
         self.points = []
         self.yPoints = []
@@ -13,8 +11,8 @@ class TerrenoVariado:
         
         
         for i in range(self.num_points):
-            x = int(i * (self.width / (self.num_points - 1)))
-            y = random.randint(self.height // 5, self.height - 200)
+            x = int(i * (params.WIDTH / (self.num_points - 1)))
+            y = random.randint(params.HEIGHT // 5, params.HEIGHT - 200)
             if 0 <= x <= params.WIDTH:
                 self.points.append([x, y])
                 self.yPoints.append([y])
@@ -43,38 +41,59 @@ class TerrenoVariado:
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
-    def updateImpact(self,pos,radius):
-        # Dibuja el círculo en la superficie
+    def updateImpact(self,pos,radius,lista):
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
-        # Actualiza la hitbox
+        tanquesDañadosIzquierda = {}
+        tanquesDañadosDerecha= {}
+        puntosImpactoIzquierda = {}
+        puntosImpactoDerecha = {}
         for i in range(pos[0] - radius, pos[0] + radius):
             for j in range(pos[1] - radius, pos[1] + radius):
                 if (i - pos[0]) ** 2 + (j - pos[1]) ** 2 <= radius ** 2:
                     if(((i, j)) in self.hitPoints):
                         del self.hitPoints[(i, j)]
-        
-    #funcion para interpolar los puntos
+                    for z in range(len(lista)):
+                        if i < pos[0]:
+                            if (i,j) in lista[z].hitBox:
+                                tanquesDañadosIzquierda[z] = True
+                                puntosImpactoIzquierda[z] = (i, j)
+                        if i > pos[0]:
+                            if (i,j) in lista[z].hitBox:
+                                if z not in tanquesDañadosIzquierda:
+                                    tanquesDañadosDerecha[z] = True
+                                    if z not in puntosImpactoDerecha:
+                                        puntosImpactoDerecha[z] = (i, j) 
+                    #if(((i, j)) in self.hitPoints):
+                    #    del self.hitPoints[(i, j)]
+       
+        # Imprime los puntos de impacto
+        print("Puntos de impacto en la izquierda:")
+        for z, punto in puntosImpactoIzquierda.items():
+            print(f"Tanque {z}: {punto}")
+
+        print("Puntos de impacto en la derecha:")
+        for z, punto in puntosImpactoDerecha.items():
+            print(f"Tanque {z}: {punto}")
+    
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     
     # Genera el terreno
     def drawTerrain(self):
-        self.surfTerrain = pygame.Surface((self.width,self.height))
+        self.surfTerrain = pygame.Surface((params.WIDTH,params.HEIGHT))
         self.surfTerrain.fill((255,0,255))
         
-        x_interp = np.linspace(0, self.width, 100)
+        x_interp = np.linspace(0, params.WIDTH, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
         points_interp = [(int(x), int(y)) for x, y in zip(x_interp, y_interp)]
         #self.points = points_interp
 
-        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, self.height)] + points_interp + [(self.width, self.height)])
+        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, params.HEIGHT)] + points_interp + [(params.WIDTH, params.HEIGHT)])
         pygame.draw.lines(self.surfTerrain, (139, 69, 19), False, points_interp, 5)
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))
         
-        #pygame.display.update()
-    # Devuelve los puntos del terreno
-    
+
     def getDiccionary(self):
         return self.hitPoints
     
