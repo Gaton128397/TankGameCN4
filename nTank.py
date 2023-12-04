@@ -1,4 +1,4 @@
-import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, playerPhysics
+import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, playerPhysics, nBarraVida
 from functions import *
 
 class Tank:
@@ -56,12 +56,14 @@ class Tank:
         self.draw_tank()
         self.getFallPoint()
         self.getHitBox()
+        self.getLifeBar()
         
     def cargarEventos(self):
         diccionarioEventosCañon = {}
         diccionarioEventosCañon[pygame.K_LEFT] = 1
         diccionarioEventosCañon[pygame.K_RIGHT] = -1
         self.listaEventos.append(diccionarioEventosCañon)
+        
         
         #self.eventosJugador["disparar"] = pygame.K_SPACE
         #self.eventosJugador["pausa"] = pygame.K_ESCAPE
@@ -76,6 +78,7 @@ class Tank:
     def actualizarTanque(self):
         pygame.draw.rect(self.surfaceTank, self.alphaColor, (0,0,self.surfaceTank.get_width(),self.surfaceTank.get_height()))
         self.draw_tank()
+        self.getLifeBar()
         
     def actualizarAngulo(self, event):
         if self.listaEventos[0][event.key] == 1:
@@ -102,7 +105,6 @@ class Tank:
         for i in range(puntoOrigenHB[0], puntoOrigenHB[0]+HitLarge):
             for j in range(puntoOrigenHB[1], puntoOrigenHB[1]+HitHeight):
                 self.hitBox[(i,j)] = True
-        #pygame.draw.rect(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.25),self.getPos()[1]+int(self.surfaceTank.get_height()*0.54),self.width*1.36,self.height*1.24), 1)
     
     def setPos(self,posicion):
         self.xpos = posicion[0]
@@ -110,6 +112,13 @@ class Tank:
     
     def printTankPost(self):
         print((self.x+self.xpos,self.y+self.ypos))
+
+    def getLifeBar(self):
+        lifeBar = nBarraVida.BarraVida(0.1)
+        #lifeBar.loadImagen('imgs/health/full.png',0.1,0.1,(0,0))
+        self.surfaceTank.blit(lifeBar.lifeSurface,(80,110))
+        
+
 
 def actualizar(window,i):
     window.blit(i.surfaceTank,i.getPos())
