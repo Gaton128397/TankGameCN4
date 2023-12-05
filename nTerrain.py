@@ -72,13 +72,20 @@ class TerrenoVariado:
         for z, punto in puntosImpactoIzquierda.items():
             print(f"Tanque {z}: {punto}")
             distancia = functions.calcular_distancia(pos, punto)
-            dano = self.calcularDMG(distancia, proyectil.DMG)
-            print(f"El tanque {z} recibe un daño de {dano}")
+            dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
+            #dano = self.calcularDMG(distancia, 50)
+            lista[z].actualizarVida(dmg)
+            print(f"El tanque {z} recibe un daño de {dmg}")
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():
-            print(f"Tanque {z}: {punto}")
+            distancia = functions.calcular_distancia(pos, punto)
+            dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
+            lista[z].actualizarVida(dmg)
+            print(distancia)
+            print(f"El tanque {z} recibe un daño de {dmg}")
     
     def testupdateImpact(self,pos,radius,lista):
+        print(radius)
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
         tanquesDañadosIzquierda = {}
         tanquesDañadosDerecha= {}
@@ -109,14 +116,17 @@ class TerrenoVariado:
         for z, punto in puntosImpactoIzquierda.items():
             print(f"Tanque {z}: {punto}")
             distancia = functions.calcular_distancia(pos, punto)
-            print(distancia)
-            dano = self.calcularDMG(distancia, 50)
-            lista[z].actualizarVida(50)
-            print(f"El tanque {z} recibe un daño de {dano}")
+            dmg = int(functions.calcularDMG(distancia, 50, radius,1))
+            #dano = self.calcularDMG(distancia, 50)
+            lista[z].actualizarVida(dmg)
+            print(f"El tanque {z} recibe un daño de {dmg}")
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():
-            print(f"Tanque {z}: {punto}")
-            lista[z].actualizarVida(50)
+            distancia = functions.calcular_distancia(pos, punto)
+            dmg = int(functions.calcularDMG(distancia, 50, radius,1))
+            lista[z].actualizarVida(dmg)
+            print(distancia)
+            print(f"El tanque {z} recibe un daño de {dmg}")
     
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
@@ -150,7 +160,3 @@ class TerrenoVariado:
 
         return self.yPoints
     # Reinicia el terreno
-    def calcularDMG(self,distancia, dano_maximo):
-    # Esta es solo una fórmula de ejemplo, puedes ajustarla según tus necesidades
-        dano = dano_maximo / (distancia + 1)
-        return dano

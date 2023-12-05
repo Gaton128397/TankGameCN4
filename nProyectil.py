@@ -34,7 +34,7 @@ class Projectile():
             self.blastRadius = int(params.WIDTH*0.05)
             self.DMG = 40
         elif self.typeBullet == 3: #60mm
-            cargarProyectil(self.surf,"imgs/projectile1.png",1,1,(0,0))
+            cargarProyectil(self.surf,"imgs/projectile1.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.03)
             self.DMG = 30

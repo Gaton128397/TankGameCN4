@@ -56,3 +56,17 @@ def calcular_distancia(punto1, punto2):
     x2, y2 = punto2
     distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
     return distancia
+
+def calcularDMG(distancia, dano_maximo, radio,tipoProyectil):
+    if not tipoProyectil == 3:
+        if distancia < radio*0.4:
+            return dano_maximo
+        elif (distancia > radio*0.4) and (distancia < radio*0.8):
+            return dano_maximo*0.5
+        else:
+            return dano_maximo*0.2
+    else:
+        if distancia < radio*0.8:
+            return dano_maximo
+        else:
+            return dano_maximo*0.5
