@@ -2,8 +2,8 @@ import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, pl
 from functions import *
 
 class Tank:
-    def __init__(self,xpos,color, window):
-        self.xpos = xpos
+    def __init__(self,color, window):
+        self.xpos = 0
         self.ypos = 0
         self.hitBox = {}
         self.window = window
