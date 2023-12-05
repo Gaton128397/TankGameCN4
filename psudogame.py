@@ -1,14 +1,11 @@
-import pygame, random, params, nTerrain, drawFunctions, playerPhysics, nTank, ninfoBlock
+import pygame, random, params, nTerrain, drawFunctions, playerPhysics, nTank, ninfoBlock, random
 pygame.init()
 terrain = nTerrain.TerrenoVariado()
 window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
 bg = pygame.Surface((params.WIDTH, params.HEIGHT))
 colores = [(255,0,0),(0,255,0),(0,0,255),(255,255,0)]
 listaJugadores = []
-listaJugadores.append(nTank.Tank(300,colores[0],window))
-listaJugadores.append(nTank.Tank(500,colores[1],window))
-listaJugadores.append(nTank.Tank(600,colores[2],window))
-listaJugadores.append(nTank.Tank(700,colores[3],window))
+
 clock = pygame.time.Clock()
 #clock.tick(60)
 drawFunctions.backgroundDraw(bg)
@@ -23,6 +20,18 @@ info.actualizarCantidadBalas(0)
 surperficeJuego = [bg, terrain.surfTerrain,info.bloque]
 ejecutando = True
 turno = 0
+
+def setPlayers():
+        splitPos = params.WIDTH//(params.playersNumber*2)
+        contador = 0
+        for i in range(params.playersNumber):
+            listaJugadores.append(nTank.Tank((random.randint(contador,contador+splitPos)),random.choice(colores),window))
+            print(splitPos)
+            contador += splitPos*2
+            print(contador)
+
+setPlayers()
+
 while ejecutando:
     info.actualizarAngulo(listaJugadores[turno].angulo)
     keys = pygame.key.get_pressed()
