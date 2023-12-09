@@ -1,6 +1,5 @@
 from random import randint
 import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerPhysics, ninfoBlock, functions
-from ctypes import byref, c_int, pointer
 
 class gameLogic:
     
@@ -65,7 +64,8 @@ class gameLogic:
             return True
         else:
             return True
-    
+
+
     def definirTurnos(self,listaTurnos):
         for i in range(len(self.listaJugadores)):
             listaTurnos.append(i)
@@ -85,6 +85,9 @@ class gameLogic:
         surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque]
         listaTurnos = []
         turnos = [0,0]
+        potencia = 0
+        jugador = 'a'
+        balaID = 3 #3,4,5 son las IDs
         while running:
             if self.checkearTurno(listaTurnos,turnos):
                 for event in pygame.event.get():
@@ -92,31 +95,43 @@ class gameLogic:
                         pygame.quit()
                         return None
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            print("disparando")
+                        if event.key == pygame.K_SPACE: #aqui debe guardar la potencia
+                            print("cargando potencia. . . ")
                             playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]))
-                        if event.key == pygame.K_1:
-                            turnos[0] = -1
+                        
+                        if event.key == pygame.K_RETURN: #recien aqui recibe la potencia para disparar
+                            #debe revisar que haya una bala seleccionada o partir de la mas chica
+                            if potencia >0:
+                                if jugador.inventario[balaID] > 0:
+                                    print('disparo') #metodo shoot
+                                    jugador.inventario[balaID]-=1 #bala
+                                else:
+                                    print('no quedan')
+                                #cuando dispara se saca el jugador de la lista de turnos
+                                #siguiente jugador dispara
+                                
+                        
+                        if event.key == pygame.K_1: #bala 1
+                            balaID = 3#pequena
                         if event.key == pygame.K_2:
-                            del self.listaJugadores[turnos[0]]
-                            turnos[0] = -1
+                            balaID = 4#mediana
                         if event.key == pygame.K_3:
-                            print(turnos[0])
-                            #print(turnoAnterior)
-                        if event.key == pygame.K_4:
-                            running = False
+                            balaID = 5#grande
+                        if event.key == pygame.K_ESCAPE:
+                            print('pausa') #yo (mariano) lo arreglo dsps
             else:
                 running = False
             clock.tick(60)
             self.unUpdate()
             pygame.display.update()
         
-        
-def tstgm():#Logica de mainScreen()
+
+
+
+def testgame(window):#Logica de mainScreen()
     pygame.init()
-    print("hola")
     clock = pygame.time.Clock()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
+    window = window#pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     playerWon = None
     run = True
     numeroPartidos = 3
@@ -147,4 +162,4 @@ def tstgm():#Logica de mainScreen()
             pygame.display.update()
         except (KeyboardInterrupt, SystemExit): #manejar los errores
             return True
-tstgm()
+# tstgm()

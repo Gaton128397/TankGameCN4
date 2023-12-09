@@ -1,9 +1,9 @@
-from pygame import image,transform
+from pygame import image,transform,Surface
 
 
 size = 100 #fullScreen = 120
 WIDTH,HEIGHT = size*16,size*9
-
+playersNumber = 6
 #screens
 menuImg = image.load('imgs/startEnd/Menu.png')
 bGganador1 = image.load('imgs/startEnd/ganador1.png')
@@ -34,6 +34,15 @@ bigStone = image.load('imgs/icons/BigStone.png')
 mediumStone = image.load('imgs/icons/mediumStone.png')
 smallStone = image.load('imgs/icons/smallStone.png')
 
+heartFull = image.load('imgs/health/full.png')
+heartsHalf = image.load('imgs/health/half.png')
+heartsNone = image.load('imgs/health/none.png')
+parachute = image.load('imgs/icons/parachute.png')
+anguloICO = image.load('imgs/icons/angulo.png')
+balaICO = image.load('imgs/icons/bala.png')
+balasICO = image.load('imgs/icons/balas.png')
+distanciaICO = image.load('imgs/icons/distancia.png')
+
 #loads
 menuImg = transform.scale(menuImg, (WIDTH, HEIGHT))
 shopIniImg = transform.scale(shopIniImg, (WIDTH, HEIGHT))
@@ -61,4 +70,5 @@ bigStone = transform.scale(bigStone, (size, size))
 mediumStone = transform.scale(mediumStone, (size, size))
 smallStone = transform.scale(smallStone, (size, size))
 
-
+parachute = transform.scale(parachute, (size*0.2,size*0.5))
+#METODOS

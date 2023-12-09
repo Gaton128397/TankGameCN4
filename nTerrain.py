@@ -65,7 +65,7 @@ class TerrenoVariado:
                                         puntosImpactoDerecha[z] = (i, j) 
                     #if(((i, j)) in self.hitPoints):
                     #    del self.hitPoints[(i, j)]
-       
+        
         # Imprime los puntos de impacto
         
         print("Puntos de impacto en la izquierda:")

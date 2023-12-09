@@ -2,8 +2,8 @@ import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, pl
 from functions import *
 
 class Tank:
-    def __init__(self,color, window, playerIndex):
-        self.playerIndex = playerIndex
+    def __init__(self,color, window, playerID):
+        self.playerID = playerID
         self.xpos = 0
         self.ypos = 0
         self.hitBox = {}
@@ -11,20 +11,10 @@ class Tank:
         self.listaEventos = [] #indice 0 mover cañon, indice 1 poderes
         self.cargarEventos()
         self.lifeBar = nBarraVida.BarraVida(0.1)
-            
-        #valores de la hitbox. Cambiar esto por llamar a la funcion 
-        #self.y = self.y-20
-        #self.x = self.x - 70
-        #tambien cambiar n magicos por % de pantalla para el reescalado
-        
-        
+
         self.color = color
-        #eliminar: self.origin = (position[0] + 25, position[1] - 6.5)
 
         self.angulo =random.randint(0,180)
-        
-
-        #self.surface = surface
 
         self.xCanon1 = 0
         self.yCanon1 = 0
@@ -33,12 +23,7 @@ class Tank:
         self.yCanon2 = 0
 
         self.end = (0,0)
-        
-        #self.xCanon1 =(self.x + self.width/2)  #coordenadas del cañon
-        #self.yCanon1  = (self.y - self.height/3)
-        
-       
-        #self.xCanon2 = (self.xCanon1 + a*self.longitud * math.cos(math.radians(self.angulo)))
+
         self.tankProportion = 0.22
         self.surfaceTank = pygame.Surface((params.WIDTH*self.tankProportion, params.HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.4)
@@ -65,9 +50,7 @@ class Tank:
         diccionarioEventosCañon[pygame.K_RIGHT] = -1
         self.listaEventos.append(diccionarioEventosCañon)
         
-        
-        #self.eventosJugador["disparar"] = pygame.K_SPACE
-        #self.eventosJugador["pausa"] = pygame.K_ESCAPE
+
         
     def draw_tank(self):
         pygame.draw.polygon(self.surfaceTank, self.color, ((self.x, self.y), (self.x - self.width/2, self.y), (self.x - self.width/2, self.y - self.height),(self.x + self.width/2, self.y - self.height),(self.x + self.width/2, self.y),(self.x, self.y))) #rectangulo inicial
@@ -100,7 +83,7 @@ class Tank:
         return (self.xpos, self.ypos)
     
     def getFallPoint(self):
-        #pygame.draw.circle(self.surfaceTank, (0,0,0), (self.getPos()[0]+int(self.surfaceTank.get_width()*0.4),self.getPos()[1]+int(self.surfaceTank.get_height()*0.7)), 1)
+        
         return (int(self.getPos()[0]+int(self.surfaceTank.get_width()*0.4)),int(self.getPos()[1]+int(self.surfaceTank.get_height()*0.7)))
 
     def getHitBox(self):

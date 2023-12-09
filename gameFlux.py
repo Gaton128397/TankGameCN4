@@ -1,4 +1,4 @@
-import pygame,random,sys,player,runShop,createMap,params,runMenu,runSettings,runGanador1,runGanador2,runPausa,runPlaymode,runControles,runDificultad,runPausaSettings, runMapsScreen
+import pygame,random,sys,player,runShop,createMap,params,runMenu,runSettings,runGanador1,runGanador2,runPausa,runPlaymode,runControles,runDificultad,runPausaSettings, runMapsScreen,runGame,functions
 
 #0 = menu
 #1 = playmode
@@ -20,9 +20,6 @@ def mainScreen():#Logica de mainScreen()
     shop = runShop.Shop()#crea el shop
     settings = runSettings.Settings()#crea el settings
     mapScreen = runMapsScreen.Maps()#crea el maps
-
-    """game = runGame()#crea el game"""
-    
     pausa = runPausa.Pausa()#crea el pausa
     controles = runControles.Controles()#crea el controles
     ganador1 = runGanador1.Ganador1()#crea el ganador1
@@ -41,14 +38,18 @@ def mainScreen():#Logica de mainScreen()
     mapa = None #Ninguno
     modo = 1 #CPU 
     jugadores = 2 #jugadores
+    rondaActual = 1
     rondas = 1 #rondas
+    run = True
     dificultad = 0
 
-    #Jugadores
-    jugador1 = player.Player()#crea el jugador 1
-    jugador2 = player.Player()#crea el jugador 2
-    jugador3 = player.Player()#crea el jugador 3
-    listaJugadores = [jugador1, jugador2, jugador3]#lista de jugadores
+    #jugadores
+    jugador1 = player.Player()#jugador 1
+    jugador2 = player.Player()#jugador 2
+    jugador3 = player.Player()#jugador 3
+    jugador4 = player.Player()#jugador 4
+    listaJugadores = [jugador1,jugador2,jugador3,jugador4]#lista de jugadores
+    # resetTanks = functions.loadPlayers(listaJugadores,screen)
 
     while True:#loop principal
 
@@ -58,7 +59,7 @@ def mainScreen():#Logica de mainScreen()
         elif actualScreen == 1:#Playmode
             playMode = playmode.runPlaymode()
             actualScreen = playMode[0]
-            modo = actualScreen[2]
+            modo = playMode[1]
 
         elif actualScreen == 2:#tienda
             actualScreen = shop.openShop(listaJugadores)#requiere una lista de jugadores
@@ -75,9 +76,13 @@ def mainScreen():#Logica de mainScreen()
             mapa = mapBool[1]
             
         elif actualScreen == 5:#juego
-            actualScreen = print('runGame')
-            lastScreen = 5
-            print("juego") #runGame()
+            print('empesamo')
+            break
+            # while rondaActual <= rondas:
+            #     functions.resetTanks(listaJugadores,resetTanks)
+            #     game = runGame.gameLogic(screen,listaJugadores)
+            #     game.run(clock)
+            #     rondaActual += 1
 
         elif actualScreen == 6:#pausa
             pausa_result = pausa.runPausa(lastScreen)

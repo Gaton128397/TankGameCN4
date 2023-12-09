@@ -9,11 +9,11 @@ class infoBlock:
         
         self.bloque.fill(self.alphaColor)
         self.actualizarTitulo()
-        self.cargar_imagen('imgs/angulo.png',0.15,0.2,(0.02,0.03))
-        self.cargar_imagen('imgs/distancia.png',0.15,0.2,(0.02,0.27))
-        self.cargar_imagen('imgs/elixir.png',0.1,0.17,(0.7,0.4))
-        self.cargar_imagen('imgs/bala.png',0.1,0.15,(0.05,0.5))
-        self.cargar_imagen('imgs/balas.png',0.1,0.15,(0.05,0.7))
+        self.cargar_imagen(params.anguloICO,0.15,0.2,(0.02,0.03))
+        self.cargar_imagen(params.distanciaICO,0.15,0.2,(0.02,0.27))
+        self.cargar_imagen(params.health,0.1,0.17,(0.7,0.4))
+        self.cargar_imagen(params.balaICO,0.1,0.15,(0.05,0.5))
+        self.cargar_imagen(params.balasICO,0.1,0.15,(0.05,0.7))
         
         
     def cargar_imagen(self, imagen, proporcionX, proporcionY, posicion):
@@ -48,14 +48,14 @@ class infoBlock:
     def actualizarEscudo(self, condicion):
         if condicion:
             self.borrarEscudo()
-            self.cargar_imagen('imgs/shield.png',0.1,0.17,(0.7,0.2))
+            self.cargar_imagen(params.shield,0.1,0.17,(0.7,0.2))
         else:
             self.borrarEscudo()
             
     def actualizarDmg(self, condicion):
         if condicion:
             self.borrarDmg()
-            self.cargar_imagen('imgs/sword.png',0.1,0.17,(0.8,0.2))
+            self.cargar_imagen(params.dmg,0.1,0.17,(0.8,0.2))
         else:
             self.borrarDmg()
             
