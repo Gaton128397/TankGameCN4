@@ -1,4 +1,4 @@
-import math
+import math, params, player, nTank, random
 
 radius = 160
 
@@ -70,3 +70,19 @@ def calcularDMG(distancia, dano_maximo, radio,tipoProyectil):
             return dano_maximo
         else:
             return dano_maximo*0.5
+    
+def loadPlayers(listaJugadores,window):
+    resetTanks = []
+    for i in range(params.playersNumber):
+        listaJugadores.append(player.Player())
+    colores = ["red", "green", "blue", "yellow", "orange", (128, 0, 128)]
+    for i in range(len(listaJugadores)):
+        choise = random.randint(0,len(colores)-1)
+        listaJugadores[i].asignTank(nTank.Tank(colores[choise],window,i))
+        resetTanks.append(nTank.Tank(colores[choise],window,i))
+        colores.pop(choise)
+    return resetTanks
+
+def resetTanks(listaJugadores,tankList):
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].asignTank(tankList[i])

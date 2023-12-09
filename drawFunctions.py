@@ -16,6 +16,6 @@ def returnSurface(matriz):
         if i < len(matriz) - 1:
             surface.blit(matriz[i],(0,0))
         else:
-            surface.blit(matriz[i],(870,0))
+            surface.blit(matriz[i],(0,0))
     
     return surface

@@ -23,16 +23,19 @@ class Projectile():
         self.explosionArea = 0
         self.blastRadius = 0
         self.DMG = 0
+        
         if self.typeBullet == 1: #105mm
             cargarProyectil(self.surf,"imgs/projectile3.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.07)
             self.DMG = 50
+            
         elif self.typeBullet == 2: #80mm
             cargarProyectil(self.surf,"imgs/projectile2.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.05)
             self.DMG = 40
+            
         elif self.typeBullet == 3: #60mm
             cargarProyectil(self.surf,"imgs/projectile1.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)

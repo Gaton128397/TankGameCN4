@@ -1,9 +1,10 @@
 from random import randint
-import pygame,projectile,nTank,nTerrain,time,sys,chooseMenu, params, drawFunctions,  infoBlock, player, random
+import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerPhysics, ninfoBlock, functions
+from ctypes import byref, c_int, pointer
 
 class gameLogic:
     
-    def __init__(self, windowGame,listaJugadores):
+    def __init__(self, windowGame,playerList):
         self.screen = windowGame
         
         #background
@@ -18,24 +19,57 @@ class gameLogic:
         self.screen.blit(self.terrain.surfTerrain,(0,0))
         
         #players
-        self.surfaceJugadores = pygame.Surface((params.WIDTH,params.HEIGHT))
-        self.surfaceJugadores.fill((255,0,255))
-        self.surfaceJugadores.set_alpha()
-        self.surfaceJugadores.set_colorkey((255,0,255))
+        self.listaPlayers = playerList
         self.listaJugadores = []
-        #self.updPlayers()
-            
-            
+        self.setPlayers()
+        
+        #infoBlock
+        self.info = ninfoBlock.infoBlock(0.3)
+        
+    def setPlayers(self):
+        splitPos = params.WIDTH//(params.playersNumber*2)
+        contador = 0
+        for i in range(params.playersNumber):
+            self.listaPlayers[i].tanque.setPos((random.randint(contador,contador+splitPos),-10))
+            self.listaJugadores.append(self.listaPlayers[i].tanque)
+            print(splitPos)
+            contador += splitPos*2
+            print(contador)
+    
     def updPlayers(self):
         for i in range(len(self.listaJugadores)):
-            self.listaJugadores[i].draw_tank(True)
-        self.screen.blit(self.surfaceJugadores,(0,0))
+            self.screen.blit(self.listaJugadores[i].surfaceTank,(self.listaJugadores[i].getPos()))
         
     def unUpdate(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
-        #self.updPlayers()
+        self.updPlayers()
+        
+    def checkearTurno(self,listaDeTurnos,turnos): #0 para turno actual, 1 para turno anterior
+        if len(self.listaJugadores) == 1:
+            return False
+        elif not listaDeTurnos:
+            self.definirTurnos(listaDeTurnos)
+            turnos[0] = random.choice(listaDeTurnos)
+            turnos[1] = turnos[0]
+            print("turno actual: ",turnos[0])
+            print("turno anterior: ",turnos[1])
+            return True
+        elif turnos[0] != turnos[1]:
+            turnos[0] = random.choice(listaDeTurnos)
+            turnos[1] = turnos[0]
+            listaDeTurnos.remove(turnos[0])
+            print("turno actual: ",turnos[0])
+            print("turno anterior: ",turnos[1])
+            print("Lista de turnos"+str(listaDeTurnos))
+            return True
+        else:
+            return True
     
+    def definirTurnos(self,listaTurnos):
+        for i in range(len(self.listaJugadores)):
+            listaTurnos.append(i)
+        
     def tankPos(self):
         return 0
         
@@ -46,31 +80,35 @@ class gameLogic:
         print("loading")
     
     def run(self,clock):
-        playerWinner = -1
         running = True
+        playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]))
+        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque]
+        listaTurnos = []
+        turnos = [0,0]
         while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    return None
-                    running = False
-                if pygame.mouse.get_pressed()[2]:
-                    self.terrain.updateImpact(pygame.mouse.get_pos(),100)
-                    self.unUpdate()
-                elif pygame.mouse.get_pressed()[0]:
-                    if pygame.mouse.get_pos() in self.terrain.getDiccionary():
-                    #pygame.draw.circle(self.surfaceTerrain, (255, 0, 255), pygame.mouse.get_pos(), 100)
-                        print("hit")
-                    else:
-                        print("not hit")
-                    #self.unUpdate()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_1:
-                        playerWinner = 1
-                        running = False
-                    
-            #clock.tick(60)
-            
+            if self.checkearTurno(listaTurnos,turnos):
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return None
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_SPACE:
+                            print("disparando")
+                            playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]))
+                        if event.key == pygame.K_1:
+                            turnos[0] = -1
+                        if event.key == pygame.K_2:
+                            del self.listaJugadores[turnos[0]]
+                            turnos[0] = -1
+                        if event.key == pygame.K_3:
+                            print(turnos[0])
+                            #print(turnoAnterior)
+                        if event.key == pygame.K_4:
+                            running = False
+            else:
+                running = False
+            clock.tick(60)
+            self.unUpdate()
             pygame.display.update()
         
         
@@ -83,22 +121,18 @@ def tstgm():#Logica de mainScreen()
     run = True
     numeroPartidos = 3
     while run:
+        partidosActuales = 0
+        listaJugadores = []
+        resetTanks = functions.loadPlayers(listaJugadores,window)
+        while partidosActuales < numeroPartidos:
+            functions.resetTanks(listaJugadores,resetTanks)
+            game = gameLogic(window,listaJugadores)
+            game.run(clock)
+            partidosActuales += 1
+        print("partidos terminados")
+        run = False     
         try:
             for event in pygame.event.get():
-                partidosActuales = 0
-                listaJugadores = []
-                for i in range(params.playersNumber):
-                    listaJugadores.append(player.Player())
-                colores = ["red", "green", "blue", "yellow", "orange", (128, 0, 128)]
-                for i in range(len(listaJugadores)):
-                    choise = random.randint(0,len(colores)-1)
-                    listaJugadores[i].asignTank(nTank.Tank(colores[choise],window))
-                    colores.pop(choise)
-                while partidosActuales < numeroPartidos:
-                    game = gameLogic(window,listaJugadores)
-                    game.run(clock)
-                    partidosActuales += 1
-                playerWon = game.run(clock)
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     run = False
