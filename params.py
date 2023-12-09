@@ -1,5 +1,6 @@
 from pygame import image,transform
 
+
 size = 100 #fullScreen = 120
 WIDTH,HEIGHT = size*16,size*9
 
@@ -16,6 +17,7 @@ settingsImg = image.load('imgs/varios/settings.png')
 controlesImg = image.load('imgs/varios/controles.png')
 playModeImg = image.load('imgs/varios/playmode.png')
 bgMapas = image.load('imgs/maps/mapas.png')
+difficulty = image.load('imgs/varios/dificultad.png')
 
 #mapas
 mapaDesert = image.load('imgs/maps/desierto.png')
@@ -58,4 +60,5 @@ health = transform.scale(health, (size, size))
 bigStone = transform.scale(bigStone, (size, size))
 mediumStone = transform.scale(mediumStone, (size, size))
 smallStone = transform.scale(smallStone, (size, size))
+
 

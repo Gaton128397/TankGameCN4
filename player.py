@@ -12,6 +12,3 @@ class Player:
         self.points = 0
         self.kills = 0
         self.deaths = 0
-
-    def asignTank(self,tank):
-        tanque = tank

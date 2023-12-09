@@ -7,5 +7,3 @@ class item:
         self.descripcion = descripcion
         self.precio = precio
         self.Icon = icon
-    def showItem(self,screen):
-        pass
