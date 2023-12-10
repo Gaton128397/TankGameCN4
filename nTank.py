@@ -11,9 +11,8 @@ class Tank:
         self.listaEventos = [] #indice 0 mover cañon, indice 1 poderes
         self.cargarEventos()
         self.lifeBar = nBarraVida.BarraVida(0.1)
-        self.health = True
         self.color = color
-
+        self.ammo = True
         self.angulo = 60
 
         self.xCanon1 = 0

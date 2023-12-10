@@ -13,6 +13,9 @@ class Player:
         self.kills = 0
         self.deaths = 0
         self.tanque = None
+
+        self.stadistics = []#indice 0 kills, indice 1 deaths
+        self.generalStadistics = []#indice 0 points, indice 1 kills, indice 2 deaths
         
     def asignTank(self,tank):
         self.tanque = tank

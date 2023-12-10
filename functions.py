@@ -1,4 +1,4 @@
-import math, params, player, nTank, random
+import math, params, player, nTank, random, copy
 
 radius = 160
 
@@ -79,10 +79,18 @@ def loadPlayers(listaJugadores,window):
     for i in range(len(listaJugadores)):
         choise = random.randint(0,len(colores)-1)
         listaJugadores[i].asignTank(nTank.Tank(colores[choise],window,i))
-        resetTanks.append(nTank.Tank(colores[choise],window,i))
+        resetTanks.append([colores[choise],i])
         colores.pop(choise)
     return resetTanks
 
-def resetTanks(listaJugadores,tankList):
+def resetTanks(listaJugadores,paramsTanks,window):
     for i in range(len(listaJugadores)):
-        listaJugadores[i].asignTank(tankList[i])
+        listaJugadores[i].asignTank(None)
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].asignTank(nTank.Tank(paramsTanks[i][0],window,paramsTanks[i][1]))
+
+def resetIventario(listaJugadores):
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].inventory[3] = 3
+        listaJugadores[i].inventory[4] = 3
+        listaJugadores[i].inventory[5] = 3

@@ -24,7 +24,7 @@ class gameLogic:
         
         #infoBlock
         self.info = ninfoBlock.infoBlock(0.3)
-        
+        self.cantidadbullets = self.cantidadBalas()
     def setPlayers(self):
         splitPos = params.WIDTH//(params.playersNumber*2)
         contador = 0
@@ -42,22 +42,53 @@ class gameLogic:
         self.screen.blit(self.terrain.surfTerrain,(0,0))
         self.screen.blit(self.info.bloque, (params.WIDTH*0.68, 0))
         self.updPlayers()
+
+    def actualizarInfo(self,player,balaID):
+        self.info.actualizarAngulo(player.angulo)
+        #self.info.actualizarDistancia(player.getPos()[0])
+        #self.info.actualizarEscudo(player.shield)
+        #self.info.actualizarDmg(player.damage)
+        #self.info.actualizarBotellas(player.inventory[0])
+        #self.info.actualizarTipoBala(player.inventory[balaID])
+
+        if balaID == 5: #bala 1
+            self.info.actualizarTipoBala("60")
+            self.info.actualizarCantidadBalas(self.listaPlayers[player.playerID].inventory[balaID])
+            
+        if balaID == 4:
+            balaID = 4#mediana
+            self.info.actualizarTipoBala("80")
+            self.info.actualizarCantidadBalas(self.listaPlayers[player.playerID].inventory[balaID])
+            
+        if balaID == 3:
+            balaID = 3#grande
+            self.info.actualizarTipoBala("105")
+            self.info.actualizarCantidadBalas(self.listaPlayers[player.playerID].inventory[balaID])
+        
+
         
     def getTankIndex(self, tank):
         for i in range(len(self.listaJugadores)):
             if tank == self.listaJugadores[i]:
                 return i
         return False
-    def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados): #0 para turno actual, 1 para turno anterior
+    
+    def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
         if len(self.listaJugadores) == 1:
+            #mostrar pantalla de que el jugador gano
+            return False
+        elif self.cantidadbullets <= 0:
+            #mostrar pantalla de que se los jugadores se quedaron sin balas
             return False
         elif jugadoresDerrotados:
             for i in range(len(jugadoresDerrotados)):
                 print("jugador derrotado: " + str(self.getTankIndex(jugadoresDerrotados[i])))
                 del self.listaJugadores[self.getTankIndex(jugadoresDerrotados[i])]
             self.definirTurnos(listaDeTurnos)
+            self.cantidadbullets = self.cantidadBalas()
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
             jugadoresDerrotados.clear()
             print("candidad jugador: " + str(len(self.listaJugadores)))
@@ -66,6 +97,7 @@ class gameLogic:
             self.definirTurnos(listaDeTurnos)
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
             print("turno actual: ",turnos[0])
             print("turno anterior: ",turnos[1])
@@ -73,6 +105,7 @@ class gameLogic:
         elif turnos[0] != turnos[1]:
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
             print("turno actual: ",turnos[0])
             print("turno anterior: ",turnos[1])
@@ -86,6 +119,7 @@ class gameLogic:
         listaTurnos.clear()
         for i in range(len(self.listaJugadores)):
             listaTurnos.append(i)
+        print("lista de turnos: " + str(listaTurnos))
         
     def tankPos(self):
         return 0
@@ -96,6 +130,18 @@ class gameLogic:
     def loadingScreen():
         print("loading")
     
+    def cantidadBalas(self):
+        cantidadBalas = 0
+        for i in range(len(self.listaJugadores)):
+            cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[3]
+            cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[4]
+            cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[5]
+        return cantidadBalas
+    
+    def comprobarBalasJugador(self,jugador):
+        if self.listaPlayers[jugador.playerID].inventory[3] <= 0 and self.listaPlayers[jugador.playerID].inventory[4] <= 0 and self.listaPlayers[jugador.playerID].inventory[5] <= 0:
+            self.listaPlayers[jugador.playerID].tanque.ammo = False
+        
     def run(self,clock):
         running = True
         print(self.listaJugadores[0].getPos())
@@ -114,61 +160,67 @@ class gameLogic:
         self.info.actualizarAngulo(self.listaJugadores[0].angulo)
         print("cantidad jugadores: " + str(len(self.listaJugadores)))
         while running:
-            if self.checkearTurno(listaTurnos,turnos,jugadoresDerrotados):
+            
+            if self.checkearTurno(listaTurnos,turnos,jugadoresDerrotados,balaID):
                 jugador = self.listaJugadores[turnos[0]]
-                pressed = pygame.key.get_pressed()
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        return None
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if pygame.mouse.get_pressed()[0]:
-                            print(pygame.mouse.get_pos())
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE: #aqui debe guardar la potencia
-                            print("cargando potencia. . . ")
+                if jugador.ammo:
+                    pressed = pygame.key.get_pressed()
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            return None
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            if pygame.mouse.get_pressed()[0]:
+                                print(pygame.mouse.get_pos())
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_SPACE: #aqui debe guardar la potencia
+                                print("cargando potencia. . . ")
+                                
+                            if event.key == pygame.K_RETURN: #recien aqui recibe la potencia para disparar
+                                #debe revisar que haya una bala seleccionada o partir de la mas chica
+                                if potencia >0:
+                                    if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
+                                        print('disparo') #metodo shoot
+                                        bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.02))),balaID,50,jugador.angulo,self.screen,self.listaJugadores)
+                                        self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary()),bullet,self.listaJugadores,jugadoresDerrotados)
+                                        self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
+                                        self.cantidadbullets -= 1
+                                        self.comprobarBalasJugador(self.listaJugadores[turnos[0]])
+                                        print("balas totales: " + str(self.cantidadbullets))
+                                        self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
+                                        playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]))
+                                        turnos[0] = -1
+                                    else:
+                                        print('no quedan')
+                                    #cuando dispara se saca el jugador de la lista de turnos
                             
-                        if event.key == pygame.K_RETURN: #recien aqui recibe la potencia para disparar
-                            #debe revisar que haya una bala seleccionada o partir de la mas chica
-                            if potencia >0:
-                                if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
-                                    print('disparo') #metodo shoot
-                                    bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.02))),balaID,50,jugador.angulo,self.screen,self.listaJugadores)
-                                    self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary()),bullet,self.listaJugadores,jugadoresDerrotados)
-                                    self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
-                                    self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
-                                    playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]))
-                                    turnos[0] = -1
-                                else:
-                                    print('no quedan')
-                                #cuando dispara se saca el jugador de la lista de turnos
-                        
-                        if event.key == pygame.K_1: #bala 1
-                            balaID = 5#pequena
-                            self.info.actualizarTipoBala("60")
-                            self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
+                            if event.key == pygame.K_1: #bala 1
+                                balaID = 5#pequena
+                                self.info.actualizarTipoBala("60")
+                                self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
+                                
+                            if event.key == pygame.K_2:
+                                balaID = 4#mediana
+                                self.info.actualizarTipoBala("80")
+                                self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
+                                
+                            if event.key == pygame.K_3:
+                                balaID = 3#grande
+                                self.info.actualizarTipoBala("105")
+                                self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                             
-                        if event.key == pygame.K_2:
-                            balaID = 4#mediana
-                            self.info.actualizarTipoBala("80")
-                            self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
-                            
-                        if event.key == pygame.K_3:
-                            balaID = 3#grande
-                            self.info.actualizarTipoBala("105")
-                            self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
-                        
-                        if event.key == pygame.K_0:
-                            turnos[0] = -1
-                        if event.key == pygame.K_ESCAPE:
-                            print('pausa') #yo (mariano) lo arreglo dsps
-                if pressed[pygame.K_LEFT]:
-                    jugador.actualizarAngulo(pygame.K_LEFT)
-                    self.info.actualizarAngulo(jugador.angulo)
-                elif pressed[pygame.K_RIGHT]:
-                    jugador.actualizarAngulo(pygame.K_RIGHT)
-                    self.info.actualizarAngulo(jugador.angulo)
-                
+                            if event.key == pygame.K_0:
+                                turnos[0] = -1
+                            if event.key == pygame.K_ESCAPE:
+                                print('pausa') #yo (mariano) lo arreglo dsps
+                    if pressed[pygame.K_LEFT]:
+                        jugador.actualizarAngulo(pygame.K_LEFT)
+                        self.info.actualizarAngulo(jugador.angulo)
+                    elif pressed[pygame.K_RIGHT]:
+                        jugador.actualizarAngulo(pygame.K_RIGHT)
+                        self.info.actualizarAngulo(jugador.angulo)
+                else:
+                    turnos[0] = -1
             else:
                 running = False
             clock.tick(60)
@@ -190,7 +242,8 @@ def testgame():#Logica de mainScreen()
         listaJugadores = []
         resetTanks = functions.loadPlayers(listaJugadores,window)
         while partidosActuales < numeroPartidos:
-            functions.resetTanks(listaJugadores,resetTanks)
+            functions.resetTanks(listaJugadores,resetTanks,window)
+            #functions.resetIventario(listaJugadores)
             game = gameLogic(window,listaJugadores)
             game.run(clock)
             partidosActuales += 1

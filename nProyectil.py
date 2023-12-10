@@ -8,6 +8,9 @@ def cargarProyectil(surf, imagen, proporcionX, proporcionY, posicion):
     surf.blit(imagen_escalada, (posicion))
 class Projectile():
     def __init__(self, position, typeBullet,power, theta,window,listaJugador):
+        self.reloj = 400
+        if theta >= 85 and theta <= 100:
+            self.reloj = 60
         super(Projectile, self).__init__()
         #('se crea')
         self.listaJugador = listaJugador
@@ -111,7 +114,7 @@ class Projectile():
                     if (int(self.x+puntox),int(self.yNew+puntoy)) in self.listaJugador[i].hitBox:
                         print("ouch")
                         return (int(self.x+puntox),int(self.yNew+puntoy))
-            clock.tick(400)
+            clock.tick(self.reloj)
             pygame.display.update()
         pygame.display.update()
         return (int(self.x+puntox),int(self.yNew+puntoy))
