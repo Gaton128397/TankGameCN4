@@ -29,27 +29,21 @@ class BarraVida:
             if self.vida%20 > 0:
                 corazonMitad = 1
             corazonVacío = vidaMaxima//20 - corazonLLeno - corazonMitad
-            print(corazonLLeno,corazonMitad,corazonVacío)
             self.actualizarCorazones(corazonLLeno,corazonMitad,corazonVacío)
         else:
             self.lifeSurface.fill((255,0,255))
-            self.loadImagen('imgs/game_over.png',0.5,0.5,(0.025,0.025))
-            print("game over")
         
     def actualizarCorazones(self,corazonLLeno,corazonMitad,corazonVacío):
         j = 0
         for i in range(corazonLLeno):
             self.loadImagen('imgs/health/full.png',0.1,0.1,(0.1*j,0))
             j += 1
-            print("hace un corazon lleno")
         for i in range(corazonMitad):
             self.loadImagen('imgs/health/half.png',0.1,0.1,(0.1*j,0))
             j += 1
-            print("hace un corazon medio")
         for i in range(corazonVacío):
             self.loadImagen('imgs/health/none.png',0.1,0.1,(0.1*j,0))
             j += 1
-            print("hace un corazon vacio")
 
     def restoreLife(self, life):
         if self.vida != 0:
@@ -70,6 +64,9 @@ class BarraVida:
             self.actualizarCorazones()  # Actualizamos los corazones en la barra de vida
         else:
             print("game over")
+            
+    def getVida(self):
+        return self.vida
 
 def testLifeBar():
     pygame.init()

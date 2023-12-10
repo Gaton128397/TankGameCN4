@@ -41,7 +41,20 @@ class TerrenoVariado:
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
-    def updateImpact(self,pos,proyectil,lista):
+    def updateImpact(self,position,proyectil,lista, jugadoresDerrotados):
+        pos = []
+        if position[0] < 0:
+            pos.append(0)
+        elif position[0] > params.WIDTH:
+            pos.append(params.WIDTH)
+        else:
+            pos.append(position[0])
+        if position[1] < 0:
+            pos.append(0)
+        elif position[1] > params.HEIGHT:
+            pos.append(params.HEIGHT)
+        else:
+            pos.append(position[1])
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, proyectil.blastRadius)
         tanquesDañadosIzquierda = {}
         tanquesDañadosDerecha= {}
@@ -75,12 +88,16 @@ class TerrenoVariado:
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
             #dano = self.calcularDMG(distancia, 50)
             lista[z].actualizarVida(dmg)
+            if lista[z].getVida() <= 0:
+                jugadoresDerrotados.append(lista[z])
             print(f"El tanque {z} recibe un daño de {dmg}")
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
             lista[z].actualizarVida(dmg)
+            if lista[z].getVida() <= 0:
+                jugadoresDerrotados.append(lista[z])
             print(distancia)
             print(f"El tanque {z} recibe un daño de {dmg}")
     
@@ -119,6 +136,7 @@ class TerrenoVariado:
             dmg = int(functions.calcularDMG(distancia, 50, radius,1))
             #dano = self.calcularDMG(distancia, 50)
             lista[z].actualizarVida(dmg)
+            
             print(f"El tanque {z} recibe un daño de {dmg}")
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():

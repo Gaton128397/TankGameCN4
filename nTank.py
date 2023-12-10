@@ -11,10 +11,10 @@ class Tank:
         self.listaEventos = [] #indice 0 mover cañon, indice 1 poderes
         self.cargarEventos()
         self.lifeBar = nBarraVida.BarraVida(0.1)
-
+        self.health = True
         self.color = color
 
-        self.angulo =random.randint(0,180)
+        self.angulo = 60
 
         self.xCanon1 = 0
         self.yCanon1 = 0
@@ -42,7 +42,7 @@ class Tank:
         self.draw_tank()
         self.getFallPoint()
         self.getHitBox()
-        self.surfaceTank.blit(self.lifeBar.lifeSurface,(80,110))
+        self.surfaceTank.blit(self.lifeBar.lifeSurface,(int(self.surfaceTank.get_width()*0.28),int(self.surfaceTank.get_height()*0.74)))
         
     def cargarEventos(self):
         diccionarioEventosCañon = {}
@@ -62,17 +62,17 @@ class Tank:
     def actualizarTanque(self):
         pygame.draw.rect(self.surfaceTank, self.alphaColor, (0,0,self.surfaceTank.get_width(),self.surfaceTank.get_height()))
         self.draw_tank()
-        self.surfaceTank.blit(self.lifeBar.lifeSurface,(80,110))
+        self.surfaceTank.blit(self.lifeBar.lifeSurface,(int(self.surfaceTank.get_width()*0.28),int(self.surfaceTank.get_height()*0.74)))
         
     def actualizarVida(self,vida):
         self.lifeBar.actualizarVida(vida)
         self.actualizarTanque()
 
     def actualizarAngulo(self, event):
-        if self.listaEventos[0][event.key] == 1:
+        if self.listaEventos[0][event] == 1:
             if self.angulo < 180:
                 self.angulo += 1
-        if self.listaEventos[0][event.key] == -1:
+        if self.listaEventos[0][event] == -1:
             if self.angulo > 0:
                 self.angulo += -1
         self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
@@ -100,6 +100,15 @@ class Tank:
     
     def printTankPost(self):
         print((self.x+self.xpos,self.y+self.ypos))
+        
+    def getVida(self):
+        return self.lifeBar.vida
+    
+    def recalcularCordCanon(self):
+        self.xCanon1 =self.x
+        self.yCanon1  = (self.y - self.height) - self.height/4
+        self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
+        self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         
 def actualizar(window,i):
     window.blit(i.surfaceTank,i.getPos())

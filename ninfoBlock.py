@@ -17,7 +17,7 @@ class infoBlock:
         
         
     def cargar_imagen(self, imagen, proporcionX, proporcionY, posicion):
-        imagen_cargada = pygame.image.load(imagen)
+        imagen_cargada = imagen
         imagen_escalada = pygame.transform.scale(imagen_cargada, (self.bloque.get_width()*proporcionX, self.bloque.get_height()*proporcionY))
         self.bloque.blit(imagen_escalada, (int(self.bloque.get_width() *posicion[0]),int(self.bloque.get_height() *posicion[1])))
 
@@ -75,7 +75,7 @@ class infoBlock:
     def actualizarCantidadBalas(self,texto):
         if texto > 0:
             texto = str(texto)
-            self.borrarCantidadBala(True)
+            self.borrarCantidadBala(False)
             texto = "x"+texto
             fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
             superficie_texto = fuente.render(texto, True, (0, 0, 0))

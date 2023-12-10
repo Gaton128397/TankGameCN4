@@ -33,6 +33,7 @@ def playerSpawn(window,listaJugadores,terrain,surface):
                     fallingTanks.remove(i)
                     listaJugadores[i].hitBox = {}
                     listaJugadores[i].getHitBox()
+                    listaJugadores[i].recalcularCordCanon()
             window.blit(surfaceCopy,(0,0))
             clock.tick(60)
             pygame.display.flip()

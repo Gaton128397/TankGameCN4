@@ -4,6 +4,7 @@ from pygame import image,transform,Surface
 size = 100 #fullScreen = 120
 WIDTH,HEIGHT = size*16,size*9
 playersNumber = 6
+gravityConstant = 9.8
 #screens
 menuImg = image.load('imgs/startEnd/Menu.png')
 bGganador1 = image.load('imgs/startEnd/ganador1.png')
@@ -30,9 +31,9 @@ mapaCiudad = image.load('imgs/maps/ciudad.png')
 shield = image.load('imgs/icons/shield.png')
 dmg = image.load('imgs/icons/dmg.png')
 health = image.load('imgs/icons/health.png')
-bigStone = image.load('imgs/icons/BigStone.png')
-mediumStone = image.load('imgs/icons/mediumStone.png')
-smallStone = image.load('imgs/icons/smallStone.png')
+bigStone = image.load('imgs/icons/105mmStone.png')
+mediumStone = image.load('imgs/icons/80mmStone.png')
+smallStone = image.load('imgs/icons/60mmStone.png')
 
 heartFull = image.load('imgs/health/full.png')
 heartsHalf = image.load('imgs/health/half.png')

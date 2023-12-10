@@ -24,20 +24,20 @@ class Projectile():
         self.blastRadius = 0
         self.DMG = 0
         
-        if self.typeBullet == 1: #105mm
-            cargarProyectil(self.surf,"imgs/projectile3.png",1,1,(0,0))
+        if self.typeBullet == 3: #105mm
+            cargarProyectil(self.surf,"imgs/icons/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.07)
             self.DMG = 50
             
-        elif self.typeBullet == 2: #80mm
-            cargarProyectil(self.surf,"imgs/projectile2.png",1,1,(0,0))
+        elif self.typeBullet == 4: #80mm
+            cargarProyectil(self.surf,"imgs/icons/80mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.05)
             self.DMG = 40
             
-        elif self.typeBullet == 3: #60mm
-            cargarProyectil(self.surf,"imgs/projectile1.png",0.6,0.6,(0,0))
+        elif self.typeBullet == 5: #60mm
+            cargarProyectil(self.surf,"imgs/icons/60mmStone.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.03)
             self.DMG = 30
@@ -91,7 +91,7 @@ class Projectile():
         puntox = int(self.surf.get_width()/2)
         puntoy = int(self.surf.get_height()/2)
         self.x += 10
-        while (self.x >0 and self.x < params.WIDTH):
+        while (self.x >0 and self.x < params.WIDTH) and (self.yNew < params.HEIGHT):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -100,9 +100,10 @@ class Projectile():
             self.yNew = self.y-self.ch
             self.win.blit(matriz[0],(0,0))
             self.win.blit(matriz[1],(0,0))
-            self.win.blit(matriz[2],(870,0))
+            self.win.blit(matriz[2],(params.WIDTH*0.7,0))
             self.win.blit(self.surf,(int(self.x),int(self.yNew)))
-            self.win.blit(self.listaJugador[0].surfaceTank,self.listaJugador[0].getPos())
+            for i in range(len(self.listaJugador)):
+                self.win.blit(self.listaJugador[i].surfaceTank,self.listaJugador[i].getPos())
             if (int(self.x+puntox),int(self.yNew+puntoy)) in puntosTerreno:
                 return (int(self.x+puntox),int(self.yNew+puntoy))
             else:
@@ -110,9 +111,10 @@ class Projectile():
                     if (int(self.x+puntox),int(self.yNew+puntoy)) in self.listaJugador[i].hitBox:
                         print("ouch")
                         return (int(self.x+puntox),int(self.yNew+puntoy))
-            clock.tick(200)
+            clock.tick(400)
             pygame.display.update()
         pygame.display.update()
+        return (int(self.x+puntox),int(self.yNew+puntoy))
         
 def game():
     pygame.init()
@@ -153,4 +155,4 @@ def game():
         window.blit(listajugador[0].surfaceTank,listajugador[0].getPos())
         window.blit(matriz[2],(870,0))
         pygame.display.update()
-game()
+#game()
