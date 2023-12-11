@@ -97,17 +97,9 @@ def loadPlayers(listaJugadores,window,ia):
         choise = random.randint(0,len(colores)-1)
         listaJugadores[i].asignTank(nTank.Tank(colores[choise],window,i))
         resetTanks.append([colores[choise],i])
-        resetTanks.append([colores[choise],i])
         colores.pop(choise)
     return resetTanks
 
-def resetTanks(listaJugadores,paramsTanks,window):
-    for i in range(len(listaJugadores)):
-        listaJugadores[i].asignTank(None)
-    for i in range(len(listaJugadores)):
-        listaJugadores[i].asignTank(nTank.Tank(paramsTanks[i][0],window,paramsTanks[i][1]))
-
-def resetIventario(listaJugadores):
 def resetTanks(listaJugadores,paramsTanks,window):
     for i in range(len(listaJugadores)):
         listaJugadores[i].asignTank(None)

@@ -52,9 +52,9 @@ class Projectile():
 
         self.ch = 0
         if (theta >90):
-            self.dx = -params.WIDTH*0.001
+            self.dx = -params.WIDTH*0.002
         else:
-            self.dx = params.WIDTH*0.001
+            self.dx = params.WIDTH*0.002
         print("este es self dx"+str(self.dx))
         self.f = self.getTrajectory()
 
