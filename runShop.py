@@ -1,11 +1,11 @@
 import pygame, sys,button,crearItems,params,player,time
 pygame.init()
 #variables
-# jugadorTest = player.Player()
-# jugadorTest2 = player.Player()
-# jugadorTest3 = player.Player()
-# jugadorTest4 = player.Player()
-# listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
+jugadorTest = player.Player()
+jugadorTest2 = player.Player()
+jugadorTest3 = player.Player()
+jugadorTest4 = player.Player()
+listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
 class Shop:
     def __init__(self):
 
@@ -14,19 +14,19 @@ class Shop:
         self.tiendaIni = params.shopIniImg
         self.tiendaMid = params.shopMidImg
         self.tiendaEnd = params.shopFinImg
-        self.window = pygame.display.set_mode((self.width, self.height))
+        self.window = params.screen#pygame.display.set_mode((self.width, self.height))
 
         self.actualItem = None
-
+        self.buttons = self.buttons()
     '''METHODS'''
     def createItems(self):
         '''CREARITEMS'''
         shield = crearItems.item('shield',0,'+1 escudo',100,params.shield)
         dmg = crearItems.item('dmg',1,'+10 dmg',100,params.dmg)
         health = crearItems.item('health',2,'+10 vida',100,params.health)
-        bigStone = crearItems.item('big Stone',3,'piedra grande',100,params.bigStone)
-        mediumStone = crearItems.item('small Stone',4,'piedra chica',100,params.smallStone)
-        smallStone = crearItems.item('medium Stone',5,'piedra mediana',100,params.mediumStone)
+        bigStone = crearItems.item('big Stone',3,'piedra grande',4000,params.bigStone)
+        mediumStone = crearItems.item('small Stone',4,'piedra chica',1000,params.smallStone)
+        smallStone = crearItems.item('medium Stone',5,'piedra mediana',2500,params.mediumStone)
         return [shield,dmg,health,bigStone,mediumStone,smallStone]
     
     def buttons(self):
@@ -166,50 +166,42 @@ class Shop:
         player = 0 #jugador actual
         running =True
         while running:
-            if params.size == 120:
-                screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-            else:
-                screen = pygame.display.set_mode((params.size*16, params.size*9))
-            screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
+            
+            params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
+            #events = pygame.event.get()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     running = False
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_f:
-                        if params.size == 120:
-                            self.window = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-                        else:
-                            self.window = pygame.display.set_mode((params.size*16, params.size*9))
                 #botones tienda
-            for boton in self.buttons():
-                time.sleep(0.005)
-                if boton.check_click(event):
-                    if boton.item == 'home':
-                        running = False
-                    elif boton.item == 'settings':
-                        print('settings')
-                    elif boton.item == 'buy':
-                        self.buyItem(self.actualItem,playerList[player])
-                    elif boton.item == 'sell':
-                        self.sellItem(self.actualItem,playerList[player])
-
-                    elif boton.item == 'previous':
-                        if player > 0:
-                            player -= 1
-                            self.actualItem = None
-                        else:
-                            player = len(playerList)-1
-                    elif boton.item == 'finish':
-                        if player == len(playerList)-1:
+                for btn in self.buttons:
+                    time.sleep(0.005)
+                    if btn.check_click(event):
+                        if btn.item == 'home':
                             running = False
-                        if player < len(playerList)-1:
-                            player += 1
-                            self.actualItem = None
+                        elif btn.item == 'settings':
+                            print('settings')
+                        elif btn.item == 'buy':
+                            self.buyItem(self.actualItem,playerList[player])
+                        elif btn.item == 'sell':
+                            self.sellItem(self.actualItem,playerList[player])
 
-                    else:
-                        self.selectItem(boton.item)
-                        self.actualItem = boton.item
+                        elif btn.item == 'previous':
+                            if player > 0:
+                                player -= 1
+                                self.actualItem = None
+                            else:
+                                player = len(playerList)-1
+                        elif btn.item == 'finish':
+                            if player == len(playerList)-1:
+                                running = False
+                            if player < len(playerList)-1:
+                                player += 1
+                                self.actualItem = None
+
+                        else:
+                            self.selectItem(btn.item)
+                            self.actualItem = btn.item
             #dibujar tienda
             if player == 0:
                 
@@ -229,6 +221,6 @@ class Shop:
                 self.selectItem(self.actualItem)
             pygame.display.update()
 
-# if __name__ == "__main__":
+#if __name__ == "__main__":
 #     shop = Shop()
 #     shop.openShop(listaJugadores)

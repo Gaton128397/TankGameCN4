@@ -1,9 +1,10 @@
-from pygame import image,transform,Surface
+from pygame import image,transform,Surface,display
 
 
-size = 100 #fullScreen = 120
+size = 80 #fullScreen = 120
 playersNumber = 2
 gravityConstant = 9.8
+screen = display.set_mode((size*16, size*9))
 #screens
 menuImg = image.load('imgs/startEnd/Menu.png')
 bGganador1 = image.load('imgs/startEnd/ganador1.png')

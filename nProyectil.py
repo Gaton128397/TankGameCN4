@@ -102,8 +102,7 @@ class Projectile():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-            self.x += self.dx + self.wind
-            print(self.x//1000)
+            self.x += self.dx + self.wind/100
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.yNew = self.y-self.ch
             self.win.blit(matriz[0],(0,0))
@@ -125,43 +124,3 @@ class Projectile():
         pygame.display.update()
         return (int(self.x+puntox),int(self.yNew+puntoy))
         
-def game():
-    pygame.init()
-    run = True
-    clock = pygame.time.Clock()
-    window = pygame.display.set_mode((params.size*16, params.size*9))
-    terrain = nTerrain.TerrenoVariado()
-    bg = pygame.Surface((params.size*16, params.size*9))
-    drawFunctions.backgroundDraw(bg)
-    info = ninfoBlock.infoBlock(0.3)
-    info.actualizarAngulo('10')
-    info.actualizarDistancia("2000")
-    info.actualizarEscudo(False)
-    info.actualizarDmg(False)
-    info.actualizarBotellas("0")
-    info.actualizarTipoBala("105")
-    info.actualizarCantidadBalas(0)
-    listajugador = []
-    for i in range(1):
-        listajugador.append(nTank.Tank(700,(255,0,0),window))
-    matriz = []
-    matriz.append(bg)
-    matriz.append(terrain.surfTerrain)
-    matriz.append(info.bloque)
-    playerPhysics.playerSpawn(window,listajugador,terrain,drawFunctions.returnSurface(matriz))
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                run = False
-            elif pygame.mouse.get_pressed()[0]:
-                print(pygame.mouse.get_pos())
-        bullet = Projectile((100,10),1,random.randint(1,100),60,window,listajugador)
-        terrain.updateImpact(bullet.shoot(matriz,terrain.getDiccionary()),bullet,listajugador)
-        playerPhysics.fallTanks(window,listajugador,terrain.getDiccionary(),drawFunctions.returnSurface(matriz))
-        window.blit(matriz[0],(0,0))
-        window.blit(matriz[1],(0,0))
-        window.blit(listajugador[0].surfaceTank,listajugador[0].getPos())
-        window.blit(matriz[2],(870,0))
-        pygame.display.update()
-#game()

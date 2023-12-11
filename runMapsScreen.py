@@ -57,12 +57,12 @@ def createButtons():
             nieve_button, desierto_button, ciudad_button]
     
 def loadScreen():
-    if params.size == 120:
-        screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-    else:
-        screen = pygame.display.set_mode((params.size*16, params.size*9))
-    screen.blit(pygame.transform.scale(params.bgMapas, (params.size*16, params.size*9)), (0, 0))    
-    pygame.display.flip()
+    #if params.size == 120:
+    #    params.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+    #else:
+    #    params.screen = pygame.display.set_mode((params.size*16, params.size*9))
+    params.screen.blit(pygame.transform.scale(params.bgMapas, (params.size*16, params.size*9)), (0, 0))    
+    #pygame.display.flip()
 
 # if __name__ == '__main__':
     # runMaps()
