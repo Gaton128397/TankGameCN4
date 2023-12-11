@@ -39,7 +39,7 @@ class gameLogic:
         splitPos = params.WIDTH//(params.playersNumber*2)
         contador = 0
         for i in range(params.playersNumber):
-            self.listaPlayers[i].tanque.setPos((random.randint(contador,contador+splitPos),-10))
+            self.listaPlayers[i].tanque.setPos((random.randint(contador,contador+splitPos),-20))
             self.listaJugadores.append(self.listaPlayers[i].tanque)
             contador += splitPos*2
     
@@ -88,26 +88,30 @@ class gameLogic:
     def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
         if len(self.listaJugadores) == 1:
             #mostrar pantalla de que el jugador gano
-            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png")
+            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             summary.sb_run()
             summary = None
             for i in range(len(self.listaPlayers)):
-                print("jugador: " + str(i) + " kills: " + str(self.listaPlayers[i].kda[0])+ " deaths: " + str(self.listaPlayers[i].kda[1]))
-            for i in range(len(self.listaPlayers)):
-                if self.listaPlayers[i].selfKill:
-                    print("jugador: " + str(i) + " se suicido")
+                self.listaPlayers[i].generalkda[0] += self.listaPlayers[i].kda[0]
+                self.listaPlayers[i].generalkda[1] += self.listaPlayers[i].kda[1]
+                self.listaPlayers[i].kda[0] = 0
+                self.listaPlayers[i].kda[1] = 0
+            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scoreGeneral.png",True)
+            summary.sb_run()
             return False
         elif self.cantidadbullets <= 0:
-            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png")
+            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             summary.sb_run()
             summary = None
+            for i in range(len(self.listaPlayers)):
+                self.listaPlayers[i].generalkda[0] += self.listaPlayers[i].kda[0]
+                self.listaPlayers[i].generalkda[1] += self.listaPlayers[i].kda[1]
+                self.listaPlayers[i].kda[0] = 0
+                self.listaPlayers[i].kda[1] = 0
+            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scoreGeneral.png",True)
+            summary.sb_run()
+            
             #mostrar pantalla de que se los jugadores se quedaron sin balas
-            for i in range(len(self.listaPlayers)):
-                print("jugador: " + str(i) + " kills: " + str(self.listaPlayers[i].kda[0])+ " deaths: " + str(self.listaPlayers[i].kda[1]))
-            print("\n")
-            for i in range(len(self.listaPlayers)):
-                if self.listaPlayers[i].selfKill:
-                    print("jugador: " + str(i) + " se suicido")
             return False
         elif jugadoresDerrotados:
             for i in range(len(jugadoresDerrotados)):

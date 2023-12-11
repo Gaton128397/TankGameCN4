@@ -39,15 +39,16 @@ class imgTank:
         
     
 class scoreBoard():
-    def __init__(self,listaJugadores, window,colors,ruta):
+    def __init__(self,listaJugadores, window,colors,ruta,general):
         self.colors = colors
         self.surface = pygame.Surface((params.WIDTH,params.HEIGHT))
         drawFunctions.backgroundDraw(self.surface,ruta)
         self.window = window
+        self.general = general
         self.listaJugadores = listaJugadores
+        self.infoMostrar = None
         self.mostrarJugadores()
     def mostrarJugadores(self):
-        superficiesJugadores = []
         contador = 0
         for i in range(len(self.listaJugadores)):
             jugador = pygame.Surface((params.WIDTH*0.842,params.HEIGHT*0.07))
@@ -60,9 +61,14 @@ class scoreBoard():
     def mostrarJugador(self,superficie,jugador):
         tank = imgTank(self.colors[jugador])
         superficie.blit(tank.surfaceTank,(0,0))
-        self.mostrarTexto(superficie,str(self.listaJugadores[jugador].kda[0]),int(superficie.get_width() *0.37))
-        self.mostrarTexto(superficie,str(self.listaJugadores[jugador].kda[1]),int(superficie.get_width() *0.65))
-        self.mostrarTexto(superficie,str(self.listaJugadores[jugador].money),int(superficie.get_width() *0.85))
+        if not self.general:
+            self.mostrarTexto(superficie,str(self.listaJugadores[jugador].kda[0]),int(superficie.get_width() *0.37))
+            self.mostrarTexto(superficie,str(self.listaJugadores[jugador].kda[1]),int(superficie.get_width() *0.65))
+            self.mostrarTexto(superficie,str(self.listaJugadores[jugador].money),int(superficie.get_width() *0.85))
+        else:
+            self.mostrarTexto(superficie,str(self.listaJugadores[jugador].generalkda[0]),int(superficie.get_width() *0.37))
+            self.mostrarTexto(superficie,str(self.listaJugadores[jugador].generalkda[1]),int(superficie.get_width() *0.65))
+            self.mostrarTexto(superficie,str(self.listaJugadores[jugador].money),int(superficie.get_width() *0.85))
     def mostrarTexto(self,superficie,texto, pos):
         fuente = pygame.font.Font(None, int(params.HEIGHT*0.05))
         superficie_texto = fuente.render(texto, True, (0, 0, 0))
@@ -76,6 +82,10 @@ class scoreBoard():
                 if event.type == pygame.QUIT:
                     run = False
                     pygame.quit()
-            self.window.blit(self.surface,(0,0))
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        run = False
             clock.tick(60)
+            self.window.blit(self.surface,(0,0))
+            
             pygame.display.flip()

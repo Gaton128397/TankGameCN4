@@ -39,7 +39,7 @@ def mainScreen():#Logica de mainScreen()
     modo = 1 #CPU 
     jugadores = 2 #jugadores
     
-    rondas = 1 #rondas
+    partidas = 3 #rondas
     run = True
     dificultad = 0
 
@@ -74,19 +74,19 @@ def mainScreen():#Logica de mainScreen()
             mapa = mapBool[1]
             
         elif actualScreen == 5:#juego
-            rondaActual = 0
+            partidaActual = 0
             listaJugadores = []
             ia = True
             resetTanks = functions.loadPlayers(listaJugadores,screen,ia)
             winner = None
-            while rondaActual < rondas:
+            while partidaActual < partidas:
                 functions.resetTanks(listaJugadores,resetTanks,screen)
                 functions.resetIventario(listaJugadores)
                 abierta = shop.openShop(listaJugadores)
                 if abierta == 1:
                     game = runGame.gameLogic(screen,listaJugadores,mapa)
                     game.run(clock)
-                    rondaActual += 1
+                    partidas += 1
             print("ganador")
 
         elif actualScreen == 6:#pausa

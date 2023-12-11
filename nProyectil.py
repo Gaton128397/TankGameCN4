@@ -43,7 +43,13 @@ class Projectile():
             self.blastRadius = int(params.WIDTH*0.03)
             self.DMG = 30
         self.origin = (position[0],position[1])
-
+        if theta < 100 and theta > 85:
+            variable = random.randint(0,1)
+            if variable == 0:
+                self.theta = 85 - random.randint(0,5)
+            else:
+                self.theta = 100 + random.randint(0,5)
+            
         self.theta = toRadian(abs(theta))
 
         self.x, self.y = position[0], position[1]
