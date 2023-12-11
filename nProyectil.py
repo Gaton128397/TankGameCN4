@@ -113,6 +113,7 @@ class Projectile():
                         print("ouch")
                         return (int(self.x+puntox),int(self.yNew+puntoy))
             clock.tick(self.reloj)
+            clock.tick(self.reloj)
             pygame.display.update()
         pygame.display.update()
         return (int(self.x+puntox),int(self.yNew+puntoy))

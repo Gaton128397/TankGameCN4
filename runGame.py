@@ -86,6 +86,8 @@ class gameLogic:
         return False
     
     def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
+    
+    def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
         if len(self.listaJugadores) == 1:
             #mostrar pantalla de que el jugador gano
             summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png")
@@ -115,8 +117,10 @@ class gameLogic:
                 del self.listaJugadores[self.getTankIndex(jugadoresDerrotados[i])]
             self.definirTurnos(listaDeTurnos)
             self.cantidadbullets = self.cantidadBalas()
+            self.cantidadbullets = self.cantidadBalas()
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
             jugadoresDerrotados.clear()
@@ -127,6 +131,7 @@ class gameLogic:
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
             self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
+            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
             print("turno actual: ",turnos[0])
             print("turno anterior: ",turnos[1])
@@ -134,6 +139,7 @@ class gameLogic:
         elif turnos[0] != turnos[1]:
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
             print("turno actual: ",turnos[0])
@@ -149,6 +155,7 @@ class gameLogic:
         for i in range(len(self.listaJugadores)):
             listaTurnos.append(i)
         print("lista de turnos: " + str(listaTurnos))
+        print("lista de turnos: " + str(listaTurnos))
         
     def tankPos(self):
         return 0
@@ -158,6 +165,19 @@ class gameLogic:
     
     def loadingScreen():
         print("loading")
+    
+    def cantidadBalas(self):
+        cantidadBalas = 0
+        for i in range(len(self.listaJugadores)):
+            cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[3]
+            cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[4]
+            cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[5]
+        return cantidadBalas
+    
+    def comprobarBalasJugador(self,jugador):
+        if self.listaPlayers[jugador.playerID].inventory[3] <= 0 and self.listaPlayers[jugador.playerID].inventory[4] <= 0 and self.listaPlayers[jugador.playerID].inventory[5] <= 0:
+            self.listaPlayers[jugador.playerID].tanque.ammo = False
+        
     
     def cantidadBalas(self):
         cantidadBalas = 0
