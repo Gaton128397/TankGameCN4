@@ -1,4 +1,4 @@
-import math, params, player, nTank, random
+import math, params, player, nTank, random, copy
 
 radius = 160
 
@@ -71,18 +71,43 @@ def calcularDMG(distancia, dano_maximo, radio,tipoProyectil):
         else:
             return dano_maximo*0.5
     
-def loadPlayers(listaJugadores,window):
+def loadPlayers(listaJugadores,window,ia):
     resetTanks = []
-    for i in range(params.playersNumber):
-        listaJugadores.append(player.Player())
+    if ia == False:
+        for i in range(params.playersNumber):
+            listaJugadores.append(player.Player())
+    elif ia == True:
+        choosePlayer = True
+        for i in range(params.playersNumber):
+            if choosePlayer:
+                randomPlayer = random.randint(0,1)
+                if randomPlayer == 0:
+                    listaJugadores.append(player.Player())
+                    choosePlayer = False
+                else:
+                    listaJugadores.append(player.Player())
+                    listaJugadores[i].ia = True
+            else:
+                listaJugadores.append(player.Player())
+                listaJugadores[i].ia = True
+                
     colores = ["red", "green", "blue", "yellow", "orange", (128, 0, 128)]
     for i in range(len(listaJugadores)):
         choise = random.randint(0,len(colores)-1)
         listaJugadores[i].asignTank(nTank.Tank(colores[choise],window,i))
-        resetTanks.append(nTank.Tank(colores[choise],window,i))
+        resetTanks.append([colores[choise],i])
         colores.pop(choise)
     return resetTanks
 
-def resetTanks(listaJugadores,tankList):
+def resetTanks(listaJugadores,paramsTanks,window):
     for i in range(len(listaJugadores)):
-        listaJugadores[i].asignTank(tankList[i])
+        listaJugadores[i].asignTank(None)
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].asignTank(nTank.Tank(paramsTanks[i][0],window,paramsTanks[i][1]))
+
+def resetIventario(listaJugadores):
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].inventory[0] = 0
+        listaJugadores[i].inventory[3] = 3
+        listaJugadores[i].inventory[4] = 0
+        listaJugadores[i].inventory[5] = 0

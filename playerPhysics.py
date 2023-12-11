@@ -1,6 +1,6 @@
 import pygame, drawFunctions, params
 
-def playerSpawn(window,listaJugadores,terrain,surface):
+def playerSpawn(window,listaJugadores,terrain,surface,gravity):
     clock = pygame.time.Clock()
     falling = True
     fallingTanks = []
@@ -10,7 +10,7 @@ def playerSpawn(window,listaJugadores,terrain,surface):
             fallingTanks.append(i)
             copy.append(listaJugadores[i].surfaceTank.copy())
             drawFunctions.cargarImagen(listaJugadores[i].surfaceTank,params.parachute,0.2,0.5,(0.32,0.03))
-    g = params.gravityConstant//3
+    g = gravity//3
     if not fallingTanks:
         falling = False
     while falling:
@@ -38,15 +38,16 @@ def playerSpawn(window,listaJugadores,terrain,surface):
             clock.tick(60)
             pygame.display.flip()
             
-def fallTanks(window,listaJugadores, terrainPoints, surface):
+def fallTanks(window,listaJugadores, terrainPoints,listaPlayers,listaJugadoresDerrotados, surface, gravity):
     clock = pygame.time.Clock()
     falling = True
     fallingTanks = []
     copy = []
+    falldmg = params.WIDTH*0.005
     for i in range(len(listaJugadores)):
         if listaJugadores[i].getFallPoint() not in terrainPoints:
             fallingTanks.append(i)
-    g = params.gravityConstant
+    g = gravity
     if not fallingTanks:
         falling = False
     while falling:
@@ -59,12 +60,19 @@ def fallTanks(window,listaJugadores, terrainPoints, surface):
         else:
             for i in fallingTanks:
                 listaJugadores[i].ypos += g
+                listaJugadores[i].fallDmg += g
                 surfaceCopy = surface.copy()
                 surfaceCopy.blit(surface,(0,0))
                 for j in listaJugadores:
                     surfaceCopy.blit(j.surfaceTank,j.getPos())
                 if listaJugadores[i].getFallPoint() in terrainPoints:
                     listaJugadores[i].ypos = int(listaJugadores[i].ypos)
+                    listaJugadores[i].actualizarVida(listaJugadores[i].fallDmg//falldmg)
+                    if listaJugadores[i].getVida() <= 0:
+                        if listaJugadores[i] not in listaJugadoresDerrotados:
+                            listaJugadoresDerrotados.append(listaJugadores[i])
+                            listaPlayers[listaJugadores[i].playerID].kda[1] += 1
+                    listaJugadores[i].fallDmg = 0
                     fallingTanks.remove(i)
                     listaJugadores[i].hitBox = {}
                     listaJugadores[i].getHitBox()

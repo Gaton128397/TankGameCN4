@@ -5,12 +5,11 @@ class Map:
         self.img = img
         self.gravity = gravity
         self.wind = wind
-        self.width, self.height = params.size*16, params.size*9
-        self.img = pygame.transform.scale(self.img, (self.width, self.height))
+        self.img = pygame.transform.scale(self.img, (params.WIDTH, params.HEIGHT))
         self.terrainColor = terrainColor
 
-    def returnMap(self):
-        return Map(self.img,self.gravity,self.wind)
+    def getMap(self):
+        return (self.img,self.gravity,self.wind)
     
     def draw(self,window):
         window.blit(self.img,(0,0))

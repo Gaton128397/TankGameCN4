@@ -196,7 +196,7 @@ class Shop:
                         player -=1
                         self.actualItem = None
                     elif self.finishButton.check_click(event):
-                        return 4 #sale de la tienda a la eleccion de mapa
+                        return 1 #sale de la tienda a la eleccion de mapa
                 else:
                     self.window.blit(self.tiendaMid,(0,0))#tienda del medio
                     if self.nextButton.check_click(event):

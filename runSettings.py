@@ -48,7 +48,7 @@ class Settings:
                     if btn.check_click(event):
                         if btn.item == 'Home':
                             print('boton home')
-                            return 0
+                            return [0,2,1]#vuelve al menu con las configuraciones por defecto
                         elif btn.item == 'Confirmar':
                             return [4,self.jugadores,self.rondas]
 

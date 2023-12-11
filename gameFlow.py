@@ -38,19 +38,16 @@ def mainScreen():#Logica de mainScreen()
     mapa = None #Ninguno
     modo = 1 #CPU 
     jugadores = 2 #jugadores
-    rondaActual = 1
+    
     rondas = 1 #rondas
     run = True
     dificultad = 0
 
     #jugadores
-    jugador1 = player.Player()#jugador 1
-    jugador2 = player.Player()#jugador 2
-    jugador3 = player.Player()#jugador 3
-    jugador4 = player.Player()#jugador 4
-    listaJugadores = [jugador1,jugador2,jugador3,jugador4]#lista de jugadores
     # resetTanks = functions.loadPlayers(listaJugadores,screen)
-
+    params.WIDTH = 1200
+    params.HEIGHT = 700
+    screen = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     while True:#loop principal
 
         if actualScreen == 0:#Menu
@@ -61,28 +58,36 @@ def mainScreen():#Logica de mainScreen()
             actualScreen = playMode[0]
             modo = playMode[1]
 
-        elif actualScreen == 2:#tienda
-            actualScreen = shop.openShop(listaJugadores)#requiere una lista de jugadores
+        #elif actualScreen == 2:#tienda
+            #actualScreen = shop.openShop(listaJugadores)#requiere una lista de jugadores
 
         elif actualScreen == 3:#settings
-            settings = settings.runSettings()
-            actualScreen = settings[0]
-            jugadores = settings[1] #jugadores 
-            rondas = settings[2] #rondas
+            settingsBool = settings.runSettings()
+            actualScreen = settingsBool[0]
+            #jugadores = settingsBool[1] #jugadores 
+            #rondas = settingsBool[2] #rondas
 
         elif actualScreen == 4:#mapas
+            print("mapas")
             mapBool = mapScreen.runMaps()
             actualScreen = mapBool[0]
             mapa = mapBool[1]
             
         elif actualScreen == 5:#juego
-            print('empesamo')
-            break
-            # while rondaActual <= rondas:
-            #     functions.resetTanks(listaJugadores,resetTanks)
-            #     game = runGame.gameLogic(screen,listaJugadores)
-            #     game.run(clock)
-            #     rondaActual += 1
+            rondaActual = 0
+            listaJugadores = []
+            ia = True
+            resetTanks = functions.loadPlayers(listaJugadores,screen,ia)
+            winner = None
+            while rondaActual < rondas:
+                functions.resetTanks(listaJugadores,resetTanks,screen)
+                functions.resetIventario(listaJugadores)
+                abierta = shop.openShop(listaJugadores)
+                if abierta == 1:
+                    game = runGame.gameLogic(screen,listaJugadores,mapa)
+                    game.run(clock)
+                    rondaActual += 1
+            print("ganador")
 
         elif actualScreen == 6:#pausa
             pausa_result = pausa.runPausa(lastScreen)

@@ -1,13 +1,13 @@
 import math,pygame,params, drawFunctions, nTerrain, nTank, random, playerPhysics, ninfoBlock
 from functions import *
-g = 9.8
 FPS = 60
 def cargarProyectil(surf, imagen, proporcionX, proporcionY, posicion):
     imagen_cargada = pygame.image.load(imagen)
     imagen_escalada = pygame.transform.scale(imagen_cargada, (surf.get_width()*proporcionX, surf.get_height()*proporcionY))
     surf.blit(imagen_escalada, (posicion))
 class Projectile():
-    def __init__(self, position, typeBullet,power, theta,window,listaJugador):
+    def __init__(self, position, typeBullet,power, theta,window,listaJugador,gravity,wind):
+        self.reloj = 400
         super(Projectile, self).__init__()
         #('se crea')
         self.listaJugador = listaJugador
@@ -23,7 +23,8 @@ class Projectile():
         self.explosionArea = 0
         self.blastRadius = 0
         self.DMG = 0
-        
+        self.g = gravity
+        self.wind = wind
         if self.typeBullet == 3: #105mm
             cargarProyectil(self.surf,"imgs/icons/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
@@ -51,10 +52,10 @@ class Projectile():
 
         self.ch = 0
         if (theta >90):
-            self.dx = -1
+            self.dx = -params.WIDTH*0.001
         else:
-            self.dx = 1
-
+            self.dx = params.WIDTH*0.001
+        print("este es self dx"+str(self.dx))
         self.f = self.getTrajectory()
 
         self.range = self.x + abs(self.getRange())
@@ -65,21 +66,21 @@ class Projectile():
         self.hitYourself = False
 
     def timeOfFlight(self):
-        return round((2 * self.power * math.sin(self.theta)) / g, 2)
+        return round((2 * self.power * math.sin(self.theta)) / self.g, 2)
 
     def getRange(self):
 
-        range_ = ((self.power ** 2) * 2 * math.sin(self.theta) * math.cos(self.theta)) / g
+        range_ = ((self.power ** 2) * 2 * math.sin(self.theta) * math.cos(self.theta)) / self.g
         return round(range_, 2)
 
     def getMaxHeight(self):
 
-        h = ((self.power ** 2) * (math.sin(self.theta)) ** 2) / (2 * g)
+        h = ((self.power ** 2) * (math.sin(self.theta)) ** 2) / (2 * self.g)
         return round(h, 2)
 
     def getTrajectory(self):
         
-        return round(g /  (2 * (self.power ** 2) * (math.cos(self.theta) ** 2)), 4) 
+        return round(self.g /  (2 * (self.power ** 2) * (math.cos(self.theta) ** 2)), 4) 
 
     def getProjectilePos(self, x):
 
@@ -95,7 +96,7 @@ class Projectile():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-            self.x += self.dx 
+            self.x += self.dx + self.wind/100
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.yNew = self.y-self.ch
             self.win.blit(matriz[0],(0,0))
@@ -111,7 +112,7 @@ class Projectile():
                     if (int(self.x+puntox),int(self.yNew+puntoy)) in self.listaJugador[i].hitBox:
                         print("ouch")
                         return (int(self.x+puntox),int(self.yNew+puntoy))
-            clock.tick(400)
+            clock.tick(self.reloj)
             pygame.display.update()
         pygame.display.update()
         return (int(self.x+puntox),int(self.yNew+puntoy))

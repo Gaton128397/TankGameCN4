@@ -1,7 +1,7 @@
 from pygame import image,transform,Surface
 
 
-size = 100 #fullScreen = 120
+size = 80 #fullScreen = 120
 WIDTH,HEIGHT = size*16,size*9
 playersNumber = 6
 gravityConstant = 9.8

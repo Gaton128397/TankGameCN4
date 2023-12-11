@@ -41,7 +41,7 @@ class TerrenoVariado:
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
-    def updateImpact(self,position,proyectil,lista, jugadoresDerrotados):
+    def updateImpact(self,position,proyectil,lista,listaPlayers,jugadoresDerrotados,turno):
         pos = []
         if position[0] < 0:
             pos.append(0)
@@ -86,19 +86,35 @@ class TerrenoVariado:
             print(f"Tanque {z}: {punto}")
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
-            #dano = self.calcularDMG(distancia, 50)
+            if listaPlayers[lista[z].playerID].inventory[0] == 1:
+                listaPlayers[lista[z].playerID].inventory[0] = 0
+                dmg = dmg*0.60
             lista[z].actualizarVida(dmg)
             if lista[z].getVida() <= 0:
                 jugadoresDerrotados.append(lista[z])
+                if lista[z].playerID == lista[turno].playerID:
+                    listaPlayers[lista[turno].playerID].selfKill = True
+                    listaPlayers[lista[turno].playerID].kda[1] += 1
+                else:
+                    listaPlayers[lista[turno].playerID].kda[0] += 1
+                    listaPlayers[lista[z].playerID].kda[1] += 1
             print(f"El tanque {z} recibe un daño de {dmg}")
         print("Puntos de impacto en la derecha:")
         for z, punto in puntosImpactoDerecha.items():
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
+            if listaPlayers[lista[z].playerID].inventory[0] == 1:
+                listaPlayers[lista[z].playerID].inventory[0] = 0
+                dmg = dmg*0.60
             lista[z].actualizarVida(dmg)
             if lista[z].getVida() <= 0:
                 jugadoresDerrotados.append(lista[z])
-            print(distancia)
+                if lista[z].playerID == lista[turno].playerID:
+                    listaPlayers[lista[turno].playerID].selfKill = True
+                    listaPlayers[lista[turno].playerID].kda[1] += 1
+                else:
+                    listaPlayers[lista[turno].playerID].kda[0] += 1
+                    listaPlayers[lista[z].playerID].kda[1] += 1
             print(f"El tanque {z} recibe un daño de {dmg}")
     
     def testupdateImpact(self,pos,radius,lista):

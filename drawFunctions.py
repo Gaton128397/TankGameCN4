@@ -1,6 +1,6 @@
 import pygame, params
-def backgroundDraw(screen):
-    backGr = params.mapaDesert
+def backgroundDraw(screen,ruta):
+    backGr = pygame.image.load(ruta)
     backGr = pygame.transform.scale(backGr,(params.WIDTH,params.HEIGHT))
     screen.blit(backGr,(0,0))
     

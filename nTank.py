@@ -11,9 +11,8 @@ class Tank:
         self.listaEventos = [] #indice 0 mover cañon, indice 1 poderes
         self.cargarEventos()
         self.lifeBar = nBarraVida.BarraVida(0.1)
-        self.health = True
         self.color = color
-
+        self.ammo = True
         self.angulo = 60
 
         self.xCanon1 = 0
@@ -23,7 +22,7 @@ class Tank:
         self.yCanon2 = 0
 
         self.end = (0,0)
-
+        self.fallDmg = 0
         self.tankProportion = 0.22
         self.surfaceTank = pygame.Surface((params.WIDTH*self.tankProportion, params.HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.4)
@@ -73,6 +72,17 @@ class Tank:
             if self.angulo < 180:
                 self.angulo += 1
         if self.listaEventos[0][event] == -1:
+            if self.angulo > 0:
+                self.angulo += -1
+        self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
+        self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
+        self.actualizarTanque()
+        
+    def actualizarAnguloIA(self, contador):
+        if contador == 1:
+            if self.angulo < 180:
+                self.angulo += 1
+        if contador == -1:
             if self.angulo > 0:
                 self.angulo += -1
         self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))

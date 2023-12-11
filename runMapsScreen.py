@@ -2,7 +2,7 @@ import pygame,sys,button,params,random,createMap
 
 class Maps:
     def __init__(self):
-        self.x = 100
+        self.x = params.size
         self.width, self.height = 16*self.x, 9*self.x
         self.screen = pygame.display.set_mode((self.width, self.height))
 
@@ -31,11 +31,11 @@ class Maps:
         self.selectedMap = 0
 
         #MAPAS
-        self.desierto = createMap.Map(params.mapaDesert, 0, 0, 'yellow') #gravedad = 0 y viento = 0
-        self.selva = createMap.Map(params.mapaSelva, 0, 0, 'green')
-        self.nieve = createMap.Map(params.mapaSnow, 0, 0, 'white')
-        self.galaxia = createMap.Map(params.mapaGalaxia, 0, 0, 'purple')
-        self.ciudad = createMap.Map(params.mapaCiudad, 0, 0, 'grey')
+        self.desierto = createMap.Map(params.mapaDesert, 9.8, 2, 'yellow') #gravedad = 0 y viento = 0
+        self.selva = createMap.Map(params.mapaSelva, 9.8, 4, 'green')
+        self.nieve = createMap.Map(params.mapaSnow, 9.8, 8, 'white')
+        self.galaxia = createMap.Map(params.mapaGalaxia, 5.2, 0, 'purple')
+        self.ciudad = createMap.Map(params.mapaCiudad, 9.8, 6, 'grey')
         self.mapas = [self.desierto, self.selva, self.nieve, self.galaxia, self.ciudad]
     def runMaps(self):
         pygame.init()
