@@ -76,7 +76,7 @@ def mainScreen():#Logica de mainScreen()
         elif actualScreen == 5:#juego
             partidaActual = 0
             listaJugadores = []
-            ia = True
+            ia = False
             resetTanks = functions.loadPlayers(listaJugadores,screen,ia)
             winner = None
             while partidaActual < partidas:

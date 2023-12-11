@@ -1,5 +1,5 @@
 from random import randint
-import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerPhysics, ninfoBlock, functions, nProyectil, scoreBoard
+import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerPhysics, ninfoBlock, functions, nProyectil, scoreBoard, npowerBar
 
 class gameLogic:
     
@@ -34,6 +34,7 @@ class gameLogic:
         #otros
         self.coloresJuagadores = []
         self.getColoresPlayers()
+        self.powerBar = npowerBar.BarraDeCarga(0.2)
         
     def setPlayers(self):
         splitPos = params.WIDTH//(params.playersNumber*2)
@@ -204,6 +205,7 @@ class gameLogic:
         turnos = [0,0]
         listaTurnos.remove(0)
         potencia = 100
+        cargarBarra = False
         jugador = 'a'
         balaID = 3 #3,4,5 son las IDs
         self.info.actualizarCantidadBalas(self.listaPlayers[0].inventory[balaID])
@@ -262,7 +264,7 @@ class gameLogic:
                                     if potencia >0:
                                         if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                             print('disparo') #metodo shoot
-                                            bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.02))),balaID,50,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
+                                            bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.02))),balaID,potencia,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
                                             self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary()),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
                                             self.cantidadbullets -= 1
@@ -300,12 +302,20 @@ class gameLogic:
                         elif pressed[pygame.K_RIGHT]:
                             jugador.actualizarAngulo(pygame.K_RIGHT)
                             self.info.actualizarAngulo(jugador.angulo)
+                        if pressed[pygame.K_SPACE]:
+                            self.powerBar.cargar(1)
+                            potencia = int(self.powerBar.carga)
+                        else:
+                            self.powerBar.resetear()
+                        print("potencia: " + str(potencia))
+
                     else:
                         turnos[0] = -1
             else:
                 running = False
             clock.tick(60)
             self.actualizarPantallasJuego()
+            self.powerBar.dibujar(self.screen)
             pygame.display.update()
         
 
