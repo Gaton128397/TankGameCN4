@@ -12,7 +12,7 @@ class gameLogic:
         self.wind = self.mapa[2]
         
         #background
-        self.backGround = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.backGround = pygame.Surface((params.size*16,params.size*9))
         self.backGround.blit(self.mapa[0],(0,0))
         self.screen.blit(self.backGround,(0,0))
         
@@ -37,7 +37,7 @@ class gameLogic:
         self.powerBar = npowerBar.BarraDeCarga(0.2)
         
     def setPlayers(self):
-        splitPos = params.WIDTH//(params.playersNumber*2)
+        splitPos = params.size*16//(params.playersNumber*2)
         contador = 0
         for i in range(params.playersNumber):
             self.listaPlayers[i].tanque.setPos((random.randint(contador,contador+splitPos),-20))
@@ -51,7 +51,7 @@ class gameLogic:
     def actualizarPantallasJuego(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
-        self.screen.blit(self.info.bloque, (params.WIDTH*0.68, 0))
+        self.screen.blit(self.info.bloque, (params.size*16*0.68, 0))
         self.updPlayers()
 
     def actualizarInfo(self,player,balaID):
@@ -231,7 +231,8 @@ class gameLogic:
                         elif jugador.angulo == anguloIA:
                             if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                 print('disparo')
-                                bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.02))),balaID,50,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
+                                potenciaIA = random.randint(100,1000)
+                                bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.size*16*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.size*9*0.02))),balaID,potencia,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
                                 self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary()),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                 self.listaPlayers[jugador.playerID].inventory[balaID] -=1
                                 self.cantidadbullets -= 1
@@ -258,7 +259,12 @@ class gameLogic:
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_SPACE: #aqui debe guardar la potencia
                                     print("cargando potencia. . . ")
-                                    
+                                if event.type==pygame.KEYDOWN:
+                                    if event.key==pygame.K_f:
+                                        if params.size == 120:
+                                            params.size=80
+                                        else:
+                                            params.size=120
                                 if event.key == pygame.K_RETURN: #recien aqui recibe la potencia para disparar
                                     #debe revisar que haya una bala seleccionada o partir de la mas chica
                                     if potencia >0:
@@ -313,6 +319,7 @@ class gameLogic:
                         turnos[0] = -1
             else:
                 running = False
+                break
             clock.tick(60)
             self.actualizarPantallasJuego()
             self.powerBar.dibujar(self.screen)
@@ -324,9 +331,7 @@ class gameLogic:
 def testgame():#Logica de mainScreen()
     pygame.init()
     clock = pygame.time.Clock()
-    #params.WIDTH = 1920
-    #params.HEIGHT = 1080
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
+    window = pygame.display.set_mode((params.size*16, params.size*9))
     playerWon = None
     run = True
     numeroPartidos = 2
@@ -358,4 +363,4 @@ def testgame():#Logica de mainScreen()
             pygame.display.update()
         except (KeyboardInterrupt, SystemExit): #manejar los errores
             return True
-#testgame()
+# testgame()
