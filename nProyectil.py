@@ -14,7 +14,7 @@ class Projectile():
         self.typeBullet = typeBullet
         self.quantity = 0
         self.dmg = 0
-        self.surf = pygame.Surface((params.WIDTH*0.05,params.HEIGHT*0.07))
+        self.surf = pygame.Surface((params.size*16*0.05,params.size*9*0.07))
         self.alphaColor = (255,0,255)
         self.surf.fill(self.alphaColor)
         self.surf.set_alpha()
@@ -28,19 +28,19 @@ class Projectile():
         if self.typeBullet == 3: #105mm
             cargarProyectil(self.surf,"imgs/icons/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.07)
+            self.blastRadius = int(params.size*16*0.07)
             self.DMG = 50
             
         elif self.typeBullet == 4: #80mm
             cargarProyectil(self.surf,"imgs/icons/80mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.05)
+            self.blastRadius = int(params.size*16*0.05)
             self.DMG = 40
             
         elif self.typeBullet == 5: #60mm
             cargarProyectil(self.surf,"imgs/icons/60mmStone.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.03)
+            self.blastRadius = int(params.size*16*0.03)
             self.DMG = 30
         self.origin = (position[0],position[1])
         if theta < 100 and theta > 85:
@@ -58,9 +58,9 @@ class Projectile():
 
         self.ch = 0
         if (theta >90):
-            self.dx = -params.WIDTH*0.002
+            self.dx = -params.size*16*0.002
         else:
-            self.dx = params.WIDTH*0.002
+            self.dx = params.size*16*0.002
         print("este es self dx"+str(self.dx))
         self.f = self.getTrajectory()
 
@@ -98,16 +98,17 @@ class Projectile():
         puntox = int(self.surf.get_width()/2)
         puntoy = int(self.surf.get_height()/2)
         self.x += 10
-        while (self.x >0 and self.x < params.WIDTH) and (self.yNew < params.HEIGHT):
+        while (self.x >0 and self.x < params.size*16) and (self.yNew < params.size*9):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-            self.x += self.dx + self.wind/100
+            self.x += self.dx + self.wind
+            print(self.x//1000)
             self.ch = self.getProjectilePos(self.x - self.origin[0])
             self.yNew = self.y-self.ch
             self.win.blit(matriz[0],(0,0))
             self.win.blit(matriz[1],(0,0))
-            self.win.blit(matriz[2],(params.WIDTH*0.7,0))
+            self.win.blit(matriz[2],(params.size*16*0.7,0))
             self.win.blit(self.surf,(int(self.x),int(self.yNew)))
             for i in range(len(self.listaJugador)):
                 self.win.blit(self.listaJugador[i].surfaceTank,self.listaJugador[i].getPos())
@@ -128,9 +129,9 @@ def game():
     pygame.init()
     run = True
     clock = pygame.time.Clock()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
+    window = pygame.display.set_mode((params.size*16, params.size*9))
     terrain = nTerrain.TerrenoVariado()
-    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
+    bg = pygame.Surface((params.size*16, params.size*9))
     drawFunctions.backgroundDraw(bg)
     info = ninfoBlock.infoBlock(0.3)
     info.actualizarAngulo('10')

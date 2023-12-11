@@ -7,3 +7,5 @@ class item:
         self.descripcion = descripcion
         self.precio = precio
         self.Icon = icon
+    def resize(self):
+        self.Icon = pygame.transform.scale(self.Icon, (params.size,params.size))
