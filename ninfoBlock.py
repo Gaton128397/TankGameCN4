@@ -2,7 +2,7 @@ import pygame, params, drawFunctions, random
 
 class infoBlock:
     def __init__(self, proporcion):
-        self.bloque = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
+        self.bloque = pygame.Surface((int(params.size*16 * proporcion), int(params.size*9 * proporcion)))
         self.alphaColor = (255,255,255)
         self.bloque.set_alpha()
         self.bloque.set_colorkey(self.alphaColor)
@@ -119,8 +119,8 @@ def actualizar(info,conds):
     info.actualizarTipoBala(random.randint(0,200))
 def testInfoBlock():
     pygame.init()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
-    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
+    window = pygame.display.set_mode((params.size*16, params.size*9))
+    bg = pygame.Surface((params.size*16, params.size*9))
     drawFunctions.backgroundDraw(bg)
     info = infoBlock(0.3)
     info.actualizarAngulo('#')
@@ -149,9 +149,9 @@ def testInfoBlock():
                 print("dx")
         contador_x += velocidad * direccion_x
         contador_y += velocidad * direccion_y
-        if contador_x <= 0 or contador_x >= params.WIDTH - int(info.bloque.get_width()*0.9):
+        if contador_x <= 0 or contador_x >= params.size*16 - int(info.bloque.get_width()*0.9):
             direccion_x *= -1
-        if contador_y <= 0 or contador_y >= params.HEIGHT - int(info.bloque.get_height()*0.9):
+        if contador_y <= 0 or contador_y >= params.size*9 - int(info.bloque.get_height()*0.9):
             direccion_y *= -1
         actualizar(info,conds)
         window.blit(bg,(0,0))

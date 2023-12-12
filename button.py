@@ -1,4 +1,4 @@
-import pygame,sys,items
+import pygame,sys,crearItems
 class Button:
     def __init__(self, rect, color,item,virtual):
         self.rect = pygame.Rect(rect)

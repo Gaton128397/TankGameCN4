@@ -43,7 +43,7 @@ def fallTanks(window,listaJugadores, terrainPoints,listaPlayers,listaJugadoresDe
     falling = True
     fallingTanks = []
     copy = []
-    falldmg = params.WIDTH*0.005
+    falldmg = params.size*16*0.005
     for i in range(len(listaJugadores)):
         if listaJugadores[i].getFallPoint() not in terrainPoints:
             fallingTanks.append(i)

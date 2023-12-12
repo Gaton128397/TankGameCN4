@@ -1,10 +1,10 @@
-from pygame import image,transform,Surface
+from pygame import image,transform,Surface,display
 
 
 size = 80 #fullScreen = 120
-WIDTH,HEIGHT = size*16,size*9
-playersNumber = 6
+playersNumber = 2
 gravityConstant = 9.8
+screen = display.set_mode((size*16, size*9))
 #screens
 menuImg = image.load('imgs/startEnd/Menu.png')
 bGganador1 = image.load('imgs/startEnd/ganador1.png')
@@ -45,24 +45,24 @@ balasICO = image.load('imgs/icons/balas.png')
 distanciaICO = image.load('imgs/icons/distancia.png')
 
 #loads
-menuImg = transform.scale(menuImg, (WIDTH, HEIGHT))
-shopIniImg = transform.scale(shopIniImg, (WIDTH, HEIGHT))
-shopMidImg = transform.scale(shopMidImg, (WIDTH, HEIGHT))
-shopFinImg = transform.scale(shopFinImg, (WIDTH, HEIGHT))
-bgGanador1 = transform.scale(bGganador1, (WIDTH, HEIGHT))
-bgGanador2 = transform.scale(bGanador2, (WIDTH, HEIGHT))
-bgMapas = transform.scale(bgMapas, (WIDTH, HEIGHT))
-pausaImg = transform.scale(pausaImg, (WIDTH, HEIGHT))
-settingsPausa = transform.scale(settingsPausa, (WIDTH, HEIGHT))
-controlesImg = transform.scale(controlesImg, (WIDTH, HEIGHT))
-playModeImg = transform.scale(playModeImg, (WIDTH, HEIGHT))
-settingsImg = transform.scale(settingsImg, (WIDTH, HEIGHT))
+menuImg = transform.scale(menuImg, (size*16, size*9))
+shopIniImg = transform.scale(shopIniImg, (size*16, size*9))
+shopMidImg = transform.scale(shopMidImg, (size*16, size*9))
+shopFinImg = transform.scale(shopFinImg, (size*16, size*9))
+bgGanador1 = transform.scale(bGganador1, (size*16, size*9))
+bgGanador2 = transform.scale(bGanador2, (size*16, size*9))
+bgMapas = transform.scale(bgMapas, (size*16, size*9))
+pausaImg = transform.scale(pausaImg, (size*16, size*9))
+settingsPausa = transform.scale(settingsPausa, (size*16, size*9))
+controlesImg = transform.scale(controlesImg, (size*16, size*9))
+playModeImg = transform.scale(playModeImg, (size*16, size*9))
+settingsImg = transform.scale(settingsImg, (size*16, size*9))
 
-bgDesert = transform.scale(mapaDesert, (WIDTH, HEIGHT))
-bgSelva = transform.scale(mapaSelva, (WIDTH, HEIGHT))
-bgSnow = transform.scale(mapaSnow, (WIDTH, HEIGHT))
-bgGalaxia = transform.scale(mapaGalaxia, (WIDTH, HEIGHT))
-bgCiudad = transform.scale(mapaCiudad, (WIDTH, HEIGHT))
+bgDesert = transform.scale(mapaDesert, (size*16, size*9))
+bgSelva = transform.scale(mapaSelva, (size*16, size*9))
+bgSnow = transform.scale(mapaSnow, (size*16, size*9))
+bgGalaxia = transform.scale(mapaGalaxia, (size*16, size*9))
+bgCiudad = transform.scale(mapaCiudad, (size*16, size*9))
 
 shield = transform.scale(shield, (size, size))
 dmg = transform.scale(dmg, (size, size))
@@ -73,3 +73,6 @@ smallStone = transform.scale(smallStone, (size, size))
 
 parachute = transform.scale(parachute, (size*0.2,size*0.5))
 #METODOS
+
+
+

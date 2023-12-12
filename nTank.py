@@ -14,7 +14,7 @@ class Tank:
         self.color = color
         self.ammo = True
         self.angulo = 60
-
+        self.potencia = 0
         self.xCanon1 = 0
         self.yCanon1 = 0
 
@@ -24,7 +24,7 @@ class Tank:
         self.end = (0,0)
         self.fallDmg = 0
         self.tankProportion = 0.22
-        self.surfaceTank = pygame.Surface((params.WIDTH*self.tankProportion, params.HEIGHT*self.tankProportion))
+        self.surfaceTank = pygame.Surface((params.size*16*self.tankProportion, params.size*9*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.4)
         self.y = int(self.surfaceTank.get_height()*0.7)
         self.width = int(self.surfaceTank.get_width()*0.22)
@@ -47,6 +47,8 @@ class Tank:
         diccionarioEventosCañon = {}
         diccionarioEventosCañon[pygame.K_LEFT] = 1
         diccionarioEventosCañon[pygame.K_RIGHT] = -1
+        diccionarioEventosCañon[pygame.K_UP] = 2
+        diccionarioEventosCañon[pygame.K_DOWN] = -2
         self.listaEventos.append(diccionarioEventosCañon)
         
 
@@ -77,7 +79,7 @@ class Tank:
         self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         self.actualizarTanque()
-        
+    
     def actualizarAnguloIA(self, contador):
         if contador == 1:
             if self.angulo < 180:
@@ -88,6 +90,17 @@ class Tank:
         self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         self.actualizarTanque()
+
+    def actualizarPotencia(self, event):
+        if self.listaEventos[0][event] == 2:
+            self.potencia +=1
+            print(self.potencia)
+            return self.potencia
+            
+        if self.listaEventos[0][event] == -2:
+            self.potencia += -1
+            print(self.potencia)
+            return self.potencia
         
     def getPos(self):
         return (self.xpos, self.ypos)

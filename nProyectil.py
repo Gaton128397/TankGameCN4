@@ -14,7 +14,7 @@ class Projectile():
         self.typeBullet = typeBullet
         self.quantity = 0
         self.dmg = 0
-        self.surf = pygame.Surface((params.WIDTH*0.05,params.HEIGHT*0.07))
+        self.surf = pygame.Surface((params.size*16*0.05,params.size*9*0.07))
         self.alphaColor = (255,0,255)
         self.surf.fill(self.alphaColor)
         self.surf.set_alpha()
@@ -28,19 +28,19 @@ class Projectile():
         if self.typeBullet == 3: #105mm
             cargarProyectil(self.surf,"imgs/icons/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.07)
+            self.blastRadius = int(params.size*16*0.07)
             self.DMG = 50
             
         elif self.typeBullet == 4: #80mm
             cargarProyectil(self.surf,"imgs/icons/80mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.05)
+            self.blastRadius = int(params.size*16*0.05)
             self.DMG = 40
             
         elif self.typeBullet == 5: #60mm
             cargarProyectil(self.surf,"imgs/icons/60mmStone.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.03)
+            self.blastRadius = int(params.size*16*0.03)
             self.DMG = 30
         self.origin = (position[0],position[1])
         if theta < 100 and theta > 85:
@@ -58,9 +58,9 @@ class Projectile():
 
         self.ch = 0
         if (theta >90):
-            self.dx = -params.WIDTH*0.002
+            self.dx = -params.size*16*0.002
         else:
-            self.dx = params.WIDTH*0.002
+            self.dx = params.size*16*0.002
         print("este es self dx"+str(self.dx))
         self.f = self.getTrajectory()
 
@@ -98,7 +98,7 @@ class Projectile():
         puntox = int(self.surf.get_width()/2)
         puntoy = int(self.surf.get_height()/2)
         self.x += 10
-        while (self.x >0 and self.x < params.WIDTH) and (self.yNew < params.HEIGHT):
+        while (self.x >0 and self.x < params.size*16) and (self.yNew < params.size*9):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -107,7 +107,7 @@ class Projectile():
             self.yNew = self.y-self.ch
             self.win.blit(matriz[0],(0,0))
             self.win.blit(matriz[1],(0,0))
-            self.win.blit(matriz[2],(params.WIDTH*0.7,0))
+            self.win.blit(matriz[2],(params.size*16*0.7,0))
             self.win.blit(self.surf,(int(self.x),int(self.yNew)))
             for i in range(len(self.listaJugador)):
                 self.win.blit(self.listaJugador[i].surfaceTank,self.listaJugador[i].getPos())
@@ -124,43 +124,3 @@ class Projectile():
         pygame.display.update()
         return (int(self.x+puntox),int(self.yNew+puntoy))
         
-def game():
-    pygame.init()
-    run = True
-    clock = pygame.time.Clock()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
-    terrain = nTerrain.TerrenoVariado()
-    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
-    drawFunctions.backgroundDraw(bg)
-    info = ninfoBlock.infoBlock(0.3)
-    info.actualizarAngulo('10')
-    info.actualizarDistancia("2000")
-    info.actualizarEscudo(False)
-    info.actualizarDmg(False)
-    info.actualizarBotellas("0")
-    info.actualizarTipoBala("105")
-    info.actualizarCantidadBalas(0)
-    listajugador = []
-    for i in range(1):
-        listajugador.append(nTank.Tank(700,(255,0,0),window))
-    matriz = []
-    matriz.append(bg)
-    matriz.append(terrain.surfTerrain)
-    matriz.append(info.bloque)
-    playerPhysics.playerSpawn(window,listajugador,terrain,drawFunctions.returnSurface(matriz))
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                run = False
-            elif pygame.mouse.get_pressed()[0]:
-                print(pygame.mouse.get_pos())
-        bullet = Projectile((100,10),1,random.randint(1,100),60,window,listajugador)
-        terrain.updateImpact(bullet.shoot(matriz,terrain.getDiccionary()),bullet,listajugador)
-        playerPhysics.fallTanks(window,listajugador,terrain.getDiccionary(),drawFunctions.returnSurface(matriz))
-        window.blit(matriz[0],(0,0))
-        window.blit(matriz[1],(0,0))
-        window.blit(listajugador[0].surfaceTank,listajugador[0].getPos())
-        window.blit(matriz[2],(870,0))
-        pygame.display.update()
-#game()
