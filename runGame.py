@@ -7,13 +7,13 @@ class gameLogic:
         self.screen = windowGame
         
         #variables de entorno
-        self.mapa = mapa.getMap()
+        self.mapa = mapa
         self.gravity = self.mapa[1]
         self.wind = self.mapa[2]
         
         #background
         self.backGround = pygame.Surface((params.WIDTH,params.HEIGHT))
-        self.backGround.blit(self.mapa[0],(0,0))
+        drawFunctions.backgroundDraw(self.backGround,self.mapa[0])
         self.screen.blit(self.backGround,(0,0))
         
         #Terreno
@@ -323,11 +323,13 @@ def testgame():#Logica de mainScreen()
     while run:
         partidosActuales = 0
         listaJugadores = []
-        resetTanks = functions.loadPlayers(listaJugadores,window)
+        ia = True
+        resetTanks = functions.loadPlayers(listaJugadores,window,ia)
         while partidosActuales < numeroPartidos:
+            mapa = ["imgs/maps/ciudad.png",9.8,2]
             functions.resetTanks(listaJugadores,resetTanks,window)
             functions.resetIventario(listaJugadores)
-            game = gameLogic(window,listaJugadores)
+            game = gameLogic(window,listaJugadores,mapa)
             game.run(clock)
             partidosActuales += 1
         print("partidos terminados")
@@ -348,4 +350,4 @@ def testgame():#Logica de mainScreen()
             pygame.display.update()
         except (KeyboardInterrupt, SystemExit): #manejar los errores
             return True
-#testgame()
+testgame()
