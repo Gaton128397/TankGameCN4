@@ -34,5 +34,3 @@ class MedidorPotencia:
 								print(f'CARGANDO: {potencia_actual:.1f}')
 
 #usar esto para llamar clase
-power = MedidorPotencia()
-power.medir_potencia()

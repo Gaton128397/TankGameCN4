@@ -228,7 +228,7 @@ class gameLogic:
                             if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                 print('disparo')
                                 potenciaIA = random.randint(50,150)
-                                bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.size*16*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.size*9*0.02))),balaID,potenciaIA,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
+                                bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.021)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.015))),balaID,potenciaIA,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
                                 self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary()),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                 self.listaPlayers[jugador.playerID].inventory[balaID] -=1
                                 self.cantidadbullets -= 1
@@ -266,7 +266,7 @@ class gameLogic:
                                     if potencia >0:
                                         if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                             print('disparo') #metodo shoot
-                                            bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.size*16*0.025)),int(jugador.getPos()[1]+jugador.yCanon2-(params.size*9*0.02))),balaID,potencia,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
+                                            bullet = nProyectil.Projectile((int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.015)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.06))),balaID,potencia,jugador.angulo,self.screen,self.listaJugadores,self.gravity,self.wind)
                                             self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary()),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
                                             self.cantidadbullets -= 1
@@ -309,7 +309,7 @@ class gameLogic:
                             potencia = int(self.powerBar.carga)
                         else:
                             self.powerBar.resetear()
-                        print("potencia: " + str(potencia))
+                        #print("potencia: " + str(potencia))
 
                     else:
                         turnos[0] = -1
@@ -334,7 +334,7 @@ def testgame():#Logica de mainScreen()
     while run:
         partidosActuales = 0
         listaJugadores = []
-        ia = True
+        ia = False
         resetTanks = functions.loadPlayers(listaJugadores,window,ia)
         while partidosActuales < numeroPartidos:
             mapa = ["imgs/maps/ciudad.png",9.8,2]

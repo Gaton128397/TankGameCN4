@@ -55,6 +55,7 @@ class TerrenoVariado:
             pos.append(params.HEIGHT)
         else:
             pos.append(position[1])
+        print("este es la posicion del proyectil: "+ str(pos))
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, proyectil.blastRadius)
         tanquesDañadosIzquierda = {}
         tanquesDañadosDerecha= {}

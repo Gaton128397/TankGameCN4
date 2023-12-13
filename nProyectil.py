@@ -131,7 +131,7 @@ def game():
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     terrain = nTerrain.TerrenoVariado()
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
-    drawFunctions.backgroundDraw(bg)
+    drawFunctions.backgroundDraw(bg,"imgs/maps/ciudad.png")
     info = ninfoBlock.infoBlock(0.3)
     info.actualizarAngulo('10')
     info.actualizarDistancia("2000")
@@ -147,7 +147,8 @@ def game():
     matriz.append(bg)
     matriz.append(terrain.surfTerrain)
     matriz.append(info.bloque)
-    playerPhysics.playerSpawn(window,listajugador,terrain,drawFunctions.returnSurface(matriz))
+    listajugadorderrota = []
+    playerPhysics.playerSpawn(window,listajugador,terrain,drawFunctions.returnSurface(matriz),9.8)
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -155,9 +156,9 @@ def game():
                 run = False
             elif pygame.mouse.get_pressed()[0]:
                 print(pygame.mouse.get_pos())
-        bullet = Projectile((100,10),1,random.randint(1,100),60,window,listajugador)
+        bullet = Projectile((100,10),1,random.randint(1,100),60,window,listajugador,9.8,0)
         terrain.updateImpact(bullet.shoot(matriz,terrain.getDiccionary()),bullet,listajugador)
-        playerPhysics.fallTanks(window,listajugador,terrain.getDiccionary(),drawFunctions.returnSurface(matriz))
+        playerPhysics.fallTanks(window,listajugador,terrain.getDiccionary(),drawFunctions.returnSurface(matriz),9.8)
         window.blit(matriz[0],(0,0))
         window.blit(matriz[1],(0,0))
         window.blit(listajugador[0].surfaceTank,listajugador[0].getPos())
