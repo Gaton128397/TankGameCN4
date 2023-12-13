@@ -37,7 +37,7 @@ class gameLogic:
         self.powerBar = npowerBar.BarraDeCarga(0.2)
         
     def setPlayers(self):
-        splitPos = params.size*16//(params.playersNumber*2)
+        splitPos = params.WIDTH//(params.playersNumber*2)
         contador = 0
         for i in range(params.playersNumber):
             self.listaPlayers[i].tanque.setPos((random.randint(contador,contador+splitPos),-20))
@@ -51,7 +51,7 @@ class gameLogic:
     def actualizarPantallasJuego(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
-        self.screen.blit(self.info.bloque, (params.size*16*0.68, 0))
+        self.screen.blit(self.info.bloque, (params.WIDTH*0.68, 0))
         self.updPlayers()
 
     def actualizarInfo(self,player,balaID):
@@ -327,7 +327,7 @@ class gameLogic:
 def testgame():#Logica de mainScreen()
     pygame.init()
     clock = pygame.time.Clock()
-    window = pygame.display.set_mode((params.size*16, params.size*9))
+    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     playerWon = None
     run = True
     numeroPartidos = 2

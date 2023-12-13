@@ -2,7 +2,7 @@ import pygame, params, random, drawFunctions
 
 class BarraVida:
     def __init__(self, proporcion):
-        self.lifeSurface = pygame.Surface((int(params.size*16 * proporcion), int(params.size*9 * proporcion)))
+        self.lifeSurface = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
         self.alphaColor = (255,0,255)
         self.lifeSurface.set_alpha()
         self.lifeSurface.set_colorkey(self.alphaColor)
@@ -70,8 +70,8 @@ class BarraVida:
 
 def testLifeBar():
     pygame.init()
-    window = pygame.display.set_mode((params.size*16, params.size*9))
-    bg = pygame.Surface((params.size*16, params.size*9))
+    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
+    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
     drawFunctions.backgroundDraw(bg)
     barra = BarraVida(0.2)
     ejecutando = True

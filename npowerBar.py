@@ -3,15 +3,15 @@ import pygame, params, drawFunctions
 # Define la clase para la barra de carga
 class BarraDeCarga:
     def __init__(self, proporcion):
-        self.poweBarSurface = pygame.Surface((int(params.size*16 * proporcion), int(params.size*9 * proporcion)))
+        self.poweBarSurface = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
         self.proporcion = proporcion
         self.alphaColor = (255,255,255)
         self.poweBarSurface.set_alpha()
         self.poweBarSurface.set_colorkey(self.alphaColor)
         self.poweBarSurface.fill((255,255,255))
-        self.rect = pygame.Rect(0, 0, int(params.size*16 * proporcion)*0.8, int(params.size*9 * proporcion)*0.2)
+        self.rect = pygame.Rect(0, 0, int(params.WIDTH * proporcion)*0.8, int(params.HEIGHT * proporcion)*0.2)
         self.color = (255, 0, 0)
-        self.carga = 10  # Inicia la carga en 0
+        self.carga = 0  # Inicia la carga en 0
         self.fuente = pygame.font.SysFont('Arial', 20)  # Define la fuente para el texto
         #self.fuente.set_bold(True)
 
