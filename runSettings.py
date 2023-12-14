@@ -80,5 +80,5 @@ def loadScreen():
     # pygame.draw.rect(screen, (0, 0, 0), (params.size*0.9, params.size*3.2, params.size, params.size*0.75), 5)
     pygame.display.flip()
 
-# if __name__ == '__main__':
-    # runSettings()
+if __name__ == '__main__':
+    runSettings()

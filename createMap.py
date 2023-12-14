@@ -11,12 +11,3 @@ class Map:
 
     def getMap(self):
         return (self.img,self.gravity,self.wind)
-    
-    # def draw(self,window):
-    #     window.blit(self.img,(0,0))
-
-    # def getGravity(self):
-    #     return self.gravity
-    
-    # def getWind(self):
-    #     return self.wind
