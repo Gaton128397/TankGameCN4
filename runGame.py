@@ -35,6 +35,11 @@ class gameLogic:
         self.coloresJuagadores = []
         self.getColoresPlayers()
         self.powerBar = npowerBar.BarraDeCarga(0.2)
+        self.estelaSurface = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.estelaAlpha = (255,255,255)
+        self.estelaSurface.fill(self.estelaAlpha)
+        self.estelaSurface.set_alpha()
+        self.estelaSurface.set_colorkey(self.estelaAlpha)
         
     def setPlayers(self):
         splitPos = params.WIDTH//(params.playersNumber*2)
@@ -52,6 +57,7 @@ class gameLogic:
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
         self.screen.blit(self.info.bloque, (params.WIDTH*0.68, 0))
+        self.screen.blit(self.estelaSurface,(0,0))
         self.updPlayers()
 
     def actualizarInfo(self,player,balaID):
@@ -194,7 +200,7 @@ class gameLogic:
         running = True
         print(self.listaJugadores[0].getPos())
         playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
-        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque]
+        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface]
         listaTurnos = []
         jugadoresDerrotados = []
         self.definirTurnos(listaTurnos)
@@ -216,8 +222,6 @@ class gameLogic:
                     if jugador.ammo:
                         if anguloIA == -1:
                             anguloIA = randint(0,180)
-                            print("angulo IA: " + str(anguloIA))
-                            print("angulo jugador: " + str(jugador.angulo))
                         if jugador.angulo > anguloIA:
                             jugador.actualizarAnguloIA(-1)
                             self.info.actualizarAngulo(jugador.angulo)
@@ -233,7 +237,6 @@ class gameLogic:
                                 self.listaPlayers[jugador.playerID].inventory[balaID] -=1
                                 self.cantidadbullets -= 1
                                 self.comprobarBalasJugador(self.listaJugadores[turnos[0]])
-                                print("balas totales: " + str(self.cantidadbullets))
                                 self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                                 playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),self.listaPlayers,jugadoresDerrotados,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
                                 anguloIA = -1
@@ -265,14 +268,13 @@ class gameLogic:
                                     #debe revisar que haya una bala seleccionada o partir de la mas chica
                                     if potencia >0:
                                         if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
-                                            print('disparo') #metodo shoot
+                                            self.estelaSurface.fill(self.estelaAlpha)
                                             wind = randint(-10,10)
                                             bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.05))),balaID,potencia,jugador.angulo,self.listaJugadores,self.gravity,wind)
                                             self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(),self.info),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
                                             self.cantidadbullets -= 1
                                             self.comprobarBalasJugador(self.listaJugadores[turnos[0]])
-                                            print("balas totales: " + str(self.cantidadbullets))
                                             self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                                             playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),self.listaPlayers,jugadoresDerrotados,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
                                             turnos[0] = -1
@@ -335,10 +337,10 @@ def testgame():#Logica de mainScreen()
     while run:
         partidosActuales = 0
         listaJugadores = []
-        ia = True
+        ia = False
         resetTanks = functions.loadPlayers(listaJugadores,window,ia)
         while partidosActuales < numeroPartidos:
-            mapa = ["imgs/maps/ciudad.png",9.8,2]
+            mapa = ["imgs/maps/galaxia.png",9.8,2]
             functions.resetTanks(listaJugadores,resetTanks,window)
             functions.resetIventario(listaJugadores)
             game = gameLogic(window,listaJugadores,mapa)

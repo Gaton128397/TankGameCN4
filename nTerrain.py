@@ -81,9 +81,7 @@ class TerrenoVariado:
         
         # Imprime los puntos de impacto
         
-        print("Puntos de impacto en la izquierda:")
         for z, punto in puntosImpactoIzquierda.items():
-            print(f"Tanque {z}: {punto}")
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
             if listaPlayers[lista[z].playerID].inventory[0] == 1:
@@ -98,8 +96,7 @@ class TerrenoVariado:
                 else:
                     listaPlayers[lista[turno].playerID].kda[0] += 1
                     listaPlayers[lista[z].playerID].kda[1] += 1
-            print(f"El tanque {z} recibe un daño de {dmg}")
-        print("Puntos de impacto en la derecha:")
+                    
         for z, punto in puntosImpactoDerecha.items():
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
@@ -115,7 +112,7 @@ class TerrenoVariado:
                 else:
                     listaPlayers[lista[turno].playerID].kda[0] += 1
                     listaPlayers[lista[z].playerID].kda[1] += 1
-            print(f"El tanque {z} recibe un daño de {dmg}")
+                    
     
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
