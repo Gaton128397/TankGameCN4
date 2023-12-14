@@ -52,7 +52,6 @@ def mainScreen():#Logica de mainScreen()
                 ia = True    
             actualScreen+=1 #pasa a settings
             
-
         elif actualScreen == 2:#settings
             settingsInfo= runSettings.runSettings()
             actualScreen,jugadores,rondas = settingsInfo[0],settingsInfo[1],settingsInfo[2]

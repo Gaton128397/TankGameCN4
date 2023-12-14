@@ -97,8 +97,13 @@ def buttons():
     return buttons
 
 
+<<<<<<< HEAD
 #if __name__ == '__main__':
     #runSettings()
 
 
  #MARCADO PARA ARREGLAR BOTONES
+=======
+if __name__ == '__main__':
+    runSettings()
+>>>>>>> origin/Maru
