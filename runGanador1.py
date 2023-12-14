@@ -37,15 +37,11 @@ def createButtons():
 
 def loadScreen():
     if params.size == 120:
-        params.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
     else:
-        params.screen = pygame.display.set_mode((params.size*16, params.size*9))
-    params.screen.blit(pygame.transform.scale(params.bGganador1, (params.size*16, params.size*9)), (0, 0))    
+        screen = pygame.display.set_mode((params.size*16, params.size*9))
+    screen.blit(pygame.transform.scale(params.bGganador1, (params.size*16, params.size*9)), (0, 0))    
     pygame.display.flip()
 
 # if __name__ == '__main__':
 #     runGanador1()
-
-
-
- #MARCADO PARA ARREGLAR BOTONES

@@ -38,11 +38,12 @@ def buttons():
     return buttons
 
 def loadScreen():
-    params.screen.blit(pygame.transform.scale(params.playModeImg, (params.size*16,params.size*9)), (0, 0))
+    if params.size == 120:
+        screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+    else:
+        screen = pygame.display.set_mode((params.size*16, params.size*9))
+    screen.blit(pygame.transform.scale(params.playModeImg, (params.size*16,params.size*9)), (0, 0))
+    pygame.display.flip()
 
-
-#if __name__ == '__main__':
-#    runPlaymode()
-
-
- #MARCADO PARA ARREGLAR BOTONES
+# if __name__ == '__main__':
+    # runPlaymode()

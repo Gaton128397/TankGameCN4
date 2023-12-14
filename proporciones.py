@@ -55,17 +55,14 @@ settingsMenu = [
 
 #provisorio para conexiones
 settingsShop = [
-    (0.78, 0.85, 0.2, 0.1), #32
-    (0.330, 0.78, 0.09, 0.1), #33
-    (0.585, 0.78, 0.09, 0.1), #34
-
+    (0.4, 0.8, 0.2, 0.1), #32
     ]
 
 #provisorio para conexiones
 juego = [
-    (0.78, 0.85, 0.2, 0.1), #35
+    (0.78, 0.85, 0.2, 0.1), #33
     ]
                 #IDs    #0              #1           #2    #3    #4   #5      #6     #7       #8         #9         #10           #11        #12
 listaProporciones = [controlesMenu,controlesPausa,Ganador,mapas,menu,pausa,playMode,score,scoreRound,settingsGame,settingsMenu,settingsShop,juego]
 
-imgs = ["Pantallas/ControlesMenu.png","Pantallas/ControlesPausa.png","Pantallas/Ganador.png","Pantallas/Mapas.png","Pantallas/Menu.png","Pantallas/Pausa.png","Pantallas/playMode.png","Pantallas/scorePartidaGlobal.png","Pantallas/scorePartidaRound.png","Pantallas/SettingsGame.png","Pantallas/SettingsMenu.png","Pantallas\shopIni.png","Pantallas\juegoPrev.png"]
+imgs = ["Pantallas/ControlesMenu.png","Pantallas/ControlesPausa.png","Pantallas/Ganador.png","Pantallas/Mapas.png","Pantallas/Menu.png","Pantallas/Pausa.png","Pantallas/playMode.png","Pantallas/scorePartidaGlobal.png","Pantallas/scorePartidaRound.png","Pantallas/SettingsGame.png","Pantallas/SettingsMenu.png","Pantallas\welcomeShop.png","Pantallas\juegoPrev.png"]

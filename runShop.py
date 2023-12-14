@@ -3,40 +3,24 @@ from button import Button
 # from functions import checkResize
 pygame.init()
 #variables
-jugadorTest = player.Player()
-jugadorTest2 = player.Player()
-jugadorTest3 = player.Player()
-jugadorTest4 = player.Player()
-listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
+# jugadorTest = player.Player()
+# jugadorTest2 = player.Player()
+# jugadorTest3 = player.Player()
+# jugadorTest4 = player.Player()
+# listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
 class Shop:
     def __init__(self):
 
-<<<<<<< HEAD
-        '''SCREEN'''
-        self.width, self.height = params.size*16,params.size*9
-        self.tiendaIni = params.shopIniImg
-        self.tiendaMid = params.shopMidImg
-        self.tiendaEnd = params.shopFinImg
-        self.window = params.screen#pygame.display.set_mode((self.width, self.height))
-=======
         self.tiendaIni = pygame.image.load('Pantallas/shopIni.png')
         self.tiendaMid = pygame.image.load('Pantallas/shopMid.png')
         self.tiendaEnd = pygame.image.load('Pantallas/shopFin.png')
->>>>>>> origin/Maru
 
         self.actualItem = None
-        self.buttons = self.buttons()
+        self.fuente = pygame.font.Font(None, int(params.size*0.4))
+
     '''METHODS'''
     def createItems(self):
         '''CREARITEMS'''
-<<<<<<< HEAD
-        shield = crearItems.item('shield',0,'+1 escudo',100,params.shield)
-        dmg = crearItems.item('dmg',1,'+10 dmg',100,params.dmg)
-        health = crearItems.item('health',2,'+10 vida',100,params.health)
-        bigStone = crearItems.item('big Stone',3,'piedra grande',4000,params.bigStone)
-        mediumStone = crearItems.item('small Stone',4,'piedra chica',1000,params.smallStone)
-        smallStone = crearItems.item('medium Stone',5,'piedra mediana',2500,params.mediumStone)
-=======
         shield = crearItems.item(0,'shield','+1 escudo, reduce dmg a la mitad pero se rompe',100,params.shield)
         dmg = crearItems.item(1,'damage','+10 dmg',100,params.dmg)
         health = crearItems.item(2,'health','+10 vida',100,params.health)
@@ -44,7 +28,6 @@ class Shop:
         mediumStone = crearItems.item(4,"Medium Projectile",'piedra chica',100,params.smallStone)
         smallStone = crearItems.item(5,'Small Projectile','piedra mediana',100,params.mediumStone)
         # print(shield.nombre)
->>>>>>> origin/Maru
         return [shield,dmg,health,bigStone,mediumStone,smallStone]
     
     def buttons(self):
@@ -69,13 +52,13 @@ class Shop:
     def selectItem(self,item):
         self.actualItem = item
 
-        nombre = pygame.font.Font(None, int(params.size*0.4))
+        nombre = self.fuente
         nombre = nombre.render(item.nombre, True, (0, 0, 0))
 
-        descripcion = pygame.font.Font(None, int(params.size*0.4))
+        descripcion = self.fuente
         descripcion = descripcion.render(item.descripcion, True, (0, 0, 0))
         
-        precio = pygame.font.Font(None, int(params.size*0.4))
+        precio = self.fuente
         precio = precio.render(str("precio: $"+str(item.precio)), True, (0, 0, 0))
         
         pygame.draw.rect(params.screen,(('#D6C6BC')),(params.size*4.38,params.size*3.73,params.size*7.27,params.size*3.25))
@@ -90,23 +73,23 @@ class Shop:
 
     def showInventory(self,player):
 
-        item1text = pygame.font.Font(None, int(params.size*0.4))
+        item1text = self.fuente
         item1text = item1text.render("x"+str(player.inventory[0]), True, (0, 0, 0))
 
 
-        item2text = pygame.font.Font(None, int(params.size*0.4))
+        item2text = self.fuente
         item2text = item2text.render("x"+str(player.inventory[1]), True, (0, 0, 0))
         
-        item3text = pygame.font.Font(None, int(params.size*0.4))
+        item3text = self.fuente
         item3text = item3text.render("x"+str(player.inventory[2]), True, (0, 0, 0))
         
-        item4text = pygame.font.Font(None, int(params.size*0.4))
+        item4text = self.fuente
         item4text = item4text.render("x"+str(player.inventory[3]), True, (0, 0, 0))
         
-        item5text = pygame.font.Font(None, int(params.size*0.4))
+        item5text = self.fuente
         item5text = item5text.render("x"+str(player.inventory[4]), True, (0, 0, 0))
         
-        item6text = pygame.font.Font(None, int(params.size*0.4))
+        item6text = self.fuente
         item6text = item6text.render("x"+str(player.inventory[5]), True, (0, 0, 0))
         
         #borrar anterior
@@ -183,60 +166,32 @@ class Shop:
         running =True
         while running:
             
-<<<<<<< HEAD
-            params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
-            #events = pygame.event.get()
-=======
             if params.size == 120:
                 screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
             else:
                 screen = pygame.display.set_mode((params.size*16, params.size*9))
             screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
             # pygame.display.update()
->>>>>>> origin/Maru
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     running = False
                 #botones tienda
-<<<<<<< HEAD
-                for btn in self.buttons:
-                    time.sleep(0.005)
-                    if btn.check_click(event):
-                        if btn.item == 'home':
-=======
             # checkResize(event)
-            for boton in self.buttons():
-                time.sleep(0.005)
-                if boton.check_click(event):
-                    if boton.item == 'Buy':
-                        self.buyItem(self.actualItem,playerList[player])
-                    elif boton.item == 'Sell':
-                        self.sellItem(self.actualItem,playerList[player])
-                    elif boton.item == 'Back':
-                        if player > 0:
-                            player -= 1
-                            self.actualItem = None
-                        else:
-                            player = len(playerList)-1
-                    elif boton.item == 'Next':
-                        if player == len(playerList)-1:
->>>>>>> origin/Maru
-                            running = False
-                        elif btn.item == 'settings':
-                            print('settings')
-                        elif btn.item == 'buy':
+                for boton in self.buttons():
+                    time.sleep(0.005)
+                    if boton.check_click(event):
+                        if boton.item == 'Buy':
                             self.buyItem(self.actualItem,playerList[player])
-                        elif btn.item == 'sell':
+                        elif boton.item == 'Sell':
                             self.sellItem(self.actualItem,playerList[player])
-
-                        elif btn.item == 'previous':
+                        elif boton.item == 'Back':
                             if player > 0:
                                 player -= 1
                                 self.actualItem = None
                             else:
                                 player = len(playerList)-1
-                        elif btn.item == 'finish':
+                        elif boton.item == 'Next':
                             if player == len(playerList)-1:
                                 running = False
                             if player < len(playerList)-1:
@@ -244,8 +199,8 @@ class Shop:
                                 self.actualItem = None
 
                         else:
-                            self.selectItem(btn.item)
-                            self.actualItem = btn.item
+                            self.selectItem(boton.item)
+                            self.actualItem = boton.item
             #dibujar tienda
             if player == 0:
                 
@@ -265,14 +220,7 @@ class Shop:
             self.showStats(playerList[player])
             self.showMoney(playerList[player])
             pygame.display.update()
-<<<<<<< HEAD
-
-#if __name__ == "__main__":
-#     shop = Shop()
-#     shop.openShop(listaJugadores)
-=======
         return 12
 # if __name__ == "__main__":
     # shop = Shop()
     # shop.openShop(listaJugadores)
->>>>>>> origin/Maru

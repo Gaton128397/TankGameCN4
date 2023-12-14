@@ -26,13 +26,10 @@ def buttons():
     return [home_button]
 
 def loadScreen():
-    #screen = pygame.display.set_mode((params.size*16, params.size*9))
-    params.screen.blit(pygame.transform.scale(params.controlesImg, (params.size*16,params.size*9)), (0, 0))
+    screen = pygame.display.set_mode((params.size*16, params.size*9))
+    screen.blit(pygame.transform.scale(params.controlesImg, (params.size*16,params.size*9)), (0, 0))
     pygame.display.flip()
 
     
 if __name__ == '__main__':
     runControles()
-
-
- #MARCADO PARA ARREGLAR BOTONES

@@ -1,35 +1,15 @@
 import pygame,sys,button,params
-def borrarNumero(surfaceNumero):
-    surfaceNumero.fill((255,0,255))
-
-def actualizarNumero(surfaceNumero,pos,jugador):
-    borrarNumero(surfaceNumero)
-    texto = str(jugador) 
-    fuente = pygame.font.Font(None, int(surfaceNumero.get_width() *0.5))
-    superficie_texto = fuente.render(texto, True, (0, 0, 0))
-    surfaceNumero.blit(superficie_texto, (0,0))
 
 def runSettings():
     pygame.init()
     clock = pygame.time.Clock()
-    proporcion  = 0.1
-    surfaceNumeroJugadores = pygame.Surface((params.size*16*proporcion, params.size*9*proporcion))
-    alphaColor = (255,0,255)
-    surfaceNumeroJugadores.set_alpha()
-    surfaceNumeroJugadores.set_colorkey(alphaColor)
-    surfaceNumero = pygame.Surface((params.size*16*proporcion, params.size*9*proporcion))
-    surfaceNumero.set_alpha()
-    surfaceNumero.set_colorkey(alphaColor)
 
     jugadores = 2
     rondas = 1
-    actualizarNumero(surfaceNumeroJugadores,(0, 0),jugadores)
-    actualizarNumero(surfaceNumero,(0, 0),rondas)
-    #screen = pygame.display.set_mode((params.size*16, params.size*9))
+
     while True:
-        params.screen.blit(pygame.transform.scale(params.settingsImg, (params.size*16,params.size*9)), (0, 0))
-        params.screen.blit(surfaceNumeroJugadores,(params.size*16*0.74, params.size*9*0.38))
-        params.screen.blit(surfaceNumero,(params.size*16*0.74, params.size*9*0.82))
+        loadScreen()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -50,36 +30,30 @@ def runSettings():
 
                     elif btn.item == 'MasPlayer':
                         if jugadores < 6 and jugadores >= 0:
-                            params.playersNumber += 1
-                            actualizarNumero(surfaceNumeroJugadores,(0, 0),params.playersNumber)
+                            jugadores += 1
                             #deberia blitear en pantalla el numero de jugadores
 
                     elif btn.item == 'MenosPlayer':
                         if jugadores > 2 and jugadores <= 6:
-                            params.playersNumber -= 1
-                            actualizarNumero(surfaceNumeroJugadores,(params.size*16*0.5, params.size*9*0.5),params.playersNumber)
+                            jugadores -= 1
                             #deberia blitear en pantalla el numero de jugadores
                     elif btn.item == 'MasRonda':
                         if rondas < 5 and rondas >= 0:
                             rondas += 1
-                            actualizarNumero(surfaceNumero,(0, 0),rondas)
-                            print(rondas)
                             #deberia blitear en pantalla el numero de rondas
                     elif btn.item == 'MenosRonda':
                         if rondas > 1 and rondas <= 5:
+                            params.size +=5
                             rondas -= 1
-                            actualizarNumero(surfaceNumero,(0, 0),rondas)
-                            print(rondas)
                             #deberia blitear en pantalla el numero de ronda
                     elif btn.item == 'IncreaseSize':
                         if params.size < 120:
                             params.size +=5
-                            params.screen = pygame.display.set_mode((params.size*16, params.size*9))
                     elif btn.item == 'DecreaseSize':
                         if params.size > 25:
                             params.size -=5
-                            params.screen = pygame.display.set_mode((params.size*16, params.size*9))
-            pygame.display.flip()
+
+        clock.tick(60)
 
 def buttons():
     x,width,height = params.size,params.size*16,params.size*9 
@@ -96,14 +70,15 @@ def buttons():
     buttons = [home_button, confirmar_button, mas_player_button, menos_player_button, mas_ronda_button, menos_ronda_button, increase_size_button, decrease_size_button]
     return buttons
 
+def loadScreen():
+    if params.size == 120:
+        screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+    else:
+        screen = pygame.display.set_mode((params.size*16, params.size*9))
+    screen.blit(pygame.transform.scale(params.settingsImg, (params.size*16,params.size*9)), (0, 0))
+    # pygame.draw.rect(screen, (0,0, 0), (params.size*2.8, params.size*3.2, params.size, params.size*0.75), 5)
+    # pygame.draw.rect(screen, (0, 0, 0), (params.size*0.9, params.size*3.2, params.size, params.size*0.75), 5)
+    pygame.display.flip()
 
-<<<<<<< HEAD
-#if __name__ == '__main__':
-    #runSettings()
-
-
- #MARCADO PARA ARREGLAR BOTONES
-=======
 if __name__ == '__main__':
     runSettings()
->>>>>>> origin/Maru

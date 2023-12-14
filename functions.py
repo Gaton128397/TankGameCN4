@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-import params,pygame,sys
-from button import Button
-
-def cambiar_tamano_pantalla():
-    # if params.size <= 50:  
-        # params.screen = pygame.display.set_mode((800,800))
-    # else:
-=======
-import params,pygame,sys,random,runShop,player
+import params,pygame,sys,random,runShop,player,runShop2
 from button import Button
 from createMap import Map
 jugadorTest = player.Player()
@@ -24,7 +15,6 @@ def crearMapas():
     return (selva,galaxia,nieve,desierto,ciudad)
 
 def cambiar_tamano_pantalla():
->>>>>>> origin/Maru
     params.screen = pygame.display.set_mode((params.size*16,params.size*9))
 
 def checkResize(event):
@@ -43,11 +33,8 @@ def run(img,propBotonesPantalla,pantalla):
     img1 = img
     screen = pantalla
     mapa = None
-<<<<<<< HEAD
-=======
     modo = None
     shop = runShop.Shop()
->>>>>>> origin/Maru
     while True:
         
         background = pygame.image.load(img1)
@@ -56,11 +43,7 @@ def run(img,propBotonesPantalla,pantalla):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-<<<<<<< HEAD
             checkResize(event)
-=======
-            # checkResize(event)
->>>>>>> origin/Maru
             for btns in crearButtons(propBotonesPantalla):
                 for btn in btns:
                     if btn.check_click(event):
@@ -93,18 +76,6 @@ def run(img,propBotonesPantalla,pantalla):
                                 print('Confirmar seleccion')
                                 return 11
                             elif btn.item == 5:
-<<<<<<< HEAD
-                                print('mapa random')
-                            elif btn.item == 6:
-                                print('mapa selva')
-                            elif btn.item == 7:
-                                print('mapa galaxia')
-                            elif btn.item == 8:
-                                print('mapa nieve')
-                            elif btn.item == 9:
-                                print('mapa desierto')
-                            elif btn.item == 10:
-=======
                                 mapa = random.choice(crearMapas())
                                 print('mapa random')
                             elif btn.item == 6:
@@ -121,7 +92,6 @@ def run(img,propBotonesPantalla,pantalla):
                                 print('mapa desierto')
                             elif btn.item == 10:
                                 mapa = crearMapas()[4]
->>>>>>> origin/Maru
                                 print('mapa ciudad')
 
                         #menu
@@ -130,14 +100,15 @@ def run(img,propBotonesPantalla,pantalla):
                                 print('starting. . . ')
                                 return 6
                             elif btn.item == 12:
-                                return 10
                                 print('Settings')
+                                return 10                               
                             elif btn.item == 13:
-                                return 0
                                 print('Controles')
+                                return 0
                             elif btn.item == 14:
+                                print('salir')
                                 return -1
-                                print('salir 2')
+                                
 
                         #pausa
                         elif pantalla == 5:
@@ -157,14 +128,6 @@ def run(img,propBotonesPantalla,pantalla):
                         #playMode
                         if pantalla == 6:
                             if btn.item == 19:
-<<<<<<< HEAD
-                                print('Modo amigos')
-                            elif btn.item == 20:
-                                print('Modo CPU')
-                            elif btn.item == 21:
-                                print('Confirmar eleccion')
-                                return 9
-=======
                                 modo = 0
                                 print('Modo amigos')
                             elif btn.item == 20:
@@ -174,7 +137,6 @@ def run(img,propBotonesPantalla,pantalla):
                                 if modo !=None:
                                     print('Confirmar eleccion')
                                     return 9
->>>>>>> origin/Maru
                         #score
                         if pantalla == 7:
                             if btn.item == 22:
@@ -208,9 +170,6 @@ def run(img,propBotonesPantalla,pantalla):
                                 return 4                              
                             elif btn.item == 30:
                                 print('Aumentar resolucion')
-<<<<<<< HEAD
-                            elif btn.item == 31:
-=======
                                 if params.size < 120:
                                     params.size+=10
                                     cambiar_tamano_pantalla()
@@ -218,27 +177,15 @@ def run(img,propBotonesPantalla,pantalla):
                                 if params.size > 50:
                                     params.size-=10
                                     cambiar_tamano_pantalla()
->>>>>>> origin/Maru
                                 print('Disminuir resolucion')
                         
                         #SHOP PROVISIONAL
-                        if pantalla == 11:
-<<<<<<< HEAD
-                            if btn.item == 32:
-                                print('Siguiente')
-                                return 12                              
-                            elif btn.item == 33:
-                                print('Comprar')
-                            elif btn.item == 34:
-                                print('Vender')
-=======
-                            
-                            pantalla = shop.openShop(listaJugadores)
->>>>>>> origin/Maru
+                        if pantalla == 11:     
+                            pantalla = runShop2.openShop(listaJugadores)
 
                         #PANTALLA PROVISORIA DE JUEGO
                         if pantalla == 12:
-                            if btn.item == 35:
+                            if btn.item == 33:
                                 print('Siguiente')
                                 return 8       
                         
