@@ -48,6 +48,7 @@ class scoreBoard():
         self.listaJugadores = listaJugadores
         self.infoMostrar = None
         self.mostrarJugadores()
+        
     def mostrarJugadores(self):
         contador = 0
         for i in range(len(self.listaJugadores)):
@@ -58,6 +59,7 @@ class scoreBoard():
             self.mostrarJugador(jugador,i)
             self.surface.blit(jugador,(params.WIDTH*0.077,params.HEIGHT*0.275+contador))
             contador += params.HEIGHT*0.07
+            
     def mostrarJugador(self,superficie,jugador):
         tank = imgTank(self.colors[jugador])
         superficie.blit(tank.surfaceTank,(0,0))

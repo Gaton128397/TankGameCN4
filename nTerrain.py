@@ -55,7 +55,6 @@ class TerrenoVariado:
             pos.append(params.HEIGHT)
         else:
             pos.append(position[1])
-        print("este es la posicion del proyectil: "+ str(pos))
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, proyectil.blastRadius)
         tanquesDañadosIzquierda = {}
         tanquesDañadosDerecha= {}
@@ -116,51 +115,6 @@ class TerrenoVariado:
                 else:
                     listaPlayers[lista[turno].playerID].kda[0] += 1
                     listaPlayers[lista[z].playerID].kda[1] += 1
-            print(f"El tanque {z} recibe un daño de {dmg}")
-    
-    def testupdateImpact(self,pos,radius,lista):
-        print(radius)
-        pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
-        tanquesDañadosIzquierda = {}
-        tanquesDañadosDerecha= {}
-        puntosImpactoIzquierda = {}
-        puntosImpactoDerecha = {}
-        for i in range(pos[0] - radius, pos[0] + radius):
-            for j in range(pos[1] - radius, pos[1] + radius):
-                if (i - pos[0]) ** 2 + (j - pos[1]) ** 2 <= radius ** 2:
-                    if(((i, j)) in self.hitPoints):
-                        del self.hitPoints[(i, j)]
-                    for z in range(len(lista)):
-                        if i < pos[0]:
-                            if (i,j) in lista[z].hitBox:
-                                tanquesDañadosIzquierda[z] = True
-                                puntosImpactoIzquierda[z] = (i, j)
-                        if i > pos[0]:
-                            if (i,j) in lista[z].hitBox:
-                                if z not in tanquesDañadosIzquierda:
-                                    tanquesDañadosDerecha[z] = True
-                                    if z not in puntosImpactoDerecha:
-                                        puntosImpactoDerecha[z] = (i, j) 
-                    #if(((i, j)) in self.hitPoints):
-                    #    del self.hitPoints[(i, j)]
-       
-        # Imprime los puntos de impacto
-        
-        print("Puntos de impacto en la izquierda:")
-        for z, punto in puntosImpactoIzquierda.items():
-            print(f"Tanque {z}: {punto}")
-            distancia = functions.calcular_distancia(pos, punto)
-            dmg = int(functions.calcularDMG(distancia, 50, radius,1))
-            #dano = self.calcularDMG(distancia, 50)
-            lista[z].actualizarVida(dmg)
-            
-            print(f"El tanque {z} recibe un daño de {dmg}")
-        print("Puntos de impacto en la derecha:")
-        for z, punto in puntosImpactoDerecha.items():
-            distancia = functions.calcular_distancia(pos, punto)
-            dmg = int(functions.calcularDMG(distancia, 50, radius,1))
-            lista[z].actualizarVida(dmg)
-            print(distancia)
             print(f"El tanque {z} recibe un daño de {dmg}")
     
     def interpolate(self, x1, y1, x2, y2, x):

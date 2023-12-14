@@ -1,35 +1,23 @@
-import math, params, player, nTank, random, copy
-import math, params, player, nTank, random, copy
+import math, params, player, nTank, random
 
-radius = 160
+def frange(start, final, increment):
+    numbers = []
+    while start < final:
+        numbers.append(start)
+        start = start + increment 
+    return numbers
 
-def toRadian(theta):
-    return theta * math.pi / 180
 
-def toDegrees(theta):
-    return theta * 180 / math.pi
+def draw_trajectory(u, theta, gravity, xPositions, yPositions,pos,wind):
+    theta = math.radians(theta)
+    # Time of flight
+    t_flight = 2 * u * math.sin(theta) / gravity
+    # Find time intervals
+    intervals = frange(0, t_flight+params.WIDTH, 0.05) 
 
-def getGradient(p1, p2):
-    if p1[0] == p2[0]:
-        m = toRadian(90)
-    else:
-        m = (p2[1] - p1[1]) / (p2[0] - p1[0])
-    return m
-
-def getAngleFromGradient(gradient):
-    return math.atan(gradient)
-
-def getAngle(pos, origin):
-    m = getGradient(pos, origin)
-    thetaRad = getAngleFromGradient(m)
-    theta = round(toDegrees(thetaRad), 2)
-    return theta
-
-def getPosOnCircumeference(theta, origin):
-    theta = toRadian(theta)
-    x = origin[0] + radius * math.cos(theta)
-    y = origin[1] + radius * math.sin(theta)
-    return (x, y)
+    for t in intervals:
+        xPositions.append(pos[0]+ (u * math.cos(theta) * t) + (wind * t))
+        yPositions.append(pos[1]+ (u * math.sin(theta) * t - 0.5 * gravity * t *t))
 
 def divideScreenIn9(width,height):    
     x1 = width*1/3
@@ -40,17 +28,6 @@ def divideScreenIn9(width,height):
     y3 = height
     listaTercios = [(x1,y1),(x2,y1),(x3,y1),(x1,y2),(x2,y2),(x3,y2),(x1,y3),(x2,y3),(x3,y3)]
     return listaTercios
-
-def collide(firstObjectPos,SecondObjectPos):
-    firstObjectPosX = firstObjectPos[0]
-    firstObjectPosY = firstObjectPos[1]
-    secondObjectPosX = SecondObjectPos[0]
-    secondObjectPosY = SecondObjectPos[1]
-    collided = math.sqrt((secondObjectPosX-firstObjectPosX)**2 + (secondObjectPosY-firstObjectPosY)**2)
-    if collided <= 0:
-        return 1
-    else:
-        return 0
     
 def calcular_distancia(punto1, punto2):
     x1, y1 = punto1
