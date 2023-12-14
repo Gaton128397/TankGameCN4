@@ -99,3 +99,6 @@ def buttons():
 
 #if __name__ == '__main__':
     #runSettings()
+
+
+ #MARCADO PARA ARREGLAR BOTONES

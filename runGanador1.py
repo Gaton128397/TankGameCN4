@@ -45,3 +45,7 @@ def loadScreen():
 
 # if __name__ == '__main__':
 #     runGanador1()
+
+
+
+ #MARCADO PARA ARREGLAR BOTONES

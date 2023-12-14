@@ -43,3 +43,6 @@ def loadScreen():
 
 #if __name__ == '__main__':
 #    runPlaymode()
+
+
+ #MARCADO PARA ARREGLAR BOTONES

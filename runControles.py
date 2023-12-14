@@ -33,3 +33,6 @@ def loadScreen():
     
 if __name__ == '__main__':
     runControles()
+
+
+ #MARCADO PARA ARREGLAR BOTONES

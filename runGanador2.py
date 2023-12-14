@@ -47,3 +47,6 @@ def loadScreen():
     pygame.display.flip()
 # if __name__ == '__main__':
     # runGanador2()
+
+
+ #MARCADO PARA ARREGLAR BOTONES

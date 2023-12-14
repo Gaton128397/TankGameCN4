@@ -46,3 +46,7 @@ def buttons():
 
 if __name__ == '__main__':
     runMenu()
+
+
+
+ #MARCADO PARA ARREGLAR BOTONES
