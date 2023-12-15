@@ -3,7 +3,9 @@ import numpy as np
 
 class TerrenoVariado:
     def __init__(self):
-        self.surfTerrain = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
+        self.surfTerrain = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.num_points = 15
         self.points = []
         self.yPoints = []
@@ -11,14 +13,14 @@ class TerrenoVariado:
         
         
         for i in range(self.num_points):
-            x = int(i * (params.WIDTH / (self.num_points - 1)))
-            y = random.randint(params.HEIGHT // 5, params.HEIGHT - 200)
-            if 0 <= x <= params.WIDTH:
+            x = int(i * (self.WIDTH / (self.num_points - 1)))
+            y = random.randint(self.HEIGHT // 5, self.HEIGHT - 200)
+            if 0 <= x <= self.WIDTH:
                 self.points.append([x, y])
                 self.yPoints.append([y])
 
         # interpolar los puntos faltantes
-        for x in range(0, params.WIDTH+1):
+        for x in range(0, self.WIDTH+1):
             if not any(point[0] == x for point in self.points):
                 # encontrar los puntos mas cercanos
                 for i in range(len(self.points) - 1):
@@ -34,9 +36,9 @@ class TerrenoVariado:
         
         self.points.sort()
         
-        for i in range(params.WIDTH):
+        for i in range(self.WIDTH):
             #print("hola")
-            for j in range(self.points[i][1],params.WIDTH+1):
+            for j in range(self.points[i][1],self.WIDTH+1):
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
@@ -44,14 +46,14 @@ class TerrenoVariado:
         pos = []
         if position[0] < 0:
             pos.append(0)
-        elif position[0] > params.WIDTH:
-            pos.append(params.WIDTH)
+        elif position[0] > self.WIDTH:
+            pos.append(self.WIDTH)
         else:
             pos.append(position[0])
         if position[1] < 0:
             pos.append(0)
-        elif position[1] > params.HEIGHT:
-            pos.append(params.HEIGHT)
+        elif position[1] > self.HEIGHT:
+            pos.append(self.HEIGHT)
         else:
             pos.append(position[1])
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, proyectil.blastRadius)
@@ -118,15 +120,15 @@ class TerrenoVariado:
     
     # Genera el terreno
     def drawTerrain(self):
-        self.surfTerrain = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.surfTerrain = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.surfTerrain.fill((255,0,255))
         
-        x_interp = np.linspace(0, params.WIDTH, 100)
+        x_interp = np.linspace(0, self.WIDTH, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
         points_interp = [(int(x), int(y)) for x, y in zip(x_interp, y_interp)]
         #self.points = points_interp
 
-        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, params.HEIGHT)] + points_interp + [(params.WIDTH, params.HEIGHT)])
+        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, self.HEIGHT)] + points_interp + [(self.WIDTH, self.HEIGHT)])
         pygame.draw.lines(self.surfTerrain, (139, 69, 19), False, points_interp, 5)
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))

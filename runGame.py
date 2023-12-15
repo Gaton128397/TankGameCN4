@@ -4,8 +4,8 @@ import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerP
 class gameLogic:
     
     def __init__(self, windowGame,playerList, mapa):
-        WIDTH = params.size*16
-        HEIGHT = params.size*9
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         self.screen = windowGame
         #WIDTH = params.size*16
         #HEIGHT = params.size*9
@@ -15,7 +15,7 @@ class gameLogic:
         self.wind = self.mapa[2]
         
         #background
-        self.backGround = pygame.Surface((WIDTH,HEIGHT))
+        self.backGround = pygame.Surface((self.WIDTH,self.HEIGHT))
         drawFunctions.backgroundDraw(self.backGround,self.mapa[0])
         self.screen.blit(self.backGround,(0,0))
         
@@ -38,14 +38,14 @@ class gameLogic:
         self.coloresJuagadores = []
         self.getColoresPlayers()
         self.powerBar = npowerBar.BarraDeCarga(0.2)
-        self.estelaSurface = pygame.Surface((WIDTH,HEIGHT))
+        self.estelaSurface = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.estelaAlpha = (255,255,255)
         self.estelaSurface.fill(self.estelaAlpha)
         self.estelaSurface.set_alpha()
         self.estelaSurface.set_colorkey(self.estelaAlpha)
         
     def setPlayers(self):
-        splitPos = params.WIDTH//(params.playersNumber*2)
+        splitPos = self.WIDTH//(params.playersNumber*2)
         contador = 0
         for i in range(params.playersNumber):
             self.listaPlayers[i].tanque.setPos((random.randint(contador,contador+splitPos),-20))
@@ -59,7 +59,7 @@ class gameLogic:
     def actualizarPantallasJuego(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
-        self.screen.blit(self.info.bloque, (params.WIDTH*0.68, 0))
+        self.screen.blit(self.info.bloque, (self.WIDTH*0.68, 0))
         self.screen.blit(self.estelaSurface,(0,0))
         self.updPlayers()
 
@@ -233,7 +233,7 @@ class gameLogic:
                             if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                 wind = randint(-10,10)
                                 potenciaIA = random.randint(50,150)
-                                bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.05))),balaID,potenciaIA,jugador.angulo,self.listaJugadores,self.gravity,wind)
+                                bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(self.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(self.HEIGHT*0.05))),balaID,potenciaIA,jugador.angulo,self.listaJugadores,self.gravity,wind)
                                 self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(), self.info),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                 self.listaPlayers[jugador.playerID].inventory[balaID] -=1
                                 self.cantidadbullets -= 1
@@ -262,7 +262,7 @@ class gameLogic:
                                         if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                             self.estelaSurface.fill(self.estelaAlpha)
                                             wind = randint(-10,10)
-                                            bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.05))),balaID,potencia,jugador.angulo,self.listaJugadores,self.gravity,wind)
+                                            bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(self.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(self.HEIGHT*0.05))),balaID,potencia,jugador.angulo,self.listaJugadores,self.gravity,wind)
                                             self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(),self.info,turnos[0]),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
                                             self.cantidadbullets -= 1
@@ -321,7 +321,9 @@ class gameLogic:
 def testgame():#Logica de mainScreen()
     pygame.init()
     clock = pygame.time.Clock()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
+    WIDTH = params.size*16
+    HEIGHT = params.size*9
+    window = pygame.display.set_mode((WIDTH, HEIGHT))
     playerWon = None
     run = True
     numeroPartidos = 2

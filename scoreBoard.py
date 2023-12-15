@@ -2,6 +2,8 @@ import pygame, params, drawFunctions, nTank, math
 
 class imgTank:
     def __init__(self,color,tankProportion):
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         self.xpos = 0
         self.ypos = 0
         self.angulo = 0
@@ -12,7 +14,7 @@ class imgTank:
         self.yCanon2 = 0
 
         self.tankProportion = tankProportion
-        self.surfaceTank = pygame.Surface((params.WIDTH*self.tankProportion, params.HEIGHT*self.tankProportion))
+        self.surfaceTank = pygame.Surface((self.WIDTH*self.tankProportion, self.HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.5)
         self.y = int(self.surfaceTank.get_height()*0.8)
         self.width = int(self.surfaceTank.get_width()*0.55)
@@ -40,8 +42,10 @@ class imgTank:
     
 class scoreBoard():
     def __init__(self,listaJugadores, window,colors,ruta,general):
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         self.colors = colors
-        self.surface = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.surface = pygame.Surface((self.WIDTH,self.HEIGHT))
         drawFunctions.backgroundDraw(self.surface,ruta)
         self.window = window
         self.general = general
@@ -52,13 +56,13 @@ class scoreBoard():
     def mostrarJugadores(self):
         contador = 0
         for i in range(len(self.listaJugadores)):
-            jugador = pygame.Surface((params.WIDTH*0.842,params.HEIGHT*0.07))
+            jugador = pygame.Surface((self.WIDTH*0.842,self.HEIGHT*0.07))
             jugador.fill((255,0,255))
             jugador.set_alpha()
             jugador.set_colorkey((255,0,255))
             self.mostrarJugador(jugador,i)
-            self.surface.blit(jugador,(params.WIDTH*0.077,params.HEIGHT*0.275+contador))
-            contador += params.HEIGHT*0.07
+            self.surface.blit(jugador,(self.WIDTH*0.077,self.HEIGHT*0.275+contador))
+            contador += self.HEIGHT*0.07
             
     def mostrarJugador(self,superficie,jugador):
         tank = imgTank(self.colors[jugador],0.07)
@@ -72,7 +76,7 @@ class scoreBoard():
             self.mostrarTexto(superficie,str(self.listaJugadores[jugador].generalkda[1]),int(superficie.get_width() *0.65))
             self.mostrarTexto(superficie,str(self.listaJugadores[jugador].money),int(superficie.get_width() *0.85))
     def mostrarTexto(self,superficie,texto, pos):
-        fuente = pygame.font.Font(None, int(params.HEIGHT*0.05))
+        fuente = pygame.font.Font(None, int(self.HEIGHT*0.05))
         superficie_texto = fuente.render(texto, True, (0, 0, 0))
         superficie.blit(superficie_texto, (pos, int(superficie.get_height() *0.05)))
         

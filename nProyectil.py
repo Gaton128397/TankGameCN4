@@ -6,6 +6,8 @@ def cargarProyectil(surf, imagen, proporcionX, proporcionY, posicion):
     surf.blit(imagen_escalada, (posicion))
 class Projectile():
     def __init__(self,window,position, typeBullet,power, theta,listaJugador,gravity,wind):
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         #pantalla donde se ejecutara la visual del proyectil
         self.window = window
         
@@ -16,7 +18,7 @@ class Projectile():
         self.typeBullet = typeBullet
         
         #superficie del proyectil
-        self.surf = pygame.Surface((params.WIDTH*0.05,params.HEIGHT*0.07))
+        self.surf = pygame.Surface((self.WIDTH*0.05,self.HEIGHT*0.07))
         
         #clave de color para el proyectil
         self.alphaColor = (255,0,255)
@@ -47,27 +49,27 @@ class Projectile():
         if self.typeBullet == 3: #105mm
             cargarProyectil(self.surf,"imgs/icons/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.07)
+            self.blastRadius = int(self.WIDTH*0.07)
             self.DMG = 50
             
         #tipo de proyectil 2
         elif self.typeBullet == 4: #80mm
             cargarProyectil(self.surf,"imgs/icons/80mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.05)
+            self.blastRadius = int(self.WIDTH*0.05)
             self.DMG = 40
             
         #tipo de proyectil 3
         elif self.typeBullet == 5: #60mm
             cargarProyectil(self.surf,"imgs/icons/60mmStone.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
-            self.blastRadius = int(params.WIDTH*0.03)
+            self.blastRadius = int(self.WIDTH*0.03)
             self.DMG = 30
             
         self.yMaxHeight = position[1]
         self.pos = []
         self.pos.append(position[0])
-        self.pos.append(params.HEIGHT-position[1])
+        self.pos.append(self.HEIGHT-position[1])
         functions.draw_trajectory(power, theta, self.g, self.xPositions,self.yPositions, self.pos, self.wind)
         
     def shoot(self,listaDeSurface,puntosTerreno,infoBlock,turno):
@@ -76,7 +78,7 @@ class Projectile():
         shoot = True
         clock = pygame.time.Clock()
         contador = 0
-        maxHeight = params.HEIGHT
+        maxHeight = self.HEIGHT
         while shoot:
             clock.tick(200)
             for event in pygame.event.get():
@@ -84,7 +86,7 @@ class Projectile():
                     pygame.quit()
                     shoot = False
             xIni = self.xPositions.pop(0) 
-            yIni = (params.HEIGHT-self.yPositions.pop(0)) 
+            yIni = (self.HEIGHT-self.yPositions.pop(0)) 
             x = xIni + puntox
             y = yIni + puntoy
             if contador == 5:
@@ -97,7 +99,7 @@ class Projectile():
             infoBlock.actualizarDistancia(int(distancia))
             self.listaJugador[turno].distancia = int(distancia)
             self.window.blit(self.surf,(xIni,yIni))
-            self.window.blit(infoBlock.bloque,(params.WIDTH*0.68,0))
+            self.window.blit(infoBlock.bloque,(self.WIDTH*0.68,0))
             if maxHeight > y:
                 maxHeight = y
                 self.actualizarMaxHeight(listaDeSurface[3],int(maxHeight))
@@ -109,7 +111,7 @@ class Projectile():
                 for i in range(len(self.listaJugador)):
                     if (int(x),int(y)) in self.listaJugador[i].hitBox:
                         return (int(x),int(y))
-            if x > params.WIDTH or x < 0 or y > params.HEIGHT:
+            if x > self.WIDTH or x < 0 or y > self.HEIGHT:
                 return (int(x),int(y))
             
             contador += 1

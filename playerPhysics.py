@@ -1,6 +1,8 @@
 import pygame, drawFunctions, params
 
 def playerSpawn(window,listaJugadores,terrain,surface,gravity):
+    WIDTH = params.size*16
+    HEIGHT = params.size*9
     clock = pygame.time.Clock()
     falling = True
     fallingTanks = []
@@ -40,10 +42,11 @@ def playerSpawn(window,listaJugadores,terrain,surface,gravity):
             
 def fallTanks(window,listaJugadores, terrainPoints,listaPlayers,listaJugadoresDerrotados, surface, gravity):
     clock = pygame.time.Clock()
+    WIDTH = params.size*16
     falling = True
     fallingTanks = []
     copy = []
-    falldmg = params.WIDTH*0.005
+    falldmg = WIDTH*0.005
     for i in range(len(listaJugadores)):
         if listaJugadores[i].getFallPoint() not in terrainPoints:
             fallingTanks.append(i)
