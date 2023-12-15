@@ -22,7 +22,7 @@ class gameLogic:
         #Terreno
         self.terrain = nTerrain.TerrenoVariado()
         
-        #print(self.terrain.getPoints())
+        #terreno
         self.screen.blit(self.terrain.surfTerrain,(0,0))
         
         #players
@@ -34,15 +34,36 @@ class gameLogic:
         self.info = ninfoBlock.infoBlock(0.25)
         self.cantidadbullets = self.cantidadBalas()
         
-        #otros
-        self.coloresJuagadores = []
-        self.getColoresPlayers()
-        self.powerBar = npowerBar.BarraDeCarga(0.2)
+        #estela de disparo
         self.estelaSurface = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.estelaAlpha = (255,255,255)
         self.estelaSurface.fill(self.estelaAlpha)
         self.estelaSurface.set_alpha()
         self.estelaSurface.set_colorkey(self.estelaAlpha)
+        
+        #powerBar
+        self.powerBar = npowerBar.BarraDeCarga(0.2)
+        
+        #surface del viento
+        self.surfaceWind = pygame.Surface((self.WIDTH*0.1,self.HEIGHT*0.04))
+        self.windAlpha = (255,255,255)
+        self.surfaceWind.fill(self.windAlpha)
+        self.surfaceWind.set_alpha()
+        self.surfaceWind.set_colorkey(self.windAlpha)
+        drawFunctions.cargarImagen(self.surfaceWind,"imgs/items/wind.png",0.3,1,(0,0))
+        
+        
+        #otros
+        self.coloresJuagadores = []
+        self.getColoresPlayers()
+        
+    def actualizarViento(self,wind):
+        pygame.draw.rect(self.surfaceWind, (255,255,255), (self.surfaceWind.get_width()*0.4,0,self.surfaceWind.get_width()*0.5,self.surfaceWind.get_height()))
+        wind = str(wind)
+        wind = wind + " m/s"
+        fuente = pygame.font.Font(None, int(self.surfaceWind.get_width() *0.2))
+        superficie_texto = fuente.render(wind, True, (0, 0, 0))
+        self.surfaceWind.blit(superficie_texto, (int(self.surfaceWind.get_width() *0.4), int(self.surfaceWind.get_height() *0.18)))
         
     def setPlayers(self):
         splitPos = self.WIDTH//(params.playersNumber*2)
@@ -59,8 +80,9 @@ class gameLogic:
     def actualizarPantallasJuego(self):#unnamed update
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
-        self.screen.blit(self.info.bloque, (self.WIDTH*0.68, 0))
         self.screen.blit(self.estelaSurface,(0,0))
+        self.screen.blit(self.info.bloque, (self.WIDTH*0.68, 0))
+        self.screen.blit(self.surfaceWind,(self.WIDTH*0,self.HEIGHT*0.1))
         self.updPlayers()
 
     def actualizarInfo(self,turno,balaID):
@@ -133,7 +155,6 @@ class gameLogic:
             turnos[1] = turnos[0]
             listaDeTurnos.remove(turnos[0])
             self.cantidadbullets = self.cantidadBalas()
-            self.cantidadbullets = self.cantidadBalas()
             self.actualizarInfo(turnos[0],balaID)
             jugadoresDerrotados.clear()
             return True
@@ -205,20 +226,31 @@ class gameLogic:
         running = True
         print(self.listaJugadores[0].getPos())
         playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
-        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface]
+        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface,self.powerBar.poweBarSurface]
         listaTurnos = []
         jugadoresDerrotados = []
         self.definirTurnos(listaTurnos)
         turnos = [0,0]
         listaTurnos.remove(0)
-        potencia = 100
+        potencia = 0
         jugador = 'a'
         balaID = 3 #3,4,5 son las IDs
         self.actualizarInfo(turnos[0],balaID)
+        chooseWind = True
+        wind = randint(-10,10)
+        self.actualizarViento(wind)
         anguloIA = -1
         while running:
+            
             if self.checkearTurno(listaTurnos,turnos,jugadoresDerrotados,balaID):
+                
                 jugador = self.listaJugadores[turnos[0]]
+                
+                if not chooseWind:
+                    chooseWind = True
+                    wind = randint(-10,10)
+                    self.actualizarViento(wind)
+                    
                 if self.listaPlayers[jugador.playerID].ia:
                     if jugador.ammo:
                         if anguloIA == -1:
@@ -231,10 +263,10 @@ class gameLogic:
                             self.info.actualizarAngulo(jugador.angulo)
                         elif jugador.angulo == anguloIA:
                             if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
-                                wind = randint(-10,10)
+                                self.estelaSurface.fill(self.estelaAlpha)
                                 potenciaIA = random.randint(50,150)
                                 bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(self.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(self.HEIGHT*0.05))),balaID,potenciaIA,jugador.angulo,self.listaJugadores,self.gravity,wind)
-                                self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(), self.info),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
+                                self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(), self.info,turnos[0]),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                 self.listaPlayers[jugador.playerID].inventory[balaID] -=1
                                 self.cantidadbullets -= 1
                                 self.comprobarBalasJugador(self.listaJugadores[turnos[0]])
@@ -242,6 +274,7 @@ class gameLogic:
                                 playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),self.listaPlayers,jugadoresDerrotados,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
                                 anguloIA = -1
                                 turnos[0] = -1
+                                chooseWind = False
                             else:
                                 balaID = randint(3,5)
                     else:
@@ -256,12 +289,13 @@ class gameLogic:
                             if event.type == pygame.MOUSEBUTTONDOWN:
                                 if pygame.mouse.get_pressed()[0]:
                                     print(pygame.mouse.get_pos())
-                                if event.key == pygame.K_RETURN: #recien aqui recibe la potencia para disparar
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_RETURN: #r
                                     #debe revisar que haya una bala seleccionada o partir de la mas chica
                                     if potencia >0:
                                         if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                             self.estelaSurface.fill(self.estelaAlpha)
-                                            wind = randint(-10,10)
+                                            #wind = 0
                                             bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(self.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(self.HEIGHT*0.05))),balaID,potencia,jugador.angulo,self.listaJugadores,self.gravity,wind)
                                             self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(),self.info,turnos[0]),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
@@ -270,6 +304,7 @@ class gameLogic:
                                             self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                                             playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),self.listaPlayers,jugadoresDerrotados,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
                                             turnos[0] = -1
+                                            chooseWind = False
                                         else:
                                             print('no quedan')
                                         #cuando dispara se saca el jugador de la lista de turnos
@@ -337,8 +372,10 @@ def testgame():#Logica de mainScreen()
             functions.resetTanks(listaJugadores,resetTanks,window)
             functions.resetIventario(listaJugadores)
             game = gameLogic(window,listaJugadores,mapa)
+            
             game.run(clock)
             partidosActuales += 1
+        
         run = False     
         try:
             for event in pygame.event.get():

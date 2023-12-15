@@ -47,21 +47,21 @@ class Projectile():
         
         #tipo de proyectil 1
         if self.typeBullet == 3: #105mm
-            cargarProyectil(self.surf,"imgs/icons/105mmStone.png",1,1,(0,0))
+            cargarProyectil(self.surf,"imgs/items/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(self.WIDTH*0.07)
             self.DMG = 50
             
         #tipo de proyectil 2
         elif self.typeBullet == 4: #80mm
-            cargarProyectil(self.surf,"imgs/icons/80mmStone.png",1,1,(0,0))
+            cargarProyectil(self.surf,"imgs/items/80mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(self.WIDTH*0.05)
             self.DMG = 40
             
         #tipo de proyectil 3
         elif self.typeBullet == 5: #60mm
-            cargarProyectil(self.surf,"imgs/icons/60mmStone.png",0.6,0.6,(0,0))
+            cargarProyectil(self.surf,"imgs/items/60mmStone.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(self.WIDTH*0.03)
             self.DMG = 30
@@ -90,11 +90,12 @@ class Projectile():
             x = xIni + puntox
             y = yIni + puntoy
             if contador == 5:
-                pygame.draw.circle(listaDeSurface[3], (0,0,0), (int(x),int(y)), 5)
+                pygame.draw.circle(listaDeSurface[3], (0,0,0), (int(x),int(y)), int(self.HEIGHT*0.006))
                 contador = 0
             self.window.blit(listaDeSurface[0],(0,0))
             self.window.blit(listaDeSurface[1],(0,0))
             self.window.blit(listaDeSurface[3],(0,0))
+            self.window.blit(listaDeSurface[4],(0,0))
             distancia = functions.calcular_distancia((x,y),(self.pos[0]+puntox,self.pos[1]+puntoy))
             infoBlock.actualizarDistancia(int(distancia))
             self.listaJugador[turno].distancia = int(distancia)

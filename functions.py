@@ -55,7 +55,7 @@ def loadPlayers(listaJugadores,window,ia):
         for i in range(params.playersNumber):
             listaJugadores.append(player.Player())
     elif ia == True:
-        choosePlayer = True
+        choosePlayer = False
         for i in range(params.playersNumber):
             if choosePlayer:
                 randomPlayer = random.randint(0,1)
@@ -86,6 +86,6 @@ def resetTanks(listaJugadores,paramsTanks,window):
 def resetIventario(listaJugadores):
     for i in range(len(listaJugadores)):
         listaJugadores[i].inventory[0] = 0
-        listaJugadores[i].inventory[3] = 3
-        listaJugadores[i].inventory[4] = 3
-        listaJugadores[i].inventory[5] = 3
+        listaJugadores[i].inventory[3] = 10
+        listaJugadores[i].inventory[4] = 10
+        listaJugadores[i].inventory[5] = 10
