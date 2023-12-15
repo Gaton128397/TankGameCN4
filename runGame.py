@@ -12,7 +12,6 @@ class gameLogic:
         #variables de entorno
         self.mapa = mapa
         self.gravity = 9.8
-        self.wind = self.mapa[2]
         
         #background
         self.backGround = pygame.Surface((self.WIDTH,self.HEIGHT))
@@ -361,10 +360,10 @@ def testgame():#Logica de mainScreen()
         if pantallaActual == 0:
             partidosActuales = 0
             listaJugadores = []
-            ia = True
+            ia = False
             resetTanks = functions.loadPlayers(listaJugadores,window,ia)
             while partidosActuales < numeroPartidos:
-                mapa = ["Mapas/galaxia.png",9.8,2]
+                mapa = ["Mapas/galaxia.png",9.8]
                 functions.resetTanks(listaJugadores,resetTanks,window)
                 functions.anhadirDiezmo(listaJugadores)
                 #tienda 
@@ -375,11 +374,4 @@ def testgame():#Logica de mainScreen()
         #print("not reach")
         clock.tick(60)
         pygame.display.update()
-testgame()
-#pantalla inicial 
-``pantalla = 4
-while pantalla != -1:
-    try:
-        if pantalla != -1:
-            pantalla = functions.run(proporciones.imgs[pantalla],proporciones.listaProporciones,pantalla)
-    except TypeError:``
+#testgame()

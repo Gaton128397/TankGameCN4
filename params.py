@@ -1,4 +1,14 @@
-playersNumber = 4
+from pygame import display, image
+playersNumber = 2
 gravityConstant = 9.8
-size = 80
-listaDeResoluciones = [(800,600),(1024,768),(1280,720),(1280,1024),(1366,768),(1600,900),(1920,1080)]
+size = 100
+playersNumber = 2
+roundNumber = 2
+screen = display.set_mode((size*16, size*9))
+#icons
+shield = image.load('items/shield.png')
+dmg = image.load('items/dmg.png')
+health = image.load('items/health.png')
+bigStone = image.load('items/105mmStone.png')
+mediumStone = image.load('items/80mmStone.png')
+smallStone = image.load('items/60mmStone.png')
