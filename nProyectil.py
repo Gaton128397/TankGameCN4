@@ -47,21 +47,21 @@ class Projectile():
         
         #tipo de proyectil 1
         if self.typeBullet == 3: #105mm
-            cargarProyectil(self.surf,"imgs/items/105mmStone.png",1,1,(0,0))
+            cargarProyectil(self.surf,"items/105mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(self.WIDTH*0.07)
             self.DMG = 50
             
         #tipo de proyectil 2
         elif self.typeBullet == 4: #80mm
-            cargarProyectil(self.surf,"imgs/items/80mmStone.png",1,1,(0,0))
+            cargarProyectil(self.surf,"items/80mmStone.png",1,1,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(self.WIDTH*0.05)
             self.DMG = 40
             
         #tipo de proyectil 3
         elif self.typeBullet == 5: #60mm
-            cargarProyectil(self.surf,"imgs/items/60mmStone.png",0.6,0.6,(0,0))
+            cargarProyectil(self.surf,"items/60mmStone.png",0.6,0.6,(0,0))
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(self.WIDTH*0.03)
             self.DMG = 30

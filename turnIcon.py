@@ -18,27 +18,9 @@ class iconoTurno:
 
     def actualizarIcono(self, Turno):
         if Turno:
-            self.loadImagen('imgs/items/flechaInvertida.png',1,1,(0,0))
+            self.loadImagen('items/flechaInvertida.png',1,1,(0,0))
         else:
             self.borrarIcono()
 
     def borrarIcono(self):
         self.iconoTurnoSurface.fill(self.alphaColor)
-
-def test():
-    window = pygame.display.set_mode((params.size*16,params.size*9))
-    pygame.display.set_caption("Test")
-    drawFunctions.backgroundDraw(window,"imgs/maps/ciudad.png")
-    icono = iconoTurno(0.05)
-    icono.actualizarIcono(True)
-    window.blit(icono.iconoTurnoSurface,(0,0))
-    pygame.display.update()
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            pygame.display.update()
-    pygame.quit()
-
-#test()

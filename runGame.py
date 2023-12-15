@@ -50,7 +50,7 @@ class gameLogic:
         self.surfaceWind.fill(self.windAlpha)
         self.surfaceWind.set_alpha()
         self.surfaceWind.set_colorkey(self.windAlpha)
-        drawFunctions.cargarImagen(self.surfaceWind,"imgs/items/wind.png",0.3,1,(0,0))
+        drawFunctions.cargarImagen(self.surfaceWind,"items/wind.png",0.3,1,(0,0))
         
         
         #otros
@@ -119,15 +119,15 @@ class gameLogic:
         if len(self.listaJugadores) == 1:
             print("jugador gano")
             #mostrar pantalla de que el jugador gano
-            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
-            summary.sb_run()
-            summary = None
+            #summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
+            #summary.sb_run()
+            #summary = None
             return False
         elif self.cantidadbullets <= 0:
             print("jugadores sin balas")
-            summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
-            summary.sb_run()
-            summary = None
+            #summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
+            #summary.sb_run()
+            #summary = None
             
             #mostrar pantalla de que se los jugadores se quedaron sin balas
             return False
@@ -364,7 +364,7 @@ def testgame():#Logica de mainScreen()
             ia = True
             resetTanks = functions.loadPlayers(listaJugadores,window,ia)
             while partidosActuales < numeroPartidos:
-                mapa = ["imgs/maps/galaxia.png",9.8,2]
+                mapa = ["Mapas/galaxia.png",9.8,2]
                 functions.resetTanks(listaJugadores,resetTanks,window)
                 functions.anhadirDiezmo(listaJugadores)
                 #tienda 
@@ -376,3 +376,10 @@ def testgame():#Logica de mainScreen()
         clock.tick(60)
         pygame.display.update()
 testgame()
+#pantalla inicial 
+``pantalla = 4
+while pantalla != -1:
+    try:
+        if pantalla != -1:
+            pantalla = functions.run(proporciones.imgs[pantalla],proporciones.listaProporciones,pantalla)
+    except TypeError:``

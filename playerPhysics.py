@@ -11,7 +11,7 @@ def playerSpawn(window,listaJugadores,terrain,surface,gravity):
         if listaJugadores[i].getFallPoint() not in terrain.getDiccionary():
             fallingTanks.append(i)
             copy.append(listaJugadores[i].surfaceTank.copy())
-            drawFunctions.cargarImagen(listaJugadores[i].surfaceTank,"imgs/items/parachute.png",0.2,0.5,(0.32,0.03))
+            drawFunctions.cargarImagen(listaJugadores[i].surfaceTank,"items/parachute.png",0.2,0.5,(0.32,0.03))
     g = gravity//3
     if not fallingTanks:
         falling = False

@@ -12,10 +12,10 @@ class infoBlock:
         
         self.bloque.fill(self.alphaColor)
         self.actualizarTitulo()
-        self.cargar_imagen("imgs/items/angulo.png",0.15,0.2,(0.02,0.03))
-        self.cargar_imagen("imgs/items/distancia.png",0.15,0.2,(0.02,0.27))
-        self.cargar_imagen("imgs/items/bala.png",0.1,0.15,(0.05,0.5))
-        self.cargar_imagen("imgs/items/balas.png",0.1,0.15,(0.05,0.7))
+        self.cargar_imagen("items/angulo.png",0.15,0.2,(0.02,0.03))
+        self.cargar_imagen("items/distancia.png",0.15,0.2,(0.02,0.27))
+        self.cargar_imagen("items/bala.png",0.1,0.15,(0.05,0.5))
+        self.cargar_imagen("items/balas.png",0.1,0.15,(0.05,0.7))
         
         self.turnoTanque = scoreBoard.imgTank((255,0,0),self.proporcion*0.2)
         self.bloque.blit(self.turnoTanque.surfaceTank,(int(self.bloque.get_width() *0.7), int(self.bloque.get_height() *0.7)))
