@@ -1,4 +1,4 @@
-import params,pygame,sys,random,runShop,player,runShop2
+import params,pygame,sys,random,player,runShop
 from button import Button
 from createMap import Map
 jugadorTest = player.Player()
@@ -34,7 +34,7 @@ def run(img,propBotonesPantalla,pantalla):
     screen = pantalla
     mapa = None
     modo = None
-    shop = runShop.Shop()
+
     while True:
         
         background = pygame.image.load(img1)
@@ -181,7 +181,8 @@ def run(img,propBotonesPantalla,pantalla):
                         
                         #SHOP PROVISIONAL
                         if pantalla == 11:     
-                            pantalla = runShop2.openShop(listaJugadores)
+                            pantalla = runShop.openShop(listaJugadores)
+                            return 12
 
                         #PANTALLA PROVISORIA DE JUEGO
                         if pantalla == 12:
