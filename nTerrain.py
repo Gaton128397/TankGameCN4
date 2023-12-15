@@ -3,7 +3,9 @@ import numpy as np
 
 class TerrenoVariado:
     def __init__(self):
-        self.surfTerrain = pygame.Surface((params.size*16,params.size*9))
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
+        self.surfTerrain = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.num_points = 15
         self.points = []
         self.yPoints = []
@@ -11,14 +13,14 @@ class TerrenoVariado:
         
         
         for i in range(self.num_points):
-            x = int(i * (params.size*16 / (self.num_points - 1)))
-            y = random.randint(params.size*9 // 5, params.size*9 - 200)
-            if 0 <= x <= params.size*16:
+            x = int(i * (self.WIDTH / (self.num_points - 1)))
+            y = random.randint(self.HEIGHT // 5, self.HEIGHT - 200)
+            if 0 <= x <= self.WIDTH:
                 self.points.append([x, y])
                 self.yPoints.append([y])
 
         # interpolar los puntos faltantes
-        for x in range(0, params.size*16+1):
+        for x in range(0, self.WIDTH+1):
             if not any(point[0] == x for point in self.points):
                 # encontrar los puntos mas cercanos
                 for i in range(len(self.points) - 1):
@@ -33,11 +35,10 @@ class TerrenoVariado:
                 self.yPoints.append([int(y)])#????????????????????????
         
         self.points.sort()
-        print(self.points[0][1])
         
-        for i in range(params.size*16):
+        for i in range(self.WIDTH):
             #print("hola")
-            for j in range(self.points[i][1],params.size*16+1):
+            for j in range(self.points[i][1],self.WIDTH+1):
                 self.hitPoints[(i,j)]=True
         self.drawTerrain()
         
@@ -45,14 +46,14 @@ class TerrenoVariado:
         pos = []
         if position[0] < 0:
             pos.append(0)
-        elif position[0] > params.size*16:
-            pos.append(params.size*16)
+        elif position[0] > self.WIDTH:
+            pos.append(self.WIDTH)
         else:
             pos.append(position[0])
         if position[1] < 0:
             pos.append(0)
-        elif position[1] > params.size*9:
-            pos.append(params.size*9)
+        elif position[1] > self.HEIGHT:
+            pos.append(self.HEIGHT)
         else:
             pos.append(position[1])
         pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, proyectil.blastRadius)
@@ -81,9 +82,7 @@ class TerrenoVariado:
         
         # Imprime los puntos de impacto
         
-        print("Puntos de impacto en la izquierda:")
         for z, punto in puntosImpactoIzquierda.items():
-            print(f"Tanque {z}: {punto}")
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
             if listaPlayers[lista[z].playerID].inventory[0] == 1:
@@ -98,8 +97,7 @@ class TerrenoVariado:
                 else:
                     listaPlayers[lista[turno].playerID].kda[0] += 1
                     listaPlayers[lista[z].playerID].kda[1] += 1
-            print(f"El tanque {z} recibe un daño de {dmg}")
-        print("Puntos de impacto en la derecha:")
+                    
         for z, punto in puntosImpactoDerecha.items():
             distancia = functions.calcular_distancia(pos, punto)
             dmg = int(functions.calcularDMG(distancia, proyectil.DMG, proyectil.blastRadius,proyectil.typeBullet))
@@ -115,67 +113,22 @@ class TerrenoVariado:
                 else:
                     listaPlayers[lista[turno].playerID].kda[0] += 1
                     listaPlayers[lista[z].playerID].kda[1] += 1
-            print(f"El tanque {z} recibe un daño de {dmg}")
-    
-    def testupdateImpact(self,pos,radius,lista):
-        print(radius)
-        pygame.draw.circle(self.surfTerrain, (255, 0, 255), pos, radius)
-        tanquesDañadosIzquierda = {}
-        tanquesDañadosDerecha= {}
-        puntosImpactoIzquierda = {}
-        puntosImpactoDerecha = {}
-        for i in range(pos[0] - radius, pos[0] + radius):
-            for j in range(pos[1] - radius, pos[1] + radius):
-                if (i - pos[0]) ** 2 + (j - pos[1]) ** 2 <= radius ** 2:
-                    if(((i, j)) in self.hitPoints):
-                        del self.hitPoints[(i, j)]
-                    for z in range(len(lista)):
-                        if i < pos[0]:
-                            if (i,j) in lista[z].hitBox:
-                                tanquesDañadosIzquierda[z] = True
-                                puntosImpactoIzquierda[z] = (i, j)
-                        if i > pos[0]:
-                            if (i,j) in lista[z].hitBox:
-                                if z not in tanquesDañadosIzquierda:
-                                    tanquesDañadosDerecha[z] = True
-                                    if z not in puntosImpactoDerecha:
-                                        puntosImpactoDerecha[z] = (i, j) 
-                    #if(((i, j)) in self.hitPoints):
-                    #    del self.hitPoints[(i, j)]
-       
-        # Imprime los puntos de impacto
-        
-        print("Puntos de impacto en la izquierda:")
-        for z, punto in puntosImpactoIzquierda.items():
-            print(f"Tanque {z}: {punto}")
-            distancia = functions.calcular_distancia(pos, punto)
-            dmg = int(functions.calcularDMG(distancia, 50, radius,1))
-            #dano = self.calcularDMG(distancia, 50)
-            lista[z].actualizarVida(dmg)
-            
-            print(f"El tanque {z} recibe un daño de {dmg}")
-        print("Puntos de impacto en la derecha:")
-        for z, punto in puntosImpactoDerecha.items():
-            distancia = functions.calcular_distancia(pos, punto)
-            dmg = int(functions.calcularDMG(distancia, 50, radius,1))
-            lista[z].actualizarVida(dmg)
-            print(distancia)
-            print(f"El tanque {z} recibe un daño de {dmg}")
+                    
     
     def interpolate(self, x1, y1, x2, y2, x):
         return y1 + ((y2 - y1) / (x2 - x1)) * (x - x1)
     
     # Genera el terreno
     def drawTerrain(self):
-        self.surfTerrain = pygame.Surface((params.size*16,params.size*9))
+        self.surfTerrain = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.surfTerrain.fill((255,0,255))
         
-        x_interp = np.linspace(0, params.size*16, 100)
+        x_interp = np.linspace(0, self.WIDTH, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
         points_interp = [(int(x), int(y)) for x, y in zip(x_interp, y_interp)]
         #self.points = points_interp
 
-        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, params.size*9)] + points_interp + [(params.size*16, params.size*9)])
+        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, self.HEIGHT)] + points_interp + [(self.WIDTH, self.HEIGHT)])
         pygame.draw.lines(self.surfTerrain, (139, 69, 19), False, points_interp, 5)
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))

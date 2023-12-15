@@ -14,7 +14,6 @@ class Button:
             params.size*9 * self.height_percent
 )
         self.clicked = False
-
         #lo que tiene que hacer, algo asi como el evento 
         self.item = item
     def check_click(self, event):

@@ -1,7 +1,9 @@
 import pygame, params, drawFunctions, nTank, math
 
 class imgTank:
-    def __init__(self,color):
+    def __init__(self,color,tankProportion):
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         self.xpos = 0
         self.ypos = 0
         self.angulo = 0
@@ -11,16 +13,16 @@ class imgTank:
         self.xCanon2 = 0
         self.yCanon2 = 0
 
-        self.tankProportion = 0.05
-        self.surfaceTank = pygame.Surface((params.size*16*self.tankProportion, params.size*9*self.tankProportion))
+        self.tankProportion = tankProportion
+        self.surfaceTank = pygame.Surface((self.WIDTH*self.tankProportion, self.HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.5)
         self.y = int(self.surfaceTank.get_height()*0.8)
         self.width = int(self.surfaceTank.get_width()*0.55)
         self.height = int(self.surfaceTank.get_height()*0.55)
         self.alphaColor = (255,0,255)
         self.surfaceTank.fill(self.alphaColor)
-        #self.surfaceTank.set_alpha()
-        #self.surfaceTank.set_colorkey(self.alphaColor)
+        self.surfaceTank.set_alpha()
+        self.surfaceTank.set_colorkey(self.alphaColor)
         self.longitud = int(self.surfaceTank.get_width()*0.12) #largo del cañon
         self.xCanon1 =self.x #coordenadas del cañon
         self.yCanon1  = (self.y - self.height) - self.height/4
@@ -40,26 +42,30 @@ class imgTank:
     
 class scoreBoard():
     def __init__(self,listaJugadores, window,colors,ruta,general):
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         self.colors = colors
-        self.surface = pygame.Surface((params.size*16,params.size*9))
+        self.surface = pygame.Surface((self.WIDTH,self.HEIGHT))
         drawFunctions.backgroundDraw(self.surface,ruta)
         self.window = window
         self.general = general
         self.listaJugadores = listaJugadores
         self.infoMostrar = None
         self.mostrarJugadores()
+        
     def mostrarJugadores(self):
         contador = 0
         for i in range(len(self.listaJugadores)):
-            jugador = pygame.Surface((params.size*16*0.842,params.size*9*0.07))
+            jugador = pygame.Surface((self.WIDTH*0.842,self.HEIGHT*0.07))
             jugador.fill((255,0,255))
             jugador.set_alpha()
             jugador.set_colorkey((255,0,255))
             self.mostrarJugador(jugador,i)
-            self.surface.blit(jugador,(params.size*16*0.077,params.size*9*0.275+contador))
-            contador += params.size*9*0.07
+            self.surface.blit(jugador,(self.WIDTH*0.077,self.HEIGHT*0.275+contador))
+            contador += self.HEIGHT*0.07
+            
     def mostrarJugador(self,superficie,jugador):
-        tank = imgTank(self.colors[jugador])
+        tank = imgTank(self.colors[jugador],0.07)
         superficie.blit(tank.surfaceTank,(0,0))
         if not self.general:
             self.mostrarTexto(superficie,str(self.listaJugadores[jugador].kda[0]),int(superficie.get_width() *0.37))
@@ -70,7 +76,7 @@ class scoreBoard():
             self.mostrarTexto(superficie,str(self.listaJugadores[jugador].generalkda[1]),int(superficie.get_width() *0.65))
             self.mostrarTexto(superficie,str(self.listaJugadores[jugador].money),int(superficie.get_width() *0.85))
     def mostrarTexto(self,superficie,texto, pos):
-        fuente = pygame.font.Font(None, int(params.size*9*0.05))
+        fuente = pygame.font.Font(None, int(self.HEIGHT*0.05))
         superficie_texto = fuente.render(texto, True, (0, 0, 0))
         superficie.blit(superficie_texto, (pos, int(superficie.get_height() *0.05)))
         

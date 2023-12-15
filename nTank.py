@@ -1,8 +1,10 @@
-import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, playerPhysics, nBarraVida
+import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, playerPhysics, nBarraVida, turnIcon
 from functions import *
 
 class Tank:
     def __init__(self,color, window, playerID):
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
         self.playerID = playerID
         self.xpos = 0
         self.ypos = 0
@@ -14,7 +16,7 @@ class Tank:
         self.color = color
         self.ammo = True
         self.angulo = 60
-        self.potencia = 0
+        self.distancia = 0
         self.xCanon1 = 0
         self.yCanon1 = 0
 
@@ -22,9 +24,13 @@ class Tank:
         self.yCanon2 = 0
 
         self.end = (0,0)
+
+        self.Turno = False #True si es el turno del jugador (aparecera flecha), False si no lo es (no aparecera flecha)
+        self.turnoVisualizar = turnIcon.iconoTurno(0.05)
+
         self.fallDmg = 0
         self.tankProportion = 0.22
-        self.surfaceTank = pygame.Surface((params.size*16*self.tankProportion, params.size*9*self.tankProportion))
+        self.surfaceTank = pygame.Surface((self.WIDTH*self.tankProportion, self.HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.4)
         self.y = int(self.surfaceTank.get_height()*0.7)
         self.width = int(self.surfaceTank.get_width()*0.22)
@@ -42,16 +48,13 @@ class Tank:
         self.getFallPoint()
         self.getHitBox()
         self.surfaceTank.blit(self.lifeBar.lifeSurface,(int(self.surfaceTank.get_width()*0.28),int(self.surfaceTank.get_height()*0.74)))
-        
+        self.surfaceTank.blit(self.turnoVisualizar.iconoTurnoSurface,(int(self.surfaceTank.get_width()*0.29),int(self.surfaceTank.get_height()*0)))
+
     def cargarEventos(self):
         diccionarioEventosCañon = {}
         diccionarioEventosCañon[pygame.K_LEFT] = 1
         diccionarioEventosCañon[pygame.K_RIGHT] = -1
-        diccionarioEventosCañon[pygame.K_UP] = 2
-        diccionarioEventosCañon[pygame.K_DOWN] = -2
         self.listaEventos.append(diccionarioEventosCañon)
-        
-
         
     def draw_tank(self):
         pygame.draw.polygon(self.surfaceTank, self.color, ((self.x, self.y), (self.x - self.width/2, self.y), (self.x - self.width/2, self.y - self.height),(self.x + self.width/2, self.y - self.height),(self.x + self.width/2, self.y),(self.x, self.y))) #rectangulo inicial
@@ -64,9 +67,14 @@ class Tank:
         pygame.draw.rect(self.surfaceTank, self.alphaColor, (0,0,self.surfaceTank.get_width(),self.surfaceTank.get_height()))
         self.draw_tank()
         self.surfaceTank.blit(self.lifeBar.lifeSurface,(int(self.surfaceTank.get_width()*0.28),int(self.surfaceTank.get_height()*0.74)))
+        self.surfaceTank.blit(self.turnoVisualizar.iconoTurnoSurface,(int(self.surfaceTank.get_width()*0.29),int(self.surfaceTank.get_height()*0)))
         
     def actualizarVida(self,vida):
         self.lifeBar.actualizarVida(vida)
+        self.actualizarTanque()
+
+    def turnoTanque(self, turno):
+        self.turnoVisualizar.actualizarIcono(turno)
         self.actualizarTanque()
 
     def actualizarAngulo(self, event):
@@ -79,7 +87,7 @@ class Tank:
         self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         self.actualizarTanque()
-    
+        
     def actualizarAnguloIA(self, contador):
         if contador == 1:
             if self.angulo < 180:
@@ -90,17 +98,6 @@ class Tank:
         self.xCanon2 = (self.xCanon1 + self.longitud * math.cos(math.radians(self.angulo)))
         self.yCanon2 = (self.yCanon1 - self.longitud * math.sin(math.radians(self.angulo)))
         self.actualizarTanque()
-
-    def actualizarPotencia(self, event):
-        if self.listaEventos[0][event] == 2:
-            self.potencia +=1
-            print(self.potencia)
-            return self.potencia
-            
-        if self.listaEventos[0][event] == -2:
-            self.potencia += -1
-            print(self.potencia)
-            return self.potencia
         
     def getPos(self):
         return (self.xpos, self.ypos)

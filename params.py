@@ -1,8 +1,10 @@
-from pygame import display,image
+from pygame import display, image
+playersNumber = 2
+gravityConstant = 9.8
 size = 100
+playersNumber = 2
+roundNumber = 2
 screen = display.set_mode((size*16, size*9))
-
-#imgs
 #icons
 shield = image.load('items/shield.png')
 dmg = image.load('items/dmg.png')

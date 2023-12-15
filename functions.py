@@ -1,6 +1,104 @@
-import params,pygame,sys,random,runShop,player
+import math, params, player, nTank, random, runGame, gameScreens
+import pygame,sys,runShop
 from button import Button
 from createMap import Map
+def frange(start, final, increment):
+    numbers = []
+    while start < final:
+        numbers.append(start)
+        start = start + increment 
+    return numbers
+
+
+def draw_trajectory(u, theta, gravity, xPositions, yPositions,pos,wind):
+    WIDTH = params.size*16
+    theta = math.radians(theta)
+    # Time of flight
+    t_flight = 2 * u * math.sin(theta) / gravity
+    intervals = frange(0, t_flight+WIDTH, 0.05) 
+
+    for t in intervals:
+        xPositions.append(pos[0]+ (u * math.cos(theta) * t) + (wind * t))
+        yPositions.append(pos[1]+ (u * math.sin(theta) * t - 0.5 * gravity * t *t))
+
+def divideScreenIn9(width,height):    
+    x1 = width*1/3
+    y1 = height*1/3
+    x2 = width*2/3
+    y2 = height*2/3
+    x3 = width
+    y3 = height
+    listaTercios = [(x1,y1),(x2,y1),(x3,y1),(x1,y2),(x2,y2),(x3,y2),(x1,y3),(x2,y3),(x3,y3)]
+    return listaTercios
+    
+def calcular_distancia(punto1, punto2):
+    x1, y1 = punto1
+    x2, y2 = punto2
+    distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    return distancia
+
+def calcularDMG(distancia, dano_maximo, radio,tipoProyectil):
+    if not tipoProyectil == 3:
+        if distancia < radio*0.4:
+            return dano_maximo
+        elif (distancia > radio*0.4) and (distancia < radio*0.8):
+            return dano_maximo*0.5
+        else:
+            return dano_maximo*0.2
+    else:
+        if distancia < radio*0.8:
+            return dano_maximo
+        else:
+            return dano_maximo*0.5
+    
+def loadPlayers(listaJugadores,window,ia):
+    resetTanks = []
+    if ia == False:
+        for i in range(params.playersNumber):
+            listaJugadores.append(player.Player())
+    elif ia == True:
+        choosePlayer = False
+        for i in range(params.playersNumber):
+            if choosePlayer:
+                randomPlayer = random.randint(0,1)
+                if randomPlayer == 0:
+                    listaJugadores.append(player.Player())
+                    choosePlayer = False
+                else:
+                    listaJugadores.append(player.Player())
+                    listaJugadores[i].ia = True
+            else:
+                listaJugadores.append(player.Player())
+                listaJugadores[i].ia = True
+                
+    colores = ["red", "green", "blue", "yellow", "orange", (128, 0, 128)]
+    for i in range(len(listaJugadores)):
+        choise = random.randint(0,len(colores)-1)
+        listaJugadores[i].asignTank(nTank.Tank(colores[choise],window,i))
+        resetTanks.append([colores[choise],i])
+        colores.pop(choise)
+    return resetTanks
+
+def resetTanks(listaJugadores,paramsTanks,window):
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].asignTank(None)
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].asignTank(nTank.Tank(paramsTanks[i][0],window,paramsTanks[i][1]))
+
+def anhadirDiezmo(listaJugadores):
+    diezmo = 10000
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].money += diezmo
+        if listaJugadores[i].selfKill == True:
+            listaJugadores[i].money -= 5000
+            listaJugadores[i].selfKill = False
+        else:
+            listaJugadores[i].money += (5000)*listaJugadores[i].kda[0]    
+        listaJugadores[i].generalkda[0] += listaJugadores[i].kda[0]
+        listaJugadores[i].kda[0] = 0
+        listaJugadores[i].generalkda[1] += listaJugadores[i].kda[1]
+        listaJugadores[i].kda[1] = 0
+            
 jugadorTest = player.Player()
 jugadorTest2 = player.Player()
 jugadorTest3 = player.Player()
@@ -34,7 +132,7 @@ def run(img,propBotonesPantalla,pantalla):
     screen = pantalla
     mapa = None
     modo = None
-    
+
     while True:
         
         background = pygame.image.load(img1)
@@ -43,7 +141,7 @@ def run(img,propBotonesPantalla,pantalla):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            # checkResize(event)
+            checkResize(event)
             for btns in crearButtons(propBotonesPantalla):
                 for btn in btns:
                     if btn.check_click(event):
@@ -54,13 +152,13 @@ def run(img,propBotonesPantalla,pantalla):
                                 print('volver al menu')
                                 return 4
 
-                        #controles pausa   
+                        #controles pausa   #METER EN JUEGO GASTON
                         elif pantalla == 1: 
                             if btn.item == 1:#volver a la pantalla de pausa
                                 print('Vuelve a la pantalla de pausa')
                                 return 5
                         
-                        #ganadores
+                        #ganadores    #METER EN JUEGO GASTON
                         elif pantalla == 2:
                             if btn.item == 2:
                                 print('Volver al menu')
@@ -74,7 +172,8 @@ def run(img,propBotonesPantalla,pantalla):
                         elif pantalla == 3:
                             if btn.item == 4:
                                 print('Confirmar seleccion')
-                                return 11
+                                print('parte del juego')
+                                return 12
                             elif btn.item == 5:
                                 mapa = random.choice(crearMapas())
                                 print('mapa random')
@@ -100,16 +199,17 @@ def run(img,propBotonesPantalla,pantalla):
                                 print('starting. . . ')
                                 return 6
                             elif btn.item == 12:
-                                return 10
                                 print('Settings')
+                                return 10                               
                             elif btn.item == 13:
-                                return 0
                                 print('Controles')
+                                return 0
                             elif btn.item == 14:
+                                print('salir')
                                 return -1
-                                print('salir 2')
+                                
 
-                        #pausa
+                        #pausa     #METER EN JUEGO GASTON
                         elif pantalla == 5:
                             if btn.item == 15:
                                 print('Volver al juego')
@@ -136,19 +236,20 @@ def run(img,propBotonesPantalla,pantalla):
                                 if modo !=None:
                                     print('Confirmar eleccion')
                                     return 9
-                        #score
+                                
+                        #score      #METER EN JUEGO GASTON
                         if pantalla == 7:
                             if btn.item == 22:
                                 print('Confirmar eleccion')
                                 return 2
 
-                        #scoreRound
+                        #scoreRound     #METER EN JUEGO GASTON
                         if pantalla == 8:
                             if btn.item == 23:
                                 print('Confirmar eleccion')
-                                return 11
+                                print('parte del juego')
 
-                        #settingsGame
+                        #settingsGame     #METER EN JUEGO GASTON
                         if pantalla == 9:
                             if btn.item == 24:
                                 print('Confirmar eleccion')
@@ -178,23 +279,37 @@ def run(img,propBotonesPantalla,pantalla):
                                     cambiar_tamano_pantalla()
                                 print('Disminuir resolucion')
                         
-                        #SHOP PROVISIONAL
-                        if pantalla == 11:
-                            shop = runShop.Shop()
-                            pantalla = shop.openShop(listaJugadores)
+                        #SHOP PROVISIONAL      #METER EN JUEGO GASTON
+                        if pantalla == 11:     
+                            #pantalla = runShop.openShop(listaJugadores)
+                            print('esta es la pantalla 11')
+                            return 12
 
-                        #PANTALLA PROVISORIA DE JUEGO
-                        if pantalla == 12:
-                            if btn.item == 35:
-                                print('Siguiente')
-                                return 8       
-                        
-
+                        #PANTALLA PROVISORIA DE JUEGO     #METER EN JUEGO GASTON
+        if pantalla == 12:
+            print('Juego')
+            window = params.screen
+            partidosActuales = 0
+            listaJugadores = []
+            ia = False
+            variableReseteo = loadPlayers(listaJugadores,window,ia)
+            while partidosActuales < params.roundNumber:
+                mapa = ["Mapas/galaxia.png",9.8]
+                resetTanks(listaJugadores,variableReseteo,window)
+                anhadirDiezmo(listaJugadores)
+                runShop.openShop(listaJugadores)
+                gameScreens.pantallaEmpiezaJuego(window)
+                game = runGame.gameLogic(window,listaJugadores,mapa)
+                game.run(clock)
+                partidosActuales += 1
+            return 4
+        print(pantalla)
         params.screen.blit(background, (0, 0))
         pygame.display.flip()
         clock.tick(60)
 
-def crearButtons(listaProporciones):#resizeButtons:
+def crearButtons(listaProporciones):
+    #resizeButtons
     listaBotonesPantallas = []
     pantalla = []
     ID = 0

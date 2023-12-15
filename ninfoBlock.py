@@ -1,23 +1,27 @@
-import pygame, params, drawFunctions, random
+import pygame, params, drawFunctions, random,scoreBoard
 
 class infoBlock:
     def __init__(self, proporcion):
-        self.bloque = pygame.Surface((int(params.size*16 * proporcion), int(params.size*9 * proporcion)))
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
+        self.bloque = pygame.Surface((int(self.WIDTH * proporcion), int(self.HEIGHT * proporcion)))
+        self.proporcion = proporcion
         self.alphaColor = (255,255,255)
         self.bloque.set_alpha()
         self.bloque.set_colorkey(self.alphaColor)
         
         self.bloque.fill(self.alphaColor)
         self.actualizarTitulo()
-        self.cargar_imagen(params.anguloICO,0.15,0.2,(0.02,0.03))
-        self.cargar_imagen(params.distanciaICO,0.15,0.2,(0.02,0.27))
-        self.cargar_imagen(params.health,0.1,0.17,(0.7,0.4))
-        self.cargar_imagen(params.balaICO,0.1,0.15,(0.05,0.5))
-        self.cargar_imagen(params.balasICO,0.1,0.15,(0.05,0.7))
+        self.cargar_imagen("items/angulo.png",0.15,0.2,(0.02,0.03))
+        self.cargar_imagen("items/distancia.png",0.15,0.2,(0.02,0.27))
+        self.cargar_imagen("items/bala.png",0.1,0.15,(0.05,0.5))
+        self.cargar_imagen("items/balas.png",0.1,0.15,(0.05,0.7))
         
+        self.turnoTanque = scoreBoard.imgTank((255,0,0),self.proporcion*0.2)
+        self.bloque.blit(self.turnoTanque.surfaceTank,(int(self.bloque.get_width() *0.7), int(self.bloque.get_height() *0.7)))
         
     def cargar_imagen(self, imagen, proporcionX, proporcionY, posicion):
-        imagen_cargada = imagen
+        imagen_cargada = pygame.image.load(imagen)
         imagen_escalada = pygame.transform.scale(imagen_cargada, (self.bloque.get_width()*proporcionX, self.bloque.get_height()*proporcionY))
         self.bloque.blit(imagen_escalada, (int(self.bloque.get_width() *posicion[0]),int(self.bloque.get_height() *posicion[1])))
 
@@ -37,13 +41,6 @@ class infoBlock:
         superficie_texto = fuente.render(texto, True, (0, 0, 0))
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_width() *0.17)))
         
-    def actualizarBotellas(self, texto):
-        texto = str(texto)
-        self.borrarBotellas()
-        texto = "x"+texto
-        fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
-        superficie_texto = fuente.render(texto, True, (0, 0, 0))
-        self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.81), int(self.bloque.get_height() *0.45)))
         
     def actualizarEscudo(self, condicion):
         if condicion:
@@ -98,9 +95,6 @@ class infoBlock:
     def borrarDistancia(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_width() *0.17), int(self.bloque.get_width() *0.22), int(self.bloque.get_width() *0.07)))
 
-    def borrarBotellas(self):
-        pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.81), int(self.bloque.get_height() *0.45), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
-    
     def borrarTipoBala(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.5), int(self.bloque.get_width() *0.22), int(self.bloque.get_height() *0.1)))
 
@@ -109,53 +103,7 @@ class infoBlock:
             pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
         else:
             pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.18), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.4), int(self.bloque.get_height() *0.1)))
-
-def actualizar(info,conds):
-    info.actualizarDmg(conds[random.randint(0,1)])
-    info.actualizarEscudo(conds[random.randint(0,1)])
-    info.actualizarAngulo(random.randint(0,180))
-    info.actualizarDistancia(random.randint(0,5000))
-    info.actualizarBotellas(random.randint(0,100))
-    info.actualizarTipoBala(random.randint(0,200))
-def testInfoBlock():
-    pygame.init()
-    window = pygame.display.set_mode((params.size*16, params.size*9))
-    bg = pygame.Surface((params.size*16, params.size*9))
-    drawFunctions.backgroundDraw(bg)
-    info = infoBlock(0.3)
-    info.actualizarAngulo('#')
-    info.actualizarDistancia("1920")
-    info.actualizarEscudo(True)
-    info.actualizarDmg(True)
-    info.actualizarBotellas("100")
-    info.actualizarTipoBala("105")
-    info.actualizarCantidadBalas(0)
-    #info.actualizarAngulo('50')
-    contador = 0
-    contador_x = 0
-    contador_y = 0
-    velocidad = 5
-    direccion_x = 1
-    direccion_y = 1
-    conds = [True,False]
-    ejecutando = True
-    while ejecutando:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                ejecutando = False
-            if pygame.mouse.get_pressed()[2]:
-                print("xd")
-            elif pygame.mouse.get_pressed()[0]:
-                print("dx")
-        contador_x += velocidad * direccion_x
-        contador_y += velocidad * direccion_y
-        if contador_x <= 0 or contador_x >= params.size*16 - int(info.bloque.get_width()*0.9):
-            direccion_x *= -1
-        if contador_y <= 0 or contador_y >= params.size*9 - int(info.bloque.get_height()*0.9):
-            direccion_y *= -1
-        actualizar(info,conds)
-        window.blit(bg,(0,0))
-        window.blit(info.bloque, (700, 0))
-        pygame.display.flip()
-    pygame.quit()
-#testInfoBlock()
+    
+    def actualizarTanque (self, color):
+        self.turnoTanque = scoreBoard.imgTank(color,self.proporcion*0.2)
+        self.bloque.blit(self.turnoTanque.surfaceTank,(int(self.bloque.get_width() *0.7), int(self.bloque.get_height() *0.7)))
