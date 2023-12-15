@@ -2,7 +2,9 @@ import pygame, params, drawFunctions, random,scoreBoard
 
 class infoBlock:
     def __init__(self, proporcion):
-        self.bloque = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
+        self.bloque = pygame.Surface((int(self.WIDTH * proporcion), int(self.HEIGHT * proporcion)))
         self.proporcion = proporcion
         self.alphaColor = (255,255,255)
         self.bloque.set_alpha()
@@ -120,47 +122,3 @@ class infoBlock:
 def actualizar(info,conds):
     info.actualizarAngulo(random.randint(0,180))
     info.actualizarDistancia(random.randint(0,5000))
-    
-def testInfoBlock():
-    pygame.init()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
-    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
-    drawFunctions.backgroundDraw(bg, "imgs/maps/ciudad.png")
-    info = infoBlock(0.3)
-    info.actualizarAngulo('#')
-    info.actualizarDistancia("1920")
-    info.actualizarTipoBala("105")
-    info.actualizarCantidadBalas(0)
-    listaDeColores = [(255,0,0),(0,255,0),(0,0,255)]
-    #info.actualizarAngulo('50')
-    contador = 0
-    contador_x = 0
-    contador_y = 0
-    velocidad = 5
-    direccion_x = 1
-    direccion_y = 1
-    conds = [True,False]
-    ejecutando = True
-    while ejecutando:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                ejecutando = False
-            if pygame.mouse.get_pressed()[2]:
-                print("xd")
-            elif pygame.mouse.get_pressed()[0]:
-                print("dx")
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1:
-                    info.actualizarTanque(random.choice(listaDeColores))
-        contador_x += velocidad * direccion_x
-        contador_y += velocidad * direccion_y
-        if contador_x <= 0 or contador_x >= params.WIDTH - int(info.bloque.get_width()*0.9):
-            direccion_x *= -1
-        if contador_y <= 0 or contador_y >= params.HEIGHT - int(info.bloque.get_height()*0.9):
-            direccion_y *= -1
-        actualizar(info,conds)
-        window.blit(bg,(0,0))
-        window.blit(info.bloque, (700, 0))
-        pygame.display.flip()
-    pygame.quit()
-#testInfoBlock()

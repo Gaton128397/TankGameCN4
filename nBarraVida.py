@@ -2,7 +2,9 @@ import pygame, params, random, drawFunctions
 
 class BarraVida:
     def __init__(self, proporcion):
-        self.lifeSurface = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
+        self.WIDTH = params.size*16
+        self.HEIGHT = params.size*9
+        self.lifeSurface = pygame.Surface((int(self.WIDTH * proporcion), int(self.HEIGHT * proporcion)))
         self.alphaColor = (255,0,255)
         self.lifeSurface.set_alpha()
         self.lifeSurface.set_colorkey(self.alphaColor)
@@ -67,25 +69,3 @@ class BarraVida:
             
     def getVida(self):
         return self.vida
-
-def testLifeBar():
-    pygame.init()
-    window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
-    bg = pygame.Surface((params.WIDTH, params.HEIGHT))
-    drawFunctions.backgroundDraw(bg)
-    barra = BarraVida(0.2)
-    ejecutando = True
-    while ejecutando:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                ejecutando = False
-            if pygame.mouse.get_pressed()[2]:
-                barra.actualizarVida(-15)  # Si se pulsa el botón derecho del ratón, restamos 10 de vida
-                print(barra.vida)
-            elif pygame.mouse.get_pressed()[0]:
-                barra.actualizarVida(15)  # Si se pulsa el botón izquierdo del ratón, sumamos 10 de vida
-            window.blit(bg,(0,0))
-            window.blit(barra.lifeSurface, (0, 0))
-        pygame.display.flip()
-    pygame.quit()
-#testLifeBar()
