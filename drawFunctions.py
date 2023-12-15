@@ -1,7 +1,10 @@
 import pygame, params
+
 def backgroundDraw(screen,ruta):
+    WIDTH = params.size*16
+    HEIGHT = params.size*9
     backGr = pygame.image.load(ruta)
-    backGr = pygame.transform.scale(backGr,(params.WIDTH,params.HEIGHT))
+    backGr = pygame.transform.scale(backGr,(WIDTH,HEIGHT))
     screen.blit(backGr,(0,0))
     
 def cargarImagen(surf, imagen, proporcionX, proporcionY, posicion):
@@ -12,7 +15,9 @@ def cargarImagen(surf, imagen, proporcionX, proporcionY, posicion):
         
         
 def returnSurface(matriz):
-    surface = pygame.Surface((params.WIDTH, params.HEIGHT))
+    WIDTH = params.size*16
+    HEIGHT = params.size*9
+    surface = pygame.Surface((WIDTH, HEIGHT))
     for i in range(len(matriz)):
         if i < len(matriz) - 1:
             surface.blit(matriz[i],(0,0))

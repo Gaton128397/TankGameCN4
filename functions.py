@@ -9,10 +9,11 @@ def frange(start, final, increment):
 
 
 def draw_trajectory(u, theta, gravity, xPositions, yPositions,pos,wind):
+    WIDTH = params.size*16
     theta = math.radians(theta)
     # Time of flight
     t_flight = 2 * u * math.sin(theta) / gravity
-    intervals = frange(0, t_flight+params.WIDTH, 0.05) 
+    intervals = frange(0, t_flight+WIDTH, 0.05) 
 
     for t in intervals:
         xPositions.append(pos[0]+ (u * math.cos(theta) * t) + (wind * t))
