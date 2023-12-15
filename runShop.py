@@ -1,8 +1,10 @@
 import pygame, sys,crearItems,params,player,time,functions
 from button import Button
-# from functions import checkResize
+
 pygame.init()
+
 #variables
+
 jugadorTest = player.Player()
 jugadorTest2 = player.Player()
 jugadorTest3 = player.Player()
@@ -24,7 +26,6 @@ def createItems():
     bigStone = crearItems.item(3,'Big Projectile','piedra grande',100,params.bigStone)
     mediumStone = crearItems.item(4,"Medium Projectile",'piedra chica',100,params.smallStone)
     smallStone = crearItems.item(5,'Small Projectile','piedra mediana',100,params.mediumStone)
-    # print(shield.nombre)
     return [shield,dmg,health,bigStone,mediumStone,smallStone]
 
 def buttons():
@@ -38,7 +39,6 @@ def buttons():
 
         Button(0.14, 0.22, 0.11, 0.15,createItems()[0]), #escudo
         Button(0.3, 0.22, 0.11, 0.15,createItems()[1]), #espada
-        #Button(0.36, 0.22, 0.11, 0.15,createItems()[2]), #corazon
         Button(0.45, 0.22, 0.11, 0.15,createItems()[3]), #piedra grande
         Button(0.60, 0.22, 0.11, 0.15,createItems()[4]), #piedra pequena
         Button(0.75, 0.22, 0.11, 0.15,createItems()[5]) #piedra mediana
@@ -124,7 +124,6 @@ def showStats(player):
     params.screen.blit(shieldText,(params.size*13.5,params.size*4.5))
 
 def sellItem(item,player):
-    # if actualItem !=None:
     if player.inventory[item.ID] > 0:
         player.inventory[item.ID] -=1
         print(item.nombre)
@@ -133,7 +132,6 @@ def sellItem(item,player):
         player.money += item.precio
 
 def buyItem(item,player):
-    # if actualItem !=None:
     if player.money >= item.precio:
         if item.ID == 0: #maximo de 1 escudo 
             if player.inventory[item.ID] < 1:
@@ -160,15 +158,16 @@ def openShop(playerList): #recibe una lista de jugadores
     ignore = [None,'Buy','Sell','Next','Back']
     while running:
         params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
-        #selectItem(actualItem)
-        for boton in buttons():
-            pygame.draw.rect(params.screen, (255, 0, 0), boton.rect, 2)
+        
+        #DESCOMENTAR PARA VER HITBOX BOTONES TIENDA
+
+        #for boton in buttons():
+            #pygame.draw.rect(params.screen, (255, 0, 0), boton.rect, 2)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 running = False
-        # checkResize(event)
                 
             for boton in buttons():
                 time.sleep(0.005)
@@ -195,6 +194,7 @@ def openShop(playerList): #recibe una lista de jugadores
                     else:
                         actualItem = boton.item
                         selectItem(boton.item)
+
         #dibujar tienda
         if player == 0:
             
@@ -206,8 +206,6 @@ def openShop(playerList): #recibe una lista de jugadores
             
             actualImg = tiendaMid
 
-
-        
         if actualItem != None:
             selectItem(actualItem)
         showInventory(playerList[player])
@@ -215,6 +213,8 @@ def openShop(playerList): #recibe una lista de jugadores
         showMoney(playerList[player])
         pygame.display.update()
     return 12
+
+#DESCOMENTAR PARA EJECUTAR TIENDA DE MANERA INDEPENDIENTE
 
 #if __name__ == "__main__":
 #   openShop(listaJugadores)

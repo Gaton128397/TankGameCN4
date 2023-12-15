@@ -196,7 +196,8 @@ def run(img,propBotonesPantalla,pantalla):
         pygame.display.flip()
         clock.tick(60)
 
-def crearButtons(listaProporciones):#resizeButtons:
+def crearButtons(listaProporciones):
+    #resizeButtons
     listaBotonesPantallas = []
     pantalla = []
     ID = 0
