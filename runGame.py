@@ -290,7 +290,6 @@ class gameLogic:
                                     if potencia >0:
                                         if self.listaPlayers[jugador.playerID].inventory[balaID] > 0:
                                             self.estelaSurface.fill(self.estelaAlpha)
-                                            #wind = 0
                                             bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(self.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(self.HEIGHT*0.05))),balaID,potencia,jugador.angulo,self.listaJugadores,self.gravity,wind)
                                             self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(),self.info,turnos[0]),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
@@ -372,17 +371,6 @@ def testgame():#Logica de mainScreen()
                 game = gameLogic(window,listaJugadores,mapa)
                 game.run(clock)
                 partidosActuales += 1
-            pantallaActual = 1
-        if pantallaActual == 1:
-            drawFunctions.backgroundDraw(window,"imgs/startEnd/ganador1.png")
-            pygame.display.update()
-            print("volver a jugar")
-            condicion = int(input("1 para volver a jugar, 2 para salir"))
-            print("not reach")
-            if condicion == 1:
-                pantallaActual = 0
-            else:
-                run = False
         print("pantaalla actual: "+str(pantallaActual))
         #print("not reach")
         clock.tick(60)
