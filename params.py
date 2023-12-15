@@ -2,7 +2,7 @@ from pygame import display,image
 size = 100
 screen = display.set_mode((size*16, size*9))
 
-#imgs
+
 #icons
 shield = image.load('items/shield.png')
 dmg = image.load('items/dmg.png')

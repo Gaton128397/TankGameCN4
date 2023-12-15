@@ -216,5 +216,5 @@ def openShop(playerList): #recibe una lista de jugadores
         pygame.display.update()
     return 12
 
-if __name__ == "__main__":
-    openShop(listaJugadores)
+#if __name__ == "__main__":
+#   openShop(listaJugadores)

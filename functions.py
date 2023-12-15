@@ -54,13 +54,13 @@ def run(img,propBotonesPantalla,pantalla):
                                 print('volver al menu')
                                 return 4
 
-                        #controles pausa   
+                        #controles pausa   #METER EN JUEGO GASTON
                         elif pantalla == 1: 
                             if btn.item == 1:#volver a la pantalla de pausa
                                 print('Vuelve a la pantalla de pausa')
                                 return 5
                         
-                        #ganadores
+                        #ganadores    #METER EN JUEGO GASTON
                         elif pantalla == 2:
                             if btn.item == 2:
                                 print('Volver al menu')
@@ -110,7 +110,7 @@ def run(img,propBotonesPantalla,pantalla):
                                 return -1
                                 
 
-                        #pausa
+                        #pausa     #METER EN JUEGO GASTON
                         elif pantalla == 5:
                             if btn.item == 15:
                                 print('Volver al juego')
@@ -137,19 +137,20 @@ def run(img,propBotonesPantalla,pantalla):
                                 if modo !=None:
                                     print('Confirmar eleccion')
                                     return 9
-                        #score
+                                
+                        #score      #METER EN JUEGO GASTON
                         if pantalla == 7:
                             if btn.item == 22:
                                 print('Confirmar eleccion')
                                 return 2
 
-                        #scoreRound
+                        #scoreRound     #METER EN JUEGO GASTON
                         if pantalla == 8:
                             if btn.item == 23:
                                 print('Confirmar eleccion')
                                 return 11
 
-                        #settingsGame
+                        #settingsGame     #METER EN JUEGO GASTON
                         if pantalla == 9:
                             if btn.item == 24:
                                 print('Confirmar eleccion')
@@ -179,12 +180,12 @@ def run(img,propBotonesPantalla,pantalla):
                                     cambiar_tamano_pantalla()
                                 print('Disminuir resolucion')
                         
-                        #SHOP PROVISIONAL
+                        #SHOP PROVISIONAL      #METER EN JUEGO GASTON
                         if pantalla == 11:     
                             pantalla = runShop.openShop(listaJugadores)
                             return 12
 
-                        #PANTALLA PROVISORIA DE JUEGO
+                        #PANTALLA PROVISORIA DE JUEGO     #METER EN JUEGO GASTON
                         if pantalla == 12:
                             if btn.item == 33:
                                 print('Siguiente')
