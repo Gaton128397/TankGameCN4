@@ -86,6 +86,6 @@ def resetTanks(listaJugadores,paramsTanks,window):
 def resetIventario(listaJugadores):
     for i in range(len(listaJugadores)):
         listaJugadores[i].inventory[0] = 0
-        listaJugadores[i].inventory[3] = 10
-        listaJugadores[i].inventory[4] = 10
-        listaJugadores[i].inventory[5] = 10
+        listaJugadores[i].inventory[3] = 0
+        listaJugadores[i].inventory[4] = 0
+        listaJugadores[i].inventory[5] = 1

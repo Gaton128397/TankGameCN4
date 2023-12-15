@@ -359,38 +359,35 @@ def testgame():#Logica de mainScreen()
     WIDTH = params.size*16
     HEIGHT = params.size*9
     window = pygame.display.set_mode((WIDTH, HEIGHT))
-    playerWon = None
     run = True
-    numeroPartidos = 2
+    numeroPartidos = 1
+    pantallaActual = 0
     while run:
-        partidosActuales = 0
-        listaJugadores = []
-        ia = False
-        resetTanks = functions.loadPlayers(listaJugadores,window,ia)
-        while partidosActuales < numeroPartidos:
-            mapa = ["imgs/maps/galaxia.png",9.8,2]
-            functions.resetTanks(listaJugadores,resetTanks,window)
-            functions.resetIventario(listaJugadores)
-            game = gameLogic(window,listaJugadores,mapa)
-            
-            game.run(clock)
-            partidosActuales += 1
-        
-        run = False     
-        try:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    run = False
-                elif playerWon == -1:
-                    pygame.quit()
-                    run = False
-                if playerWon == 1:
-                    print("l")
-                    
-            print("not reach")
-            clock.tick(60)
+        if pantallaActual == 0:
+            partidosActuales = 0
+            listaJugadores = []
+            ia = False
+            resetTanks = functions.loadPlayers(listaJugadores,window,ia)
+            while partidosActuales < numeroPartidos:
+                mapa = ["imgs/maps/galaxia.png",9.8,2]
+                functions.resetTanks(listaJugadores,resetTanks,window)
+                functions.resetIventario(listaJugadores)
+                game = gameLogic(window,listaJugadores,mapa)
+                game.run(clock)
+                partidosActuales += 1
+            pantallaActual = 1
+        if pantallaActual == 1:
+            drawFunctions.backgroundDraw(window,"imgs/startEnd/ganador1.png")
             pygame.display.update()
-        except (KeyboardInterrupt, SystemExit): #manejar los errores
-            return True
+            print("volver a jugar")
+            condicion = int(input("1 para volver a jugar, 2 para salir"))
+            print("not reach")
+            if condicion == 1:
+                pantallaActual = 0
+            else:
+                run = False
+        print("pantaalla actual: "+str(pantallaActual))
+        #print("not reach")
+        clock.tick(60)
+        pygame.display.update()
 testgame()
