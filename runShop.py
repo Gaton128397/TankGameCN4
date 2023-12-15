@@ -3,11 +3,11 @@ from button import Button
 # from functions import checkResize
 pygame.init()
 #variables
-# jugadorTest = player.Player()
-# jugadorTest2 = player.Player()
-# jugadorTest3 = player.Player()
-# jugadorTest4 = player.Player()
-# listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
+jugadorTest = player.Player()
+jugadorTest2 = player.Player()
+jugadorTest3 = player.Player()
+jugadorTest4 = player.Player()
+listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
 class Shop:
     def __init__(self):
 
@@ -163,14 +163,8 @@ class Shop:
         actualImg = self.tiendaIni
         player = 0 #jugador actual
         running =True
+        params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
         while running:
-            
-            if params.size == 120:
-                screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-            else:
-                screen = pygame.display.set_mode((params.size*16, params.size*9))
-            screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
-            # pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()

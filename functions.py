@@ -34,7 +34,7 @@ def run(img,propBotonesPantalla,pantalla):
     screen = pantalla
     mapa = None
     modo = None
-    shop = runShop.Shop()
+    
     while True:
         
         background = pygame.image.load(img1)
@@ -180,7 +180,7 @@ def run(img,propBotonesPantalla,pantalla):
                         
                         #SHOP PROVISIONAL
                         if pantalla == 11:
-                            
+                            shop = runShop.Shop()
                             pantalla = shop.openShop(listaJugadores)
 
                         #PANTALLA PROVISORIA DE JUEGO
