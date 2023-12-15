@@ -122,22 +122,12 @@ class gameLogic:
             summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             summary.sb_run()
             summary = None
-            for i in range(len(self.listaPlayers)):
-                self.listaPlayers[i].generalkda[0] += self.listaPlayers[i].kda[0]
-                self.listaPlayers[i].generalkda[1] += self.listaPlayers[i].kda[1]
-                self.listaPlayers[i].kda[0] = 0
-                self.listaPlayers[i].kda[1] = 0
             return False
         elif self.cantidadbullets <= 0:
             print("jugadores sin balas")
             summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             summary.sb_run()
             summary = None
-            for i in range(len(self.listaPlayers)):
-                self.listaPlayers[i].generalkda[0] += self.listaPlayers[i].kda[0]
-                self.listaPlayers[i].generalkda[1] += self.listaPlayers[i].kda[1]
-                self.listaPlayers[i].kda[0] = 0
-                self.listaPlayers[i].kda[1] = 0
             
             #mostrar pantalla de que se los jugadores se quedaron sin balas
             return False
@@ -153,6 +143,7 @@ class gameLogic:
                 cambioDeTurno = random.choice(listaDeTurnos)
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.listaJugadores[turnos[0]].turnoTanque(True)
             listaDeTurnos.remove(turnos[0])
             self.cantidadbullets = self.cantidadBalas()
             self.actualizarInfo(turnos[0],balaID)
@@ -166,6 +157,7 @@ class gameLogic:
                 cambioDeTurno = random.choice(listaDeTurnos)
             turnos[0] = cambioDeTurno
             turnos[1] = turnos[0]
+            self.listaJugadores[turnos[0]].turnoTanque(True)
             self.actualizarInfo(turnos[0],balaID)
             listaDeTurnos.remove(turnos[0])
             return True
@@ -176,6 +168,7 @@ class gameLogic:
             print("Lista de turnos"+str(listaDeTurnos))
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
+            self.listaJugadores[turnos[0]].turnoTanque(True)
             self.actualizarInfo(turnos[0],balaID)
             listaDeTurnos.remove(turnos[0])
             print("\n--------------turno cambiado----------------")
@@ -226,8 +219,7 @@ class gameLogic:
         running = True
         print(self.listaJugadores[0].getPos())
         playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
-        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface,self.powerBar.poweBarSurface]
-        actualTurn = True
+        surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface,self.powerBar.poweBarSurface,self.surfaceWind]
         listaTurnos = []
         jugadoresDerrotados = []
         self.definirTurnos(listaTurnos)
@@ -237,6 +229,7 @@ class gameLogic:
         jugador = 'a'
         balaID = 3 #3,4,5 son las IDs
         self.actualizarInfo(turnos[0],balaID)
+        self.listaJugadores[turnos[0]].turnoTanque(True)
         chooseWind = True
         wind = randint(-10,10)
         self.actualizarViento(wind)
@@ -274,6 +267,7 @@ class gameLogic:
                                 self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                                 playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),self.listaPlayers,jugadoresDerrotados,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
                                 anguloIA = -1
+                                self.listaJugadores[turnos[0]].turnoTanque(False)
                                 turnos[0] = -1
                                 chooseWind = False
                             else:
@@ -304,6 +298,7 @@ class gameLogic:
                                             self.comprobarBalasJugador(self.listaJugadores[turnos[0]])
                                             self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                                             playerPhysics.fallTanks(self.screen,self.listaJugadores,self.terrain.getDiccionary(),self.listaPlayers,jugadoresDerrotados,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
+                                            self.listaJugadores[turnos[0]].turnoTanque(False)
                                             turnos[0] = -1
                                             chooseWind = False
                                         else:
@@ -361,18 +356,19 @@ def testgame():#Logica de mainScreen()
     HEIGHT = params.size*9
     window = pygame.display.set_mode((WIDTH, HEIGHT))
     run = True
-    numeroPartidos = 1
+    numeroPartidos = 3
     pantallaActual = 0
     while run:
         if pantallaActual == 0:
             partidosActuales = 0
             listaJugadores = []
-            ia = False
+            ia = True
             resetTanks = functions.loadPlayers(listaJugadores,window,ia)
             while partidosActuales < numeroPartidos:
                 mapa = ["imgs/maps/galaxia.png",9.8,2]
                 functions.resetTanks(listaJugadores,resetTanks,window)
-                functions.resetIventario(listaJugadores)
+                functions.anhadirDiezmo(listaJugadores)
+                #tienda 
                 game = gameLogic(window,listaJugadores,mapa)
                 game.run(clock)
                 partidosActuales += 1

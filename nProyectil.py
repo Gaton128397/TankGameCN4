@@ -96,6 +96,7 @@ class Projectile():
             self.window.blit(listaDeSurface[1],(0,0))
             self.window.blit(listaDeSurface[3],(0,0))
             self.window.blit(listaDeSurface[4],(0,0))
+            self.window.blit(listaDeSurface[5],(self.WIDTH*0,self.HEIGHT*0.1))
             distancia = functions.calcular_distancia((x,y),(self.pos[0]+puntox,self.pos[1]+puntoy))
             infoBlock.actualizarDistancia(int(distancia))
             self.listaJugador[turno].distancia = int(distancia)

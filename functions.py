@@ -83,9 +83,20 @@ def resetTanks(listaJugadores,paramsTanks,window):
     for i in range(len(listaJugadores)):
         listaJugadores[i].asignTank(nTank.Tank(paramsTanks[i][0],window,paramsTanks[i][1]))
 
-def resetIventario(listaJugadores):
+def anhadirDiezmo(listaJugadores):
+    diezmo = 10000
     for i in range(len(listaJugadores)):
-        listaJugadores[i].inventory[0] = 0
-        listaJugadores[i].inventory[3] = 0
+        listaJugadores[i].money += diezmo
+        if listaJugadores[i].selfKill == True:
+            listaJugadores[i].money -= 5000
+            listaJugadores[i].selfKill = False
+        else:
+            listaJugadores[i].money += (5000)*listaJugadores[i].kda[0]    
+        listaJugadores[i].generalkda[0] += listaJugadores[i].kda[0]
+        listaJugadores[i].kda[0] = 0
+        listaJugadores[i].generalkda[1] += listaJugadores[i].kda[1]
+        listaJugadores[i].kda[1] = 0
+        listaJugadores[i].inventory[3] = 3
         listaJugadores[i].inventory[4] = 0
-        listaJugadores[i].inventory[5] = 1
+        listaJugadores[i].inventory[5] = 0
+            

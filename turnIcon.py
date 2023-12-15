@@ -9,7 +9,7 @@ class iconoTurno:
         self.iconoTurnoSurface.set_alpha()
         self.iconoTurnoSurface.set_colorkey(self.alphaColor)
         self.iconoTurnoSurface.fill(self.alphaColor)
-        self.actualizarIcono(True)
+        self.actualizarIcono(False)
 
     def loadImagen(self, imagen, proporcionX, proporcionY, position):
         loadImage = pygame.image.load(imagen)

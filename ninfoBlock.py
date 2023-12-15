@@ -14,7 +14,6 @@ class infoBlock:
         self.actualizarTitulo()
         self.cargar_imagen("imgs/items/angulo.png",0.15,0.2,(0.02,0.03))
         self.cargar_imagen("imgs/items/distancia.png",0.15,0.2,(0.02,0.27))
-        self.cargar_imagen("imgs/items/health.png",0.1,0.17,(0.7,0.4))
         self.cargar_imagen("imgs/items/bala.png",0.1,0.15,(0.05,0.5))
         self.cargar_imagen("imgs/items/balas.png",0.1,0.15,(0.05,0.7))
         
@@ -42,13 +41,6 @@ class infoBlock:
         superficie_texto = fuente.render(texto, True, (0, 0, 0))
         self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.23), int(self.bloque.get_width() *0.17)))
         
-    def actualizarBotellas(self, texto):
-        texto = str(texto)
-        self.borrarBotellas()
-        texto = "x"+texto
-        fuente = pygame.font.Font(None, int(self.bloque.get_width() *0.09))
-        superficie_texto = fuente.render(texto, True, (0, 0, 0))
-        self.bloque.blit(superficie_texto, (int(self.bloque.get_width() *0.81), int(self.bloque.get_height() *0.45)))
         
     def actualizarEscudo(self, condicion):
         if condicion:
@@ -103,9 +95,6 @@ class infoBlock:
     def borrarDistancia(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_width() *0.17), int(self.bloque.get_width() *0.22), int(self.bloque.get_width() *0.07)))
 
-    def borrarBotellas(self):
-        pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.81), int(self.bloque.get_height() *0.45), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
-    
     def borrarTipoBala(self):
         pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.5), int(self.bloque.get_width() *0.22), int(self.bloque.get_height() *0.1)))
 
@@ -118,7 +107,3 @@ class infoBlock:
     def actualizarTanque (self, color):
         self.turnoTanque = scoreBoard.imgTank(color,self.proporcion*0.2)
         self.bloque.blit(self.turnoTanque.surfaceTank,(int(self.bloque.get_width() *0.7), int(self.bloque.get_height() *0.7)))
-    
-def actualizar(info,conds):
-    info.actualizarAngulo(random.randint(0,180))
-    info.actualizarDistancia(random.randint(0,5000))
