@@ -227,6 +227,7 @@ class gameLogic:
         print(self.listaJugadores[0].getPos())
         playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
         surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface,self.powerBar.poweBarSurface]
+        actualTurn = True
         listaTurnos = []
         jugadoresDerrotados = []
         self.definirTurnos(listaTurnos)

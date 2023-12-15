@@ -1,4 +1,4 @@
-import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, playerPhysics, nBarraVida
+import pygame, sys, math, random, params, drawFunctions, nTerrain, threading, playerPhysics, nBarraVida, turnIcon
 from functions import *
 
 class Tank:
@@ -24,6 +24,10 @@ class Tank:
         self.yCanon2 = 0
 
         self.end = (0,0)
+
+        self.Turno = False #True si es el turno del jugador (aparecera flecha), False si no lo es (no aparecera flecha)
+        self.turnoVisualizar = turnIcon.iconoTurno(0.05)
+
         self.fallDmg = 0
         self.tankProportion = 0.22
         self.surfaceTank = pygame.Surface((self.WIDTH*self.tankProportion, self.HEIGHT*self.tankProportion))
@@ -44,7 +48,8 @@ class Tank:
         self.getFallPoint()
         self.getHitBox()
         self.surfaceTank.blit(self.lifeBar.lifeSurface,(int(self.surfaceTank.get_width()*0.28),int(self.surfaceTank.get_height()*0.74)))
-        
+        self.surfaceTank.blit(self.turnoVisualizar.iconoTurnoSurface,(int(self.surfaceTank.get_width()*0.29),int(self.surfaceTank.get_height()*0)))
+
     def cargarEventos(self):
         diccionarioEventosCañon = {}
         diccionarioEventosCañon[pygame.K_LEFT] = 1
@@ -62,9 +67,14 @@ class Tank:
         pygame.draw.rect(self.surfaceTank, self.alphaColor, (0,0,self.surfaceTank.get_width(),self.surfaceTank.get_height()))
         self.draw_tank()
         self.surfaceTank.blit(self.lifeBar.lifeSurface,(int(self.surfaceTank.get_width()*0.28),int(self.surfaceTank.get_height()*0.74)))
+        self.surfaceTank.blit(self.turnoVisualizar.iconoTurnoSurface,(int(self.surfaceTank.get_width()*0.29),int(self.surfaceTank.get_height()*0)))
         
     def actualizarVida(self,vida):
         self.lifeBar.actualizarVida(vida)
+        self.actualizarTanque()
+
+    def turnoTanque(self, turno):
+        self.turnoVisualizar.actualizarIcono(turno)
         self.actualizarTanque()
 
     def actualizarAngulo(self, event):
