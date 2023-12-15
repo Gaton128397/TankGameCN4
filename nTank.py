@@ -3,6 +3,8 @@ from functions import *
 
 class Tank:
     def __init__(self,color, window, playerID):
+        WIDTH = params.size*16
+        HEIGHT = params.size*9
         self.playerID = playerID
         self.xpos = 0
         self.ypos = 0
@@ -14,7 +16,7 @@ class Tank:
         self.color = color
         self.ammo = True
         self.angulo = 60
-
+        self.distancia = 0
         self.xCanon1 = 0
         self.yCanon1 = 0
 
@@ -24,7 +26,7 @@ class Tank:
         self.end = (0,0)
         self.fallDmg = 0
         self.tankProportion = 0.22
-        self.surfaceTank = pygame.Surface((params.WIDTH*self.tankProportion, params.HEIGHT*self.tankProportion))
+        self.surfaceTank = pygame.Surface((WIDTH*self.tankProportion, HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.4)
         self.y = int(self.surfaceTank.get_height()*0.7)
         self.width = int(self.surfaceTank.get_width()*0.22)
@@ -48,8 +50,6 @@ class Tank:
         diccionarioEventosCañon[pygame.K_LEFT] = 1
         diccionarioEventosCañon[pygame.K_RIGHT] = -1
         self.listaEventos.append(diccionarioEventosCañon)
-        
-
         
     def draw_tank(self):
         pygame.draw.polygon(self.surfaceTank, self.color, ((self.x, self.y), (self.x - self.width/2, self.y), (self.x - self.width/2, self.y - self.height),(self.x + self.width/2, self.y - self.height),(self.x + self.width/2, self.y),(self.x, self.y))) #rectangulo inicial

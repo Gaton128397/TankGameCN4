@@ -63,16 +63,14 @@ class Projectile():
             pygame.draw.circle(self.surf, (0,0,0), (int(self.surf.get_width()/2),int(self.surf.get_height()/2)), 2)
             self.blastRadius = int(params.WIDTH*0.03)
             self.DMG = 30
-        print("power: "+str(power))
-        print("theta: "+str(theta))
-        print("g: "+str(self.g))
-        print("posicion: "+str(position))
+            
+        self.yMaxHeight = position[1]
         self.pos = []
         self.pos.append(position[0])
         self.pos.append(params.HEIGHT-position[1])
         functions.draw_trajectory(power, theta, self.g, self.xPositions,self.yPositions, self.pos, self.wind)
         
-    def shoot(self,listaDeSurface,puntosTerreno,infoBlock):
+    def shoot(self,listaDeSurface,puntosTerreno,infoBlock,turno):
         puntox = int(self.surf.get_width()/2)
         puntoy = int(self.surf.get_height()/2)
         shoot = True
@@ -97,6 +95,7 @@ class Projectile():
             self.window.blit(listaDeSurface[3],(0,0))
             distancia = functions.calcular_distancia((x,y),(self.pos[0]+puntox,self.pos[1]+puntoy))
             infoBlock.actualizarDistancia(int(distancia))
+            self.listaJugador[turno].distancia = int(distancia)
             self.window.blit(self.surf,(xIni,yIni))
             self.window.blit(infoBlock.bloque,(params.WIDTH*0.68,0))
             if maxHeight > y:
@@ -116,7 +115,7 @@ class Projectile():
             contador += 1
             pygame.display.update()
     def actualizarMaxHeight(self,surface, texto):
-        
+        texto = self.yMaxHeight - texto
         texto = str(texto)
         pygame.draw.rect(surface, (255,255,255), pygame.Rect(int(surface.get_width() *0), int(surface.get_height() *0.05), int(surface.get_width() *0.2), int(surface.get_height() *0.07)))
         texto = "Max height: "+ texto + "m"

@@ -12,7 +12,6 @@ def draw_trajectory(u, theta, gravity, xPositions, yPositions,pos,wind):
     theta = math.radians(theta)
     # Time of flight
     t_flight = 2 * u * math.sin(theta) / gravity
-    # Find time intervals
     intervals = frange(0, t_flight+params.WIDTH, 0.05) 
 
     for t in intervals:

@@ -1,7 +1,7 @@
 import pygame, params, drawFunctions, nTank, math
 
 class imgTank:
-    def __init__(self,color):
+    def __init__(self,color,tankProportion):
         self.xpos = 0
         self.ypos = 0
         self.angulo = 0
@@ -11,7 +11,7 @@ class imgTank:
         self.xCanon2 = 0
         self.yCanon2 = 0
 
-        self.tankProportion = 0.05
+        self.tankProportion = tankProportion
         self.surfaceTank = pygame.Surface((params.WIDTH*self.tankProportion, params.HEIGHT*self.tankProportion))
         self.x = int(self.surfaceTank.get_width()*0.5)
         self.y = int(self.surfaceTank.get_height()*0.8)
@@ -19,8 +19,8 @@ class imgTank:
         self.height = int(self.surfaceTank.get_height()*0.55)
         self.alphaColor = (255,0,255)
         self.surfaceTank.fill(self.alphaColor)
-        #self.surfaceTank.set_alpha()
-        #self.surfaceTank.set_colorkey(self.alphaColor)
+        self.surfaceTank.set_alpha()
+        self.surfaceTank.set_colorkey(self.alphaColor)
         self.longitud = int(self.surfaceTank.get_width()*0.12) #largo del cañon
         self.xCanon1 =self.x #coordenadas del cañon
         self.yCanon1  = (self.y - self.height) - self.height/4
@@ -61,7 +61,7 @@ class scoreBoard():
             contador += params.HEIGHT*0.07
             
     def mostrarJugador(self,superficie,jugador):
-        tank = imgTank(self.colors[jugador])
+        tank = imgTank(self.colors[jugador],0.07)
         superficie.blit(tank.surfaceTank,(0,0))
         if not self.general:
             self.mostrarTexto(superficie,str(self.listaJugadores[jugador].kda[0]),int(superficie.get_width() *0.37))

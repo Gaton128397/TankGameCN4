@@ -1,8 +1,9 @@
-import pygame, params, drawFunctions, random
+import pygame, params, drawFunctions, random,scoreBoard
 
 class infoBlock:
     def __init__(self, proporcion):
         self.bloque = pygame.Surface((int(params.WIDTH * proporcion), int(params.HEIGHT * proporcion)))
+        self.proporcion = proporcion
         self.alphaColor = (255,255,255)
         self.bloque.set_alpha()
         self.bloque.set_colorkey(self.alphaColor)
@@ -15,6 +16,8 @@ class infoBlock:
         self.cargar_imagen("imgs/icons/bala.png",0.1,0.15,(0.05,0.5))
         self.cargar_imagen("imgs/icons/balas.png",0.1,0.15,(0.05,0.7))
         
+        self.turnoTanque = scoreBoard.imgTank((255,0,0),self.proporcion*0.2)
+        self.bloque.blit(self.turnoTanque.surfaceTank,(int(self.bloque.get_width() *0.7), int(self.bloque.get_height() *0.7)))
         
     def cargar_imagen(self, imagen, proporcionX, proporcionY, posicion):
         imagen_cargada = pygame.image.load(imagen)
@@ -109,20 +112,26 @@ class infoBlock:
             pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.23), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.15), int(self.bloque.get_height() *0.1)))
         else:
             pygame.draw.rect(self.bloque, self.alphaColor, pygame.Rect(int(self.bloque.get_width() *0.18), int(self.bloque.get_height() *0.72), int(self.bloque.get_width() *0.4), int(self.bloque.get_height() *0.1)))
-
+    
+    def actualizarTanque (self, color):
+        self.turnoTanque = scoreBoard.imgTank(color,self.proporcion*0.2)
+        self.bloque.blit(self.turnoTanque.surfaceTank,(int(self.bloque.get_width() *0.7), int(self.bloque.get_height() *0.7)))
+    
 def actualizar(info,conds):
     info.actualizarAngulo(random.randint(0,180))
     info.actualizarDistancia(random.randint(0,5000))
+    
 def testInfoBlock():
     pygame.init()
     window = pygame.display.set_mode((params.WIDTH, params.HEIGHT))
     bg = pygame.Surface((params.WIDTH, params.HEIGHT))
     drawFunctions.backgroundDraw(bg, "imgs/maps/ciudad.png")
-    info = infoBlock(0.5)
+    info = infoBlock(0.3)
     info.actualizarAngulo('#')
     info.actualizarDistancia("1920")
     info.actualizarTipoBala("105")
     info.actualizarCantidadBalas(0)
+    listaDeColores = [(255,0,0),(0,255,0),(0,0,255)]
     #info.actualizarAngulo('50')
     contador = 0
     contador_x = 0
@@ -140,6 +149,9 @@ def testInfoBlock():
                 print("xd")
             elif pygame.mouse.get_pressed()[0]:
                 print("dx")
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    info.actualizarTanque(random.choice(listaDeColores))
         contador_x += velocidad * direccion_x
         contador_y += velocidad * direccion_y
         if contador_x <= 0 or contador_x >= params.WIDTH - int(info.bloque.get_width()*0.9):

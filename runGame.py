@@ -4,15 +4,18 @@ import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerP
 class gameLogic:
     
     def __init__(self, windowGame,playerList, mapa):
+        WIDTH = params.size*16
+        HEIGHT = params.size*9
         self.screen = windowGame
-        
+        #WIDTH = params.size*16
+        #HEIGHT = params.size*9
         #variables de entorno
         self.mapa = mapa
         self.gravity = 9.8
         self.wind = self.mapa[2]
         
         #background
-        self.backGround = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.backGround = pygame.Surface((WIDTH,HEIGHT))
         drawFunctions.backgroundDraw(self.backGround,self.mapa[0])
         self.screen.blit(self.backGround,(0,0))
         
@@ -28,14 +31,14 @@ class gameLogic:
         self.setPlayers()
         
         #infoBlock
-        self.info = ninfoBlock.infoBlock(0.3)
+        self.info = ninfoBlock.infoBlock(0.25)
         self.cantidadbullets = self.cantidadBalas()
         
         #otros
         self.coloresJuagadores = []
         self.getColoresPlayers()
         self.powerBar = npowerBar.BarraDeCarga(0.2)
-        self.estelaSurface = pygame.Surface((params.WIDTH,params.HEIGHT))
+        self.estelaSurface = pygame.Surface((WIDTH,HEIGHT))
         self.estelaAlpha = (255,255,255)
         self.estelaSurface.fill(self.estelaAlpha)
         self.estelaSurface.set_alpha()
@@ -60,27 +63,25 @@ class gameLogic:
         self.screen.blit(self.estelaSurface,(0,0))
         self.updPlayers()
 
-    def actualizarInfo(self,player,balaID):
-        self.info.actualizarAngulo(player.angulo)
-        #self.info.actualizarDistancia(player.getPos()[0])
-        self.info.actualizarEscudo(self.listaPlayers[player.playerID].inventory[0])
+    def actualizarInfo(self,turno,balaID):
+        self.info.actualizarAngulo(self.listaJugadores[turno].angulo)
+        self.info.actualizarDistancia(self.listaJugadores[turno].distancia)
+        self.info.actualizarTanque(self.listaJugadores[turno].color)
+        #self.info.actualizarEscudo(self.listaPlayers[player.playerID].inventory[0])
         #self.info.actualizarDmg(player.damage)
         #self.info.actualizarBotellas(player.inventory[0])
-        #self.info.actualizarTipoBala(player.inventory[balaID])
-
+        
         if balaID == 5: #bala 1
             self.info.actualizarTipoBala("60")
-            self.info.actualizarCantidadBalas(self.listaPlayers[player.playerID].inventory[balaID])
-            
-        if balaID == 4:
+            self.info.actualizarCantidadBalas(self.listaPlayers[self.listaJugadores[turno].playerID].inventory[balaID])    
+        elif balaID == 4:
             balaID = 4#mediana
             self.info.actualizarTipoBala("80")
-            self.info.actualizarCantidadBalas(self.listaPlayers[player.playerID].inventory[balaID])
-            
-        if balaID == 3:
+            self.info.actualizarCantidadBalas(self.listaPlayers[self.listaJugadores[turno].playerID].inventory[balaID])    
+        elif balaID == 3:
             balaID = 3#grande
             self.info.actualizarTipoBala("105")
-            self.info.actualizarCantidadBalas(self.listaPlayers[player.playerID].inventory[balaID])
+            self.info.actualizarCantidadBalas(self.listaPlayers[self.listaJugadores[turno].playerID].inventory[balaID])
             
     def getColoresPlayers(self):
         for i in range(len(self.listaJugadores)):
@@ -94,6 +95,7 @@ class gameLogic:
     
     def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
         if len(self.listaJugadores) == 1:
+            print("jugador gano")
             #mostrar pantalla de que el jugador gano
             summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             summary.sb_run()
@@ -105,6 +107,7 @@ class gameLogic:
                 self.listaPlayers[i].kda[1] = 0
             return False
         elif self.cantidadbullets <= 0:
+            print("jugadores sin balas")
             summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             summary.sb_run()
             summary = None
@@ -118,35 +121,43 @@ class gameLogic:
             return False
         elif jugadoresDerrotados:
             for i in range(len(jugadoresDerrotados)):
-                print("jugador derrotado: " + str(self.getTankIndex(jugadoresDerrotados[i])))
-                del self.listaJugadores[self.getTankIndex(jugadoresDerrotados[i])]
+                indice = self.getTankIndex(jugadoresDerrotados[i])
+                if indice in listaDeTurnos:
+                    listaDeTurnos.remove(indice)
+                del self.listaJugadores[indice]
             self.definirTurnos(listaDeTurnos)
-            self.cantidadbullets = self.cantidadBalas()
-            self.cantidadbullets = self.cantidadBalas()
+            cambioDeTurno = random.choice(listaDeTurnos)
+            while cambioDeTurno == turnos[1] and len(listaDeTurnos) > 1:
+                cambioDeTurno = random.choice(listaDeTurnos)
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
-            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
-            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
             listaDeTurnos.remove(turnos[0])
+            self.cantidadbullets = self.cantidadBalas()
+            self.cantidadbullets = self.cantidadBalas()
+            self.actualizarInfo(turnos[0],balaID)
             jugadoresDerrotados.clear()
-            print("candidad jugador: " + str(len(self.listaJugadores)))
             return True
-        elif not listaDeTurnos:
+        elif (not listaDeTurnos) and (turnos[0] != turnos[1]):
+            print("no hay turnos")
             self.definirTurnos(listaDeTurnos)
-            turnos[0] = random.choice(listaDeTurnos)
+            cambioDeTurno = random.choice(listaDeTurnos)
+            while cambioDeTurno == turnos[1]:
+                cambioDeTurno = random.choice(listaDeTurnos)
+            turnos[0] = cambioDeTurno
             turnos[1] = turnos[0]
-            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
-            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
+            self.actualizarInfo(turnos[0],balaID)
             listaDeTurnos.remove(turnos[0])
-            print("turno actual: ",turnos[0])
-            print("turno anterior: ",turnos[1])
             return True
         elif turnos[0] != turnos[1]:
+            print("\n--------------turno antes de cambiar----------------")
+            print("turno actual: ",turnos[0])
+            print("turno anterior: ",turnos[1])
+            print("Lista de turnos"+str(listaDeTurnos))
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
-            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
-            self.actualizarInfo(self.listaJugadores[turnos[0]],balaID)
+            self.actualizarInfo(turnos[0],balaID)
             listaDeTurnos.remove(turnos[0])
+            print("\n--------------turno cambiado----------------")
             print("turno actual: ",turnos[0])
             print("turno anterior: ",turnos[1])
             print("Lista de turnos"+str(listaDeTurnos))
@@ -159,8 +170,6 @@ class gameLogic:
         listaTurnos.clear()
         for i in range(len(self.listaJugadores)):
             listaTurnos.append(i)
-        print("lista de turnos: " + str(listaTurnos))
-        print("lista de turnos: " + str(listaTurnos))
         
     def tankPos(self):
         return 0
@@ -191,10 +200,6 @@ class gameLogic:
             cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[4]
             cantidadBalas += self.listaPlayers[self.listaJugadores[i].playerID].inventory[5]
         return cantidadBalas
-    
-    def comprobarBalasJugador(self,jugador):
-        if self.listaPlayers[jugador.playerID].inventory[3] <= 0 and self.listaPlayers[jugador.playerID].inventory[4] <= 0 and self.listaPlayers[jugador.playerID].inventory[5] <= 0:
-            self.listaPlayers[jugador.playerID].tanque.ammo = False
         
     def run(self,clock):
         running = True
@@ -207,14 +212,10 @@ class gameLogic:
         turnos = [0,0]
         listaTurnos.remove(0)
         potencia = 100
-        cargarBarra = False
         jugador = 'a'
         balaID = 3 #3,4,5 son las IDs
-        self.info.actualizarCantidadBalas(self.listaPlayers[0].inventory[balaID])
-        self.info.actualizarTipoBala("105")
-        self.info.actualizarAngulo(self.listaJugadores[0].angulo)
+        self.actualizarInfo(turnos[0],balaID)
         anguloIA = -1
-        print("cantidad jugadores: " + str(len(self.listaJugadores)))
         while running:
             if self.checkearTurno(listaTurnos,turnos,jugadoresDerrotados,balaID):
                 jugador = self.listaJugadores[turnos[0]]
@@ -255,15 +256,6 @@ class gameLogic:
                             if event.type == pygame.MOUSEBUTTONDOWN:
                                 if pygame.mouse.get_pressed()[0]:
                                     print(pygame.mouse.get_pos())
-                            if event.type == pygame.KEYDOWN:
-                                if event.key == pygame.K_SPACE: #aqui debe guardar la potencia
-                                    print("cargando potencia. . . ")
-                                if event.type==pygame.KEYDOWN:
-                                    if event.key==pygame.K_f:
-                                        if params.size == 120:
-                                            params.size=80
-                                        else:
-                                            params.size=120
                                 if event.key == pygame.K_RETURN: #recien aqui recibe la potencia para disparar
                                     #debe revisar que haya una bala seleccionada o partir de la mas chica
                                     if potencia >0:
@@ -271,7 +263,7 @@ class gameLogic:
                                             self.estelaSurface.fill(self.estelaAlpha)
                                             wind = randint(-10,10)
                                             bullet = nProyectil.Projectile(self.screen,(int(jugador.getPos()[0]+jugador.xCanon2-(params.WIDTH*0.028)),int(jugador.getPos()[1]+jugador.yCanon2-(params.HEIGHT*0.05))),balaID,potencia,jugador.angulo,self.listaJugadores,self.gravity,wind)
-                                            self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(),self.info),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
+                                            self.terrain.updateImpact(bullet.shoot(surfaces,self.terrain.getDiccionary(),self.info,turnos[0]),bullet,self.listaJugadores,self.listaPlayers,jugadoresDerrotados,turnos[0])
                                             self.listaPlayers[jugador.playerID].inventory[balaID] -=1 #bala
                                             self.cantidadbullets -= 1
                                             self.comprobarBalasJugador(self.listaJugadores[turnos[0]])
@@ -313,16 +305,15 @@ class gameLogic:
                         else:
                             self.powerBar.resetear()
                         #print("potencia: " + str(potencia))
-
                     else:
                         turnos[0] = -1
             else:
                 running = False
-                break
-            clock.tick(60)
-            self.actualizarPantallasJuego()
-            self.powerBar.dibujar(self.screen)
-            pygame.display.update()
+            if running != False:
+                clock.tick(60)
+                self.actualizarPantallasJuego()
+                self.powerBar.dibujar(self.screen)
+                pygame.display.update()
         
 
 
@@ -346,7 +337,6 @@ def testgame():#Logica de mainScreen()
             game = gameLogic(window,listaJugadores,mapa)
             game.run(clock)
             partidosActuales += 1
-        print("partidos terminados")
         run = False     
         try:
             for event in pygame.event.get():

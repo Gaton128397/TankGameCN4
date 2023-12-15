@@ -33,7 +33,6 @@ class TerrenoVariado:
                 self.yPoints.append([int(y)])#????????????????????????
         
         self.points.sort()
-        print(self.points[0][1])
         
         for i in range(params.WIDTH):
             #print("hola")
