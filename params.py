@@ -12,3 +12,4 @@ health = image.load('items/health.png')
 bigStone = image.load('items/105mmStone.png')
 mediumStone = image.load('items/80mmStone.png')
 smallStone = image.load('items/60mmStone.png')
+mapa = None

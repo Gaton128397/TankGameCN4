@@ -5,7 +5,7 @@ class Map:
         self.ID = ID
         self.img = img
         self.gravity = gravity
-        self.img = pygame.transform.scale(self.img, (params.size*16, params.size*9))
+        self.img = img #'pantalla/imagen'#pygame.transform.scale(self.img, (params.size*16, params.size*9))
         self.terrainColor = terrainColor
 
     def getMap(self):

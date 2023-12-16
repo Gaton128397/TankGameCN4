@@ -11,12 +11,16 @@ class gameLogic:
         #HEIGHT = params.size*9
         #variables de entorno
         self.mapa = mapa
-        self.gravity = 9.8#self.mapa.getMap()[1]
-        # self.color = self.mapa.getMap()[2]
+        self.gravity = self.mapa.getMap()[1]
+        self.color = self.mapa.getMap()[2]
         
         #background
         self.backGround = pygame.Surface((self.WIDTH,self.HEIGHT))
-        drawFunctions.backgroundDraw(self.backGround,self.mapa[0])
+        self.mapaImg = pygame.transform.scale(self.mapa.getMap()[0],(self.WIDTH,self.HEIGHT))
+
+        # drawFunctions.backgroundDraw(self.backGround,self.mapaIMG)
+        self.backGround.blit(self.mapa.getMap()[0],(0,0))
+        print('a')
         self.screen.blit(self.backGround,(0,0))
         
         #Terreno

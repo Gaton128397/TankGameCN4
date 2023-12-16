@@ -141,7 +141,7 @@ def run(img,propBotonesPantalla,pantalla):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            checkResize(event)
+            #checkResize(event)
             for btns in crearButtons(propBotonesPantalla):
                 for btn in btns:
                     if btn.check_click(event):
@@ -175,22 +175,22 @@ def run(img,propBotonesPantalla,pantalla):
                                 #print('parte del juego')
                                 return 12
                             elif btn.item == 5:
-                                mapa = random.choice(crearMapas())
+                                params.mapa = random.choice(crearMapas())
                                 #print('mapa random')
                             elif btn.item == 6:
-                                mapa = crearMapas()[0]
+                                params.mapa = crearMapas()[0]
                                 #print('mapa selva')
                             elif btn.item == 7:
-                                mapa = crearMapas()[1]
+                                params.mapa = crearMapas()[1]
                                 #print('mapa galaxia')
                             elif btn.item == 8:
-                                mapa = crearMapas()[2]
+                                params.mapa = crearMapas()[2]
                                 #print('mapa nieve')
                             elif btn.item == 9:
-                                mapa = crearMapas()[3]
+                                params.mapa = crearMapas()[3]
                                 #print('mapa desierto')
                             elif btn.item == 10:
-                                mapa = crearMapas()[4]
+                                params.mapa = crearMapas()[4]
                                 #print('mapa ciudad')
 
                         #menu
@@ -299,13 +299,14 @@ def run(img,propBotonesPantalla,pantalla):
             ia = False
             variableReseteo = loadPlayers(listaJugadores,window,ia)
             while partidosActuales < params.roundNumber:
-                mapa = ["Mapas/galaxia.png",9.8]#crearMapas()[random.randint(0,4)]
+                #mapa = ["Mapas/galaxia.png",9.8]
+                #mapa = crearMapas()[random.randint(0,4)]
                 resetTanks(listaJugadores,variableReseteo,window)
                 anhadirDiezmo(listaJugadores)
                 runShop.openShop(listaJugadores)
                 #player.Player().comprarIa() #solo compra si es IA
                 gameScreens.pantallaEmpiezaJuego(window)
-                game = runGame.gameLogic(window,listaJugadores,mapa)
+                game = runGame.gameLogic(window,listaJugadores,params.mapa)
                 game.run(clock)
                 partidosActuales += 1
             return 4
