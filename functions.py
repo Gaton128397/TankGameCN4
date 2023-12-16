@@ -253,20 +253,28 @@ def run(img,propBotonesPantalla,pantalla):
                         #settingsGame     #METER EN JUEGO GASTON
                         if pantalla == 9:
                             if btn.item == 24:
-                                #print('Confirmar eleccion')
+                                print('Confirmar eleccion')
                                 return 3
                             elif btn.item == 25:
-                                pass
-                                #print('Aumentar Jugadores')
+                                params.playersNumber += 1
+                                print('Aumentar Jugadores')
                             elif btn.item == 26:
-                                pass
-                                #print('Disminuir Jugadores')
+                                # Verificar si hay al menos 2 jugadores antes de disminuir
+                                if params.playersNumber > 2:
+                                    params.playersNumber -= 1
+                                    print('Disminuir Jugadores')
+                                else:
+                                    print('No se puede disminuir más. Mínimo 2 jugadores.')
                             elif btn.item == 27:
-                                pass
-                                #print('Aumentar Rondas')
+                                params.roundNumber += 1
+                                print('Aumentar Rondas')
                             elif btn.item == 28:
-                                pass
-                                #print('Disminuir Rondas')
+                                # Verificar si hay al menos 1 ronda antes de disminuir
+                                if params.roundNumber > 1:
+                                    params.roundNumber -= 1
+                                    print('Disminuir Rondas')
+                                else:
+                                    print('No se puede disminuir más. Mínimo 1 ronda.')
 
                         #settingsMenu
                         if pantalla == 10:
