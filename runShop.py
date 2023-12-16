@@ -1,37 +1,40 @@
 import pygame, sys,crearItems,params,player,time,functions
 from button import Button
+from random import randint
 
 pygame.init()
 
 #variables
 
-jugadorTest = player.Player()
-jugadorTest2 = player.Player()
-jugadorTest3 = player.Player()
-jugadorTest4 = player.Player()
-listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
+# jugadorTest = player.Player()
+# jugadorTest2 = player.Player()
+# jugadorTest3 = player.Player()
+# jugadorTest4 = player.Player()
+# jugadorTest.ia = True
+# jugadorTest2.ia = True
+# listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
 
 tiendaIni = pygame.image.load('Pantallas/shopIni.png')
 tiendaMid = pygame.image.load('Pantallas/shopMid.png')
 tiendaEnd = pygame.image.load('Pantallas/shopFin.png')
-
+tiendaHayIa = pygame.image.load('Pantallas/shopIA.png')
 actualItem = None
 
 '''METHODS'''
 def createItems():
     '''CREARITEMS'''
-    shield = crearItems.item(0,'shield','reduce daño (1 uso)',100,params.shield)
+    shield = crearItems.item(0,'shield','reduce daño (1 uso)',2500,params.shield)
     dmg = crearItems.item(1,'damage','+10 daño',100,params.dmg)
     health = crearItems.item(2,'health','+10 vida',100,params.health)
-    bigStone = crearItems.item(3,'Big Projectile','piedra grande',100,params.bigStone)
-    mediumStone = crearItems.item(4,"Medium Projectile",'piedra chica',100,params.smallStone)
-    smallStone = crearItems.item(5,'Small Projectile','piedra mediana',100,params.mediumStone)
+    bigStone = crearItems.item(3,'Big Projectile','piedra grande',4000,params.bigStone)
+    mediumStone = crearItems.item(4,"Medium Projectile",'piedra chica',2500,params.smallStone)
+    smallStone = crearItems.item(5,'Small Projectile','piedra mediana',1000,params.mediumStone)
     return [shield,dmg,health,bigStone,mediumStone,smallStone]
 
 def buttons():
     buttons = [ 
         Button(0.78, 0.85, 0.2, 0.1,'Next'), #siguiente
-        Button(0.015, 0.85, 0.2, 0.1,'Back'), #volver
+        #Button(0.015, 0.85, 0.2, 0.1,'Back'), #volver
 
 
         Button(0.330, 0.78, 0.09, 0.1,'Buy'), #comprar
@@ -126,9 +129,6 @@ def showStats(player):
 def sellItem(item,player):
     if player.inventory[item.ID] > 0:
         player.inventory[item.ID] -=1
-        print(item.nombre)
-        print("id",item.ID)
-        print(player.inventory[item.ID])
         player.money += item.precio
 
 def buyItem(item,player):
@@ -144,6 +144,27 @@ def buyItem(item,player):
                 player.inventory[item.ID] +=1
                 player.money -= item.precio
 
+def buyItemIA(listaItems,player):
+    if player.ia == True:
+        # player.money = 10000
+        while player.money > 0:
+            item = listaItems[randint(0,5)]
+            if player.money >= item.precio:
+                if item.ID == 0: #maximo de 1 escudo 
+                    if player.inventory[item.ID] < 1:
+                        player.inventory[item.ID] +=1
+                        player.money -= item.precio  
+                    else:
+                        player.inventory[item.ID] = 1
+                elif item.ID == 2:
+                    player.money = player.money
+                elif item.ID == 1 and player.inventory[item.ID]  ==10 and player.money<1000:#en caso de que ya haya 10 de dano y el dinero sea menor que 1000, no se podra restar y entra en un ciclo infinito, con esto se evita
+                    break
+                else:
+                    if player.inventory[item.ID] < 10: #maximo de 10 de cada item
+                        player.inventory[item.ID] +=1
+                        player.money -= item.precio
+
 def showMoney(player):
     showMoney = pygame.font.Font(None, int(params.size*0.6))
     showMoney = showMoney.render("$"+str(player.money), True, (229,202,0))
@@ -151,19 +172,22 @@ def showMoney(player):
     params.screen.blit(showMoney,(params.size*16*0.1,params.size*9*0.03))
     
 def openShop(playerList): #recibe una lista de jugadores
+    
     actualImg = tiendaIni
     player = 0 #jugador actual
     running =True
     actualItem = None
     ignore = [None,'Buy','Sell','Next','Back']
+    hayIA = False
     while running:
+        if hayIA:
+            actualImg = tiendaHayIa
         params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
-        
-        #DESCOMENTAR PARA VER HITBOX BOTONES TIENDA
 
-        #for boton in buttons():
-            #pygame.draw.rect(params.screen, (255, 0, 0), boton.rect, 2)
-
+        if playerList[player].ia == True:
+            buyItemIA(createItems(),playerList[player])
+            hayIA = True
+            player+=1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -172,26 +196,31 @@ def openShop(playerList): #recibe una lista de jugadores
             for boton in buttons():
                 time.sleep(0.005)
                 if boton.check_click(event):
+                    
                     if boton.item == 'Buy' and actualItem not in ignore:
+                        
                         buyItem(actualItem,playerList[player])
                     elif boton.item == 'Sell' and actualItem not in ignore:
                         sellItem(actualItem,playerList[player])
                     elif boton.item == 'Back':
-                        if player > 0:
+                        if player > 0 and not hayIA:
                             player -= 1
                             actualItem = None
                         else:
-                            if player != 0: 
+                            if player != 0:
                                 player = len(playerList)-1
                                 actualItem = None
-                            
+
                     elif boton.item == 'Next':
-                        if player == len(playerList)-1:
+                        if not hayIA:
+                            if player == len(playerList)-1: # terminar
+                                running = False
+                                actualItem = None
+                            if player < len(playerList)-1: # siguiente
+                                player += 1
+                                actualItem = None
+                        else:
                             running = False
-                            actualItem = None
-                        if player < len(playerList)-1:
-                            player += 1
-                            actualItem = None
 
                     else:
                         actualItem = boton.item
@@ -218,5 +247,8 @@ def openShop(playerList): #recibe una lista de jugadores
 
 #DESCOMENTAR PARA EJECUTAR TIENDA DE MANERA INDEPENDIENTE
 
-if __name__ == "__main__":
-   openShop(listaJugadores)
+# if __name__ == "__main__":
+#     openShop(listaJugadores)
+#     for jugador in range(len(listaJugadores)):
+#         if listaJugadores[jugador].ia == True:
+#             print(listaJugadores[jugador].inventory)

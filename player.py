@@ -1,3 +1,4 @@
+from random import randint
 class Player:
     def __init__(self):
         self.money = 0
@@ -23,3 +24,5 @@ class Player:
         
     def returnKDA(self):
         return self.kda
+
+                
