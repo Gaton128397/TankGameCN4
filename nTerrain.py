@@ -2,7 +2,7 @@ import pygame,math,random,drawFunctions, params, playerPhysics, functions
 import numpy as np
 
 class TerrenoVariado:
-    def __init__(self):
+    def __init__(self,color):
         self.WIDTH = params.size*16
         self.HEIGHT = params.size*9
         self.surfTerrain = pygame.Surface((self.WIDTH,self.HEIGHT))
@@ -10,7 +10,7 @@ class TerrenoVariado:
         self.points = []
         self.yPoints = []
         self.hitPoints = {}
-        
+        self.color = color
         
         for i in range(self.num_points):
             x = int(i * (self.WIDTH / (self.num_points - 1)))
@@ -40,8 +40,12 @@ class TerrenoVariado:
             #print("hola")
             for j in range(self.points[i][1],self.WIDTH+1):
                 self.hitPoints[(i,j)]=True
-        self.drawTerrain()
         
+        self.drawTerrain()
+
+    # def setColor(self,color):
+        # self.color = color
+
     def updateImpact(self,position,proyectil,lista,listaPlayers,jugadoresDerrotados,turno):
         pos = []
         if position[0] < 0:
@@ -128,8 +132,8 @@ class TerrenoVariado:
         points_interp = [(int(x), int(y)) for x, y in zip(x_interp, y_interp)]
         #self.points = points_interp
 
-        pygame.draw.polygon(self.surfTerrain, (255, 213, 158), [(0, self.HEIGHT)] + points_interp + [(self.WIDTH, self.HEIGHT)])
-        pygame.draw.lines(self.surfTerrain, (139, 69, 19), False, points_interp, 5)
+        pygame.draw.polygon(self.surfTerrain, (self.color), [(0, self.HEIGHT)] + points_interp + [(self.WIDTH, self.HEIGHT)])
+        pygame.draw.lines(self.surfTerrain, (self.color), False, points_interp, 5)
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))
         

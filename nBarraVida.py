@@ -64,8 +64,8 @@ class BarraVida:
                     else:  # Si no, el corazón estará lleno
                         self.corazones[num_corazon] = 'health/full.png'
             self.actualizarCorazones()  # Actualizamos los corazones en la barra de vida
-        else:
-            print("game over")
+        # else:
+            #print("game over")
             
     def getVida(self):
         return self.vida

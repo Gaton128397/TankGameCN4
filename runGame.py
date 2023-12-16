@@ -11,7 +11,8 @@ class gameLogic:
         #HEIGHT = params.size*9
         #variables de entorno
         self.mapa = mapa
-        self.gravity = 9.8
+        self.gravity = 9.8#self.mapa.getMap()[1]
+        # self.color = self.mapa.getMap()[2]
         
         #background
         self.backGround = pygame.Surface((self.WIDTH,self.HEIGHT))
@@ -19,7 +20,7 @@ class gameLogic:
         self.screen.blit(self.backGround,(0,0))
         
         #Terreno
-        self.terrain = nTerrain.TerrenoVariado()
+        self.terrain = nTerrain.TerrenoVariado(self.color)
         
         #terreno
         self.screen.blit(self.terrain.surfTerrain,(0,0))
@@ -116,14 +117,14 @@ class gameLogic:
     
     def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
         if len(self.listaJugadores) == 1:
-            print("jugador gano")
+            #print("jugador gano")
             #mostrar pantalla de que el jugador gano
             #summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             #summary.sb_run()
             #summary = None
             return False
         elif self.cantidadbullets <= 0:
-            print("jugadores sin balas")
+            #print("jugadores sin balas")
             #summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
             #summary.sb_run()
             #summary = None
@@ -149,7 +150,7 @@ class gameLogic:
             jugadoresDerrotados.clear()
             return True
         elif (not listaDeTurnos) and (turnos[0] != turnos[1]):
-            print("no hay turnos")
+            #print("no hay turnos")
             self.definirTurnos(listaDeTurnos)
             cambioDeTurno = random.choice(listaDeTurnos)
             while cambioDeTurno == turnos[1]:
@@ -161,19 +162,19 @@ class gameLogic:
             listaDeTurnos.remove(turnos[0])
             return True
         elif turnos[0] != turnos[1]:
-            print("\n--------------turno antes de cambiar----------------")
-            print("turno actual: ",turnos[0])
-            print("turno anterior: ",turnos[1])
-            print("Lista de turnos"+str(listaDeTurnos))
+            #print("\n--------------turno antes de cambiar----------------")
+            #print("turno actual: ",turnos[0])
+            #print("turno anterior: ",turnos[1])
+            #print("Lista de turnos"+str(listaDeTurnos))
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
             self.listaJugadores[turnos[0]].turnoTanque(True)
             self.actualizarInfo(turnos[0],balaID)
             listaDeTurnos.remove(turnos[0])
-            print("\n--------------turno cambiado----------------")
-            print("turno actual: ",turnos[0])
-            print("turno anterior: ",turnos[1])
-            print("Lista de turnos"+str(listaDeTurnos))
+            #print("\n--------------turno cambiado----------------")
+            #print("turno actual: ",turnos[0])
+            #print("turno anterior: ",turnos[1])
+            #print("Lista de turnos"+str(listaDeTurnos))
             return True
         else:
             return True
@@ -188,10 +189,12 @@ class gameLogic:
         return 0
         
     def pauseScreen(self):
-        print("pause state")
+        pass
+        #print("pause state")
     
     def loadingScreen():
-        print("loading")
+        pass
+        #print("loading")
     
     def cantidadBalas(self):
         cantidadBalas = 0
@@ -216,7 +219,7 @@ class gameLogic:
         
     def run(self,clock):
         running = True
-        print(self.listaJugadores[0].getPos())
+        #print(self.listaJugadores[0].getPos())
         playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
         surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface,self.powerBar.poweBarSurface,self.surfaceWind]
         listaTurnos = []
@@ -282,7 +285,8 @@ class gameLogic:
                                 return None
                             if event.type == pygame.MOUSEBUTTONDOWN:
                                 if pygame.mouse.get_pressed()[0]:
-                                    print(pygame.mouse.get_pos())
+                                    pass
+                                    #print(pygame.mouse.get_pos())
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_RETURN: #r
                                     #debe revisar que haya una bala seleccionada o partir de la mas chica
@@ -300,7 +304,8 @@ class gameLogic:
                                             turnos[0] = -1
                                             chooseWind = False
                                         else:
-                                            print('no quedan')
+                                            pass
+                                            #print('no quedan')
                                         #cuando dispara se saca el jugador de la lista de turnos
                                 
                                 if event.key == pygame.K_1: #bala 1
@@ -321,7 +326,8 @@ class gameLogic:
                                 if event.key == pygame.K_0:
                                     turnos[0] = -1
                                 if event.key == pygame.K_ESCAPE:
-                                    print('pausa') #yo (mariano) lo arreglo dsps
+                                    pass
+                                    #print('pausa') #yo (mariano) lo arreglo dsps
                         if pressed[pygame.K_LEFT]:
                             jugador.actualizarAngulo(pygame.K_LEFT)
                             self.info.actualizarAngulo(jugador.angulo)
@@ -333,7 +339,7 @@ class gameLogic:
                             potencia = int(self.powerBar.carga)
                         else:
                             self.powerBar.resetear()
-                        #print("potencia: " + str(potencia))
+                        ##print("potencia: " + str(potencia))
                     else:
                         turnos[0] = -1
             else:
@@ -370,8 +376,8 @@ def testgame():#Logica de mainScreen()
                 game = gameLogic(window,listaJugadores,mapa)
                 game.run(clock)
                 partidosActuales += 1
-        print("pantaalla actual: "+str(pantallaActual))
-        #print("not reach")
+        #print("pantaalla actual: "+str(pantallaActual))
+        ##print("not reach")
         clock.tick(60)
         pygame.display.update()
 #testgame()

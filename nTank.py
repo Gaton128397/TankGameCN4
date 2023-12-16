@@ -118,8 +118,8 @@ class Tank:
         self.xpos = posicion[0]
         self.ypos = posicion[1]
     
-    def printTankPost(self):
-        print((self.x+self.xpos,self.y+self.ypos))
+    # def printTankPost(self):
+        # print((self.x+self.xpos,self.y+self.ypos))
         
     def getVida(self):
         return self.lifeBar.vida
