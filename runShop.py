@@ -34,7 +34,7 @@ def createItems():
 def buttons():
     buttons = [ 
         Button(0.78, 0.85, 0.2, 0.1,'Next'), #siguiente
-        #Button(0.015, 0.85, 0.2, 0.1,'Back'), #volver
+        Button(0.015, 0.85, 0.2, 0.1,'Back'), #volver
 
 
         Button(0.330, 0.78, 0.09, 0.1,'Buy'), #comprar
@@ -74,79 +74,80 @@ def selectItem(item):
     else:
         pygame.draw.rect(params.screen,(('#D6C6BC')),(params.size*4.38,params.size*3.73,params.size*7.27,params.size*3.25))
 def showInventory(player):
+    if not player.ia:
+        item1text = pygame.font.Font(None, int(params.size*0.4))
+        item1text = item1text.render("x"+str(player.inventory[0]), True, (0, 0, 0))
 
-    item1text = pygame.font.Font(None, int(params.size*0.4))
-    item1text = item1text.render("x"+str(player.inventory[0]), True, (0, 0, 0))
 
-
-    item2text = pygame.font.Font(None, int(params.size*0.4))
-    item2text = item2text.render("x"+str(player.inventory[1]), True, (0, 0, 0))
-    
-    item3text = pygame.font.Font(None, int(params.size*0.4))
-    item3text = item3text.render("x"+str(player.inventory[2]), True, (0, 0, 0))
-    
-    item4text = pygame.font.Font(None, int(params.size*0.4))
-    item4text = item4text.render("x"+str(player.inventory[3]), True, (0, 0, 0))
-    
-    item5text = pygame.font.Font(None, int(params.size*0.4))
-    item5text = item5text.render("x"+str(player.inventory[4]), True, (0, 0, 0))
-    
-    item6text = pygame.font.Font(None, int(params.size*0.4))
-    item6text = item6text.render("x"+str(player.inventory[5]), True, (0, 0, 0))
-    
-    #borrar anterior
-    pygame.draw.rect(params.screen,'white',(params.size*1,params.size*5,params.size*0.45,params.size*0.4))
-    pygame.draw.rect(params.screen,'white',(params.size*1,params.size*6.8,params.size*0.45,params.size*0.4))
-    pygame.draw.rect(params.screen,'white',(params.size*2.75,params.size*5,params.size*0.45,params.size*0.4))
-    pygame.draw.rect(params.screen,'white',(params.size*2.75,params.size*5.8,params.size*0.45,params.size*0.4))
-    pygame.draw.rect(params.screen,'white',(params.size*2.75,params.size*6.8,params.size*0.45,params.size*0.4))
-    
-    #escribir nuevo
-    params.screen.blit(item1text,(params.size*1,params.size*5))
-    params.screen.blit(item2text,(params.size*1,params.size*6.8))
-    params.screen.blit(item6text,(params.size*2.75,params.size*5))
-    params.screen.blit(item4text,(params.size*2.75,params.size*5.8))
-    params.screen.blit(item5text,(params.size*2.75,params.size*6.8))
+        item2text = pygame.font.Font(None, int(params.size*0.4))
+        item2text = item2text.render("x"+str(player.inventory[1]), True, (0, 0, 0))
+        
+        item3text = pygame.font.Font(None, int(params.size*0.4))
+        item3text = item3text.render("x"+str(player.inventory[2]), True, (0, 0, 0))
+        
+        item4text = pygame.font.Font(None, int(params.size*0.4))
+        item4text = item4text.render("x"+str(player.inventory[3]), True, (0, 0, 0))
+        
+        item5text = pygame.font.Font(None, int(params.size*0.4))
+        item5text = item5text.render("x"+str(player.inventory[4]), True, (0, 0, 0))
+        
+        item6text = pygame.font.Font(None, int(params.size*0.4))
+        item6text = item6text.render("x"+str(player.inventory[5]), True, (0, 0, 0))
+        
+        #borrar anterior
+        pygame.draw.rect(params.screen,'white',(params.size*1,params.size*5,params.size*0.45,params.size*0.4))
+        pygame.draw.rect(params.screen,'white',(params.size*1,params.size*6.8,params.size*0.45,params.size*0.4))
+        pygame.draw.rect(params.screen,'white',(params.size*2.75,params.size*5,params.size*0.45,params.size*0.4))
+        pygame.draw.rect(params.screen,'white',(params.size*2.75,params.size*5.8,params.size*0.45,params.size*0.4))
+        pygame.draw.rect(params.screen,'white',(params.size*2.75,params.size*6.8,params.size*0.45,params.size*0.4))
+        
+        #escribir nuevo
+        params.screen.blit(item1text,(params.size*1,params.size*5))
+        params.screen.blit(item2text,(params.size*1,params.size*6.8))
+        params.screen.blit(item6text,(params.size*2.75,params.size*5))
+        params.screen.blit(item4text,(params.size*2.75,params.size*5.8))
+        params.screen.blit(item5text,(params.size*2.75,params.size*6.8))
 
 def showStats(player):
     
     #texto stats
+    if not player.ia:
+        dmgText = pygame.font.Font(None, int(params.size*0.6))
+        dmgText = dmgText.render(str(player.inventory[1]*10), True, (0, 0, 0))
 
-    dmgText = pygame.font.Font(None, int(params.size*0.6))
-    dmgText = dmgText.render(str(player.inventory[1]*10), True, (0, 0, 0))
-
-    shieldText = pygame.font.Font(None, int(params.size*0.6))
-    shieldText = shieldText.render(str(player.inventory[0]), True, (0, 0, 0))
-    
-    #borrar anterior
-    pygame.draw.rect(params.screen,'white',(params.size*13.5,params.size*4.5,params.size*1.5,params.size*0.4))
-    pygame.draw.rect(params.screen,'white',(params.size*13.5,params.size*6.5,params.size*1.5,params.size*0.4))
-    
-    #escribir nuevo
-    params.screen.blit(dmgText,(params.size*13.5,params.size*6.5))
-    params.screen.blit(shieldText,(params.size*13.5,params.size*4.5))
+        shieldText = pygame.font.Font(None, int(params.size*0.6))
+        shieldText = shieldText.render(str(player.inventory[0]), True, (0, 0, 0))
+        
+        #borrar anterior
+        pygame.draw.rect(params.screen,'white',(params.size*13.5,params.size*4.5,params.size*1.5,params.size*0.4))
+        pygame.draw.rect(params.screen,'white',(params.size*13.5,params.size*6.5,params.size*1.5,params.size*0.4))
+        
+        #escribir nuevo
+        params.screen.blit(dmgText,(params.size*13.5,params.size*6.5))
+        params.screen.blit(shieldText,(params.size*13.5,params.size*4.5))
 
 def sellItem(item,player):
-    if player.inventory[item.ID] > 0:
-        player.inventory[item.ID] -=1
-        player.money += item.precio
+    if not player.ia:
+        if player.inventory[item.ID] > 0:
+            player.inventory[item.ID] -=1
+            player.money += item.precio
 
 def buyItem(item,player):
-    if player.money >= item.precio:
-        if item.ID == 0: #maximo de 1 escudo 
-            if player.inventory[item.ID] < 1:
-                player.inventory[item.ID] +=1
-                player.money -= item.precio
+    if not player.ia:
+        if player.money >= item.precio:
+            if item.ID == 0: #maximo de 1 escudo 
+                if player.inventory[item.ID] < 1:
+                    player.inventory[item.ID] +=1
+                    player.money -= item.precio
+                else:
+                    player.inventory[item.ID] = 1
             else:
-                player.inventory[item.ID] = 1
-        else:
-            if player.inventory[item.ID] < 10: #maximo de 10 de cada item
-                player.inventory[item.ID] +=1
-                player.money -= item.precio
+                if player.inventory[item.ID] < 10: #maximo de 10 de cada item
+                    player.inventory[item.ID] +=1
+                    player.money -= item.precio
 
 def buyItemIA(listaItems,player):
     if player.ia == True:
-        # player.money = 10000
         while player.money > 0:
             item = listaItems[randint(0,5)]
             if player.money >= item.precio:
@@ -166,83 +167,113 @@ def buyItemIA(listaItems,player):
                         player.money -= item.precio
 
 def showMoney(player):
-    showMoney = pygame.font.Font(None, int(params.size*0.6))
-    showMoney = showMoney.render("$"+str(player.money), True, (229,202,0))
-    pygame.draw.rect(params.screen,'white',(params.size*16*0.1,params.size*9*0.03,params.size*16*0.1,params.size*9*0.05))
-    params.screen.blit(showMoney,(params.size*16*0.1,params.size*9*0.03))
+    if not player.ia:
+        showMoney = pygame.font.Font(None, int(params.size*0.6))
+        showMoney = showMoney.render("$"+str(player.money), True, (229,202,0))
+        pygame.draw.rect(params.screen,'white',(params.size*16*0.1,params.size*9*0.03,params.size*16*0.1,params.size*9*0.05))
+        params.screen.blit(showMoney,(params.size*16*0.1,params.size*9*0.03))
     
-def openShop(playerList): #recibe una lista de jugadores
-    
+def openShop(playerList,ia): #recibe una lista de jugadores
     actualImg = tiendaIni
     player = 0 #jugador actual
     running =True
     actualItem = None
     ignore = [None,'Buy','Sell','Next','Back']
-    hayIA = False
+    hayIA = ia
     while running:
+        params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
         if hayIA:
             actualImg = tiendaHayIa
-        params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
-
-        if playerList[player].ia == True:
-            buyItemIA(createItems(),playerList[player])
-            hayIA = True
-            player+=1
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                running = False
-                
-            for boton in buttons():
-                time.sleep(0.005)
-                if boton.check_click(event):
+            
+            for player in range(len(playerList)):
+                if playerList[player].ia == True:
+                    buyItemIA(createItems(),playerList[player])
+                else:
+                    jugadorNormal = player
+                    print('no es ia',jugadorNormal)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    running = False
                     
-                    if boton.item == 'Buy' and actualItem not in ignore:
+                for boton in buttons():
+                    time.sleep(0.005)
+                    if boton.check_click(event):
                         
-                        buyItem(actualItem,playerList[player])
-                    elif boton.item == 'Sell' and actualItem not in ignore:
-                        sellItem(actualItem,playerList[player])
-                    elif boton.item == 'Back':
-                        if player > 0 and not hayIA:
-                            player -= 1
-                            actualItem = None
+                        if boton.item == 'Buy' and actualItem not in ignore:
+                            buyItem(actualItem,playerList[jugadorNormal])
+
+                        elif boton.item == 'Sell' and actualItem not in ignore:
+                            sellItem(actualItem,playerList[jugadorNormal])
+                        elif boton.item == 'Next':
+                                running = False #terminar
                         else:
-                            if player != 0:
-                                player = len(playerList)-1
-                                actualItem = None
-
-                    elif boton.item == 'Next':
-                        if not hayIA:
-                            if player == len(playerList)-1: # terminar
-                                running = False
-                                actualItem = None
-                            if player < len(playerList)-1: # siguiente
-                                player += 1
-                                actualItem = None
-                        else:
-                            running = False
-
-                    else:
-                        actualItem = boton.item
-                        selectItem(boton.item)
-
-        #dibujar tienda
-        if player == 0:
-            
-            actualImg = tiendaIni
-        elif player == len(playerList)-1:
-            
-            actualImg = tiendaEnd
+                            actualItem = boton.item
+                            selectItem(boton.item)
+            if actualItem != None:
+                selectItem(actualItem)
+            showInventory(playerList[jugadorNormal])
+            showStats(playerList[jugadorNormal])
+            showMoney(playerList[jugadorNormal])
+            pygame.display.update()
+            # running = False
         else:
-            
-            actualImg = tiendaMid
+            params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    running = False
+                    
+                for boton in buttons():
+                    time.sleep(0.005)
+                    if boton.check_click(event):
+                        
+                        if boton.item == 'Buy' and actualItem not in ignore:
+                            buyItem(actualItem,playerList[player])
 
-        if actualItem != None:
-            selectItem(actualItem)
-        showInventory(playerList[player])
-        showStats(playerList[player])
-        showMoney(playerList[player])
-        pygame.display.update()
+                        elif boton.item == 'Sell' and actualItem not in ignore:
+                            sellItem(actualItem,playerList[player])
+
+                        elif boton.item == 'Back':
+                            if player > 0:
+                                player -= 1
+                                actualItem = None
+                            else:
+                                if player != 0:
+                                    # player = len(playerList)-1
+                                    actualItem = None
+
+                        elif boton.item == 'Next':
+                                if player == len(playerList)-1: # terminar
+                                    running = False
+                                    actualItem = None
+                                if player < len(playerList)-1: # siguiente
+                                    player += 1
+                                    actualItem = None
+                                else:
+                                    running = False
+
+                        else:
+                            actualItem = boton.item
+                            selectItem(boton.item)
+
+            #dibujar tienda
+            if player == 0:
+                
+                actualImg = tiendaIni
+            elif player == len(playerList)-1:
+                
+                actualImg = tiendaEnd
+            else:
+                
+                actualImg = tiendaMid
+
+            if actualItem != None:
+                selectItem(actualItem)
+            showInventory(playerList[player])
+            showStats(playerList[player])
+            showMoney(playerList[player])
+            pygame.display.update()
     return 12
 
 #DESCOMENTAR PARA EJECUTAR TIENDA DE MANERA INDEPENDIENTE
@@ -251,4 +282,4 @@ def openShop(playerList): #recibe una lista de jugadores
 #     openShop(listaJugadores)
 #     for jugador in range(len(listaJugadores)):
 #         if listaJugadores[jugador].ia == True:
-#             print(listaJugadores[jugador].inventory)
+#             #print(listaJugadores[jugador].inventory)
