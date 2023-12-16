@@ -181,8 +181,10 @@ def openShop(playerList): #recibe una lista de jugadores
                             player -= 1
                             actualItem = None
                         else:
-                            player = len(playerList)-1
-                            actualItem = None
+                            if player != 0: 
+                                player = len(playerList)-1
+                                actualItem = None
+                            
                     elif boton.item == 'Next':
                         if player == len(playerList)-1:
                             running = False
@@ -216,5 +218,5 @@ def openShop(playerList): #recibe una lista de jugadores
 
 #DESCOMENTAR PARA EJECUTAR TIENDA DE MANERA INDEPENDIENTE
 
-#if __name__ == "__main__":
-#   openShop(listaJugadores)
+if __name__ == "__main__":
+   openShop(listaJugadores)
