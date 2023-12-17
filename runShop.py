@@ -27,8 +27,8 @@ def createItems():
     dmg = crearItems.item(1,'damage','+10 daño',100,params.dmg)
     health = crearItems.item(2,'health','+10 vida',100,params.health)
     bigStone = crearItems.item(3,'Big Projectile','piedra grande',4000,params.bigStone)
-    mediumStone = crearItems.item(4,"Medium Projectile",'piedra chica',2500,params.smallStone)
-    smallStone = crearItems.item(5,'Small Projectile','piedra mediana',1000,params.mediumStone)
+    mediumStone = crearItems.item(4,"Medium Projectile",'piedra mediana',2500,params.smallStone)
+    smallStone = crearItems.item(5,'Small Projectile','piedra chica',1000,params.mediumStone)
     return [shield,dmg,health,bigStone,mediumStone,smallStone]
 
 def buttons():
