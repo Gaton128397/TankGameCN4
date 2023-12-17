@@ -32,19 +32,15 @@ class TerrenoVariado:
                 # interpolar valor de y en los puntos faltantes
                 y = self.interpolate(x1, y1, x2, y2, x)
                 self.points.append([x, int(y)])
-                self.yPoints.append([int(y)])#????????????????????????
+                self.yPoints.append([int(y)])
         
         self.points.sort()
         
         for i in range(self.WIDTH):
-            #print("hola")
             for j in range(self.points[i][1],self.WIDTH+1):
                 self.hitPoints[(i,j)]=True
         
         self.drawTerrain()
-
-    # def setColor(self,color):
-        # self.color = color
 
     def updateImpact(self,position,proyectil,lista,listaPlayers,jugadoresDerrotados,turno):
         pos = []
@@ -81,8 +77,6 @@ class TerrenoVariado:
                                     tanquesDañadosDerecha[z] = True
                                     if z not in puntosImpactoDerecha:
                                         puntosImpactoDerecha[z] = (i, j) 
-                    #if(((i, j)) in self.hitPoints):
-                    #    del self.hitPoints[(i, j)]
         
         # Imprime los puntos de impacto
         
@@ -130,14 +124,12 @@ class TerrenoVariado:
         x_interp = np.linspace(0, self.WIDTH, 100)
         y_interp = np.interp(x_interp, [point[0] for point in self.points], [point[1] for point in self.points])
         points_interp = [(int(x), int(y)) for x, y in zip(x_interp, y_interp)]
-        #self.points = points_interp
 
         pygame.draw.polygon(self.surfTerrain, (self.color), [(0, self.HEIGHT)] + points_interp + [(self.WIDTH, self.HEIGHT)])
         pygame.draw.lines(self.surfTerrain, (self.color), False, points_interp, 5)
         self.surfTerrain.set_alpha()
         self.surfTerrain.set_colorkey((255,0,255))
         
-
     def getDiccionary(self):
         return self.hitPoints
     

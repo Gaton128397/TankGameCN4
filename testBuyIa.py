@@ -1,5 +1,5 @@
 from random import randint
-import crearItems#,params
+import crearItems
 params = ''
 class Player:
     def __init__(self,ia):
@@ -39,11 +39,11 @@ def createItems():
 
 def buyItemIA(listaItems,player):
     gastado = 0
-    # player.money = 10000
     while player.money > 0:
         item = listaItems[randint(0,5)]
         if player.money >= item.precio:
-            if item.ID == 0: #maximo de 1 escudo 
+            if item.ID == 0: 
+                #maximo de 1 escudo 
                 if player.inventory[item.ID] < 1:
                     player.inventory[item.ID] +=1
                     player.money -= item.precio  
@@ -55,11 +55,13 @@ def buyItemIA(listaItems,player):
 
             elif item.ID == 2:
                 player.money = player.money
-            elif item.ID == 1 and player.inventory[item.ID]  ==10 and player.money<1000:#en caso de que ya haya 10 de dano y el dinero sea menor que 1000, no se podra restar y entra en un ciclo infinito, con esto se evita
+            elif item.ID == 1 and player.inventory[item.ID]  ==10 and player.money<1000:
+                #en caso de que ya haya 10 de dano y el dinero sea menor que 1000, no se podra restar y entra en un ciclo infinito, con esto se evita
                 print('dinero jugador:',player.money)
                 break
             else:
-                if player.inventory[item.ID] < 10: #maximo de 10 de cada item
+                if player.inventory[item.ID] < 10: 
+                    #maximo de 10 de cada item
                     player.inventory[item.ID] +=1
                     player.money -= item.precio
                     gastado +=item.precio

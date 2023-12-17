@@ -11,7 +11,6 @@ class BarraVida:
         self.lifeSurface.fill((255,0,255))
         self.vida = 100  # Inicializamos la vida a 100
         self.corazones = ['health/full.png','health/half.png','health/none.png'] * 5  # Inicializamos los 5 corazones a llenos
-        # self.game_over_image = pygame.image.load('game_over.png')  # Cargamos la imagen de game over
         self.actualizarVida(0)
 
     def loadImagen(self, imagen, proporcionX, proporcionY, position):
@@ -64,8 +63,6 @@ class BarraVida:
                     else:  # Si no, el corazón estará lleno
                         self.corazones[num_corazon] = 'health/full.png'
             self.actualizarCorazones()  # Actualizamos los corazones en la barra de vida
-        # else:
-            #print("game over")
             
     def getVida(self):
         return self.vida

@@ -51,25 +51,23 @@ def pauseScreen(screen):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            #checkResize(event)
             for btns in bttns:
                 for btn in btns:
                     if btn.check_click(event):
                         #controles menu
                         if pantalla == 5:
                             if btn.item == 15:
-                                print('Vuelve al juego')
+                                #('Vuelve al juego')
                                 return None
                             elif btn.item == 16:
-                                print('Vuelve al menu')
+                                #('Vuelve al menu')
                                 return 4
                             elif btn.item == 17:
                                 controlesPausa(screen)
-                                print('Controles pausa')
-                                #return 1
+                                #('Controles pausa')
                                 pass
                             elif btn.item == 18:
-                                print('salir')
+                                #('salir')
                                 return -1
         screen.blit(background,(0,0))
         pygame.display.update()
@@ -86,30 +84,29 @@ def ganadorScreen(screen, colorGanador):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            #checkResize(event)
+            
             for btns in bttns:
                 for btn in btns:
                     if btn.check_click(event):
                         #controles menu
                        if pantalla == 2:
                             if btn.item == 2:
-                                ##print('Volver al menu')
+                                #('Volver al menu')
                                 return 4
                                 
                             elif btn.item == 3:
-                                ##print('Cierra el juego')
+                                #('Cierra el juego')
                                 return -1
+                            
         screen.blit(background,(0,0))
         screen.blit(tanqueGanador.surfaceTank,(screen.get_width()*0.46,screen.get_height()*0.65))
         pygame.display.update()
             
 def crearBotonPausa(listaProporciones):
-    #resizeButtons
     listaBotonesPantallas = []
     pantalla = []
     ID = 0
     x = 0
-    print(x)
     for screen in listaProporciones:
         for prop in screen:
             boton = Button(prop[x],prop[x+1],prop[x+2],prop[x+3],ID)
@@ -155,9 +152,3 @@ class imgTankWinner:
         pygame.draw.circle(self.surfaceTank, self.color, ((self.x - self.width/2, self.y+1 - self.height/2)), self.height/2 + 1) #circunferencia de la izquierda
         pygame.draw.circle(self.surfaceTank, self.color, ((self.x + self.width/2, self.y+1 - self.height/2)), self.height/2 + 1) #circunferencia de la derecha
         pygame.draw.line(self.surfaceTank, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), int(self.surfaceTank.get_height()*0.04)) #cañon
-
-# pygame.init()
-# width = params.size*16
-# height = params.size*9
-# screen = pygame.display.set_mode((width,height))
-# print(ganadorScreen(screen,(255,0,0)))

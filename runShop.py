@@ -4,16 +4,7 @@ from random import randint
 
 pygame.init()
 
-#variables
-
-# jugadorTest = player.Player()
-# jugadorTest2 = player.Player()
-# jugadorTest3 = player.Player()
-# jugadorTest4 = player.Player()
-# jugadorTest.ia = True
-# jugadorTest2.ia = True
-# listaJugadores = [jugadorTest,jugadorTest2,jugadorTest3,jugadorTest4]
-
+#Imagenes de las tiendas
 tiendaIni = pygame.image.load('Pantallas/shopIni.png')
 tiendaMid = pygame.image.load('Pantallas/shopMid.png')
 tiendaEnd = pygame.image.load('Pantallas/shopFin.png')
@@ -159,7 +150,8 @@ def buyItemIA(listaItems,player):
                         player.inventory[item.ID] = 1
                 elif item.ID == 2:
                     player.money = player.money
-                elif item.ID == 1 and player.inventory[item.ID]  ==10 and player.money<1000:#en caso de que ya haya 10 de dano y el dinero sea menor que 1000, no se podra restar y entra en un ciclo infinito, con esto se evita
+                elif item.ID == 1 and player.inventory[item.ID]  ==10 and player.money<1000:
+                    #en caso de que ya haya 10 de dano y el dinero sea menor que 1000, no se podra restar y entra en un ciclo infinito, con esto se evita
                     break
                 else:
                     if player.inventory[item.ID] < 10: #maximo de 10 de cada item
@@ -190,7 +182,6 @@ def openShop(playerList,ia): #recibe una lista de jugadores
                     buyItemIA(createItems(),playerList[player])
                 else:
                     jugadorNormal = player
-                    print('no es ia',jugadorNormal)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -210,6 +201,7 @@ def openShop(playerList,ia): #recibe una lista de jugadores
                         else:
                             actualItem = boton.item
                             selectItem(boton.item)
+                            
             if actualItem != None:
                 selectItem(actualItem)
             showInventory(playerList[jugadorNormal])
@@ -218,7 +210,7 @@ def openShop(playerList,ia): #recibe una lista de jugadores
             imagenTanque = gameScreens.imgTankWinner(playerList[jugadorNormal].tanque.color,0.08)
             params.screen.blit(imagenTanque.surfaceTank,(params.screen.get_width()*0.007,params.screen.get_height()*0.015))
             pygame.display.update()
-            # running = False
+
         else:
             params.screen.blit(pygame.transform.scale(actualImg, (params.size*16,params.size*9)), (0, 0))
             for event in pygame.event.get():
@@ -242,7 +234,6 @@ def openShop(playerList,ia): #recibe una lista de jugadores
                                 actualItem = None
                             else:
                                 if player != 0:
-                                    # player = len(playerList)-1
                                     actualItem = None
 
                         elif boton.item == 'Next':
@@ -279,11 +270,3 @@ def openShop(playerList,ia): #recibe una lista de jugadores
             params.screen.blit(imagenTanque.surfaceTank,(params.screen.get_width()*0.007,params.screen.get_height()*0.015))
             pygame.display.update()
     return 12
-
-#DESCOMENTAR PARA EJECUTAR TIENDA DE MANERA INDEPENDIENTE
-
-# if __name__ == "__main__":
-#     openShop(listaJugadores)
-#     for jugador in range(len(listaJugadores)):
-#         if listaJugadores[jugador].ia == True:
-#             #print(listaJugadores[jugador].inventory)

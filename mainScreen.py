@@ -1,5 +1,6 @@
 import functions,proporciones
-#pantalla inicial 
+
+#pantalla en la cual inicia la ejecucion
 pantalla = 4
 while pantalla != -1:
     try:

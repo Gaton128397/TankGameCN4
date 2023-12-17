@@ -7,8 +7,6 @@ class gameLogic:
         self.WIDTH = params.size*16
         self.HEIGHT = params.size*9
         self.screen = windowGame
-        #WIDTH = params.size*16
-        #HEIGHT = params.size*9
         #variables de entorno
         self.mapa = mapa
         self.gravity = self.mapa.getMap()[1]
@@ -18,7 +16,6 @@ class gameLogic:
         self.backGround = pygame.Surface((self.WIDTH,self.HEIGHT))
         self.mapaImg = pygame.transform.scale(self.mapa.getMap()[0],(self.WIDTH,self.HEIGHT))
 
-        # drawFunctions.backgroundDraw(self.backGround,self.mapaIMG)
         self.backGround.blit(self.mapa.getMap()[0],(0,0))
         self.screen.blit(self.backGround,(0,0))
         
@@ -80,7 +77,7 @@ class gameLogic:
         for i in range(len(self.listaJugadores)):
             self.screen.blit(self.listaJugadores[i].surfaceTank,(self.listaJugadores[i].getPos()))
         
-    def actualizarPantallasJuego(self):#unnamed update
+    def actualizarPantallasJuego(self):
         self.screen.blit(self.backGround,(0,0))
         self.screen.blit(self.terrain.surfTerrain,(0,0))
         self.screen.blit(self.estelaSurface,(0,0))
@@ -92,19 +89,16 @@ class gameLogic:
         self.info.actualizarAngulo(self.listaJugadores[turno].angulo)
         self.info.actualizarDistancia(self.listaJugadores[turno].distancia)
         self.info.actualizarTanque(self.listaJugadores[turno].color)
-        #self.info.actualizarEscudo(self.listaPlayers[player.playerID].inventory[0])
-        #self.info.actualizarDmg(player.damage)
-        #self.info.actualizarBotellas(player.inventory[0])
         
         if balaID == 5: #bala 1
             self.info.actualizarTipoBala("60")
             self.info.actualizarCantidadBalas(self.listaPlayers[self.listaJugadores[turno].playerID].inventory[balaID])    
         elif balaID == 4:
-            balaID = 4#mediana
+            balaID = 4 #mediana
             self.info.actualizarTipoBala("80")
             self.info.actualizarCantidadBalas(self.listaPlayers[self.listaJugadores[turno].playerID].inventory[balaID])    
         elif balaID == 3:
-            balaID = 3#grande
+            balaID = 3 #grande
             self.info.actualizarTipoBala("105")
             self.info.actualizarCantidadBalas(self.listaPlayers[self.listaJugadores[turno].playerID].inventory[balaID])
             
@@ -120,19 +114,17 @@ class gameLogic:
     
     def checkearTurno(self,listaDeTurnos,turnos,jugadoresDerrotados,balaID): #0 para turno actual, 1 para turno anterior
         if len(self.listaJugadores) == 1:
-            #print("jugador gano")
             #mostrar pantalla de que el jugador gano
             summary = scoreBoard.scoreBoardShow(self.listaPlayers,self.screen, self.coloresJuagadores,"Pantallas/scorePartidaRound.png",False)
             summary.sb_run()
             summary = None
             return False
         elif self.cantidadbullets <= 0:
-            #print("jugadores sin balas")
+            #mostrar pantalla de que se los jugadores se quedaron sin balas
             summary = scoreBoard.scoreBoardShow(self.listaPlayers,self.screen, self.coloresJuagadores,"Pantallas/scorePartidaRound.png",False)
             summary.sb_run()
             summary = None
-            
-            #mostrar pantalla de que se los jugadores se quedaron sin balas
+                 
             return False
         elif jugadoresDerrotados:
             for i in range(len(jugadoresDerrotados)):
@@ -153,7 +145,6 @@ class gameLogic:
             jugadoresDerrotados.clear()
             return True
         elif (not listaDeTurnos) and (turnos[0] != turnos[1]):
-            #print("no hay turnos")
             self.definirTurnos(listaDeTurnos)
             cambioDeTurno = random.choice(listaDeTurnos)
             while cambioDeTurno == turnos[1]:
@@ -165,19 +156,11 @@ class gameLogic:
             listaDeTurnos.remove(turnos[0])
             return True
         elif turnos[0] != turnos[1]:
-            #print("\n--------------turno antes de cambiar----------------")
-            #print("turno actual: ",turnos[0])
-            #print("turno anterior: ",turnos[1])
-            #print("Lista de turnos"+str(listaDeTurnos))
             turnos[0] = random.choice(listaDeTurnos)
             turnos[1] = turnos[0]
             self.listaJugadores[turnos[0]].turnoTanque(True)
             self.actualizarInfo(turnos[0],balaID)
             listaDeTurnos.remove(turnos[0])
-            #print("\n--------------turno cambiado----------------")
-            #print("turno actual: ",turnos[0])
-            #print("turno anterior: ",turnos[1])
-            #print("Lista de turnos"+str(listaDeTurnos))
             return True
         else:
             return True
@@ -193,11 +176,9 @@ class gameLogic:
         
     def pauseScreen(self):
         pass
-        #print("pause state")
     
     def loadingScreen():
         pass
-        #print("loading")
     
     def cantidadBalas(self):
         cantidadBalas = 0
@@ -226,7 +207,6 @@ class gameLogic:
         
     def run(self,clock):
         running = True
-        #print(self.listaJugadores[0].getPos())
         playerPhysics.playerSpawn(self.screen,self.listaJugadores,self.terrain,drawFunctions.returnSurface([self.backGround,self.terrain.surfTerrain]),self.gravity)
         surfaces = [self.backGround,self.terrain.surfTerrain,self.info.bloque,self.estelaSurface,self.powerBar.poweBarSurface,self.surfaceWind]
         listaTurnos = []
@@ -295,7 +275,7 @@ class gameLogic:
                             if event.type == pygame.MOUSEBUTTONDOWN:
                                 if pygame.mouse.get_pressed()[0]:
                                     pass
-                                    #print(pygame.mouse.get_pos())
+                                    
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_RETURN: #r
                                     #debe revisar que haya una bala seleccionada o partir de la mas chica
@@ -314,7 +294,7 @@ class gameLogic:
                                             chooseWind = False
                                         else:
                                             pass
-                                            #print('no quedan')
+                                            
                                         #cuando dispara se saca el jugador de la lista de turnos
                                 
                                 if event.key == pygame.K_1: #bala 1
@@ -343,7 +323,7 @@ class gameLogic:
                                     if exitCmnd == 4:
                                         return 4
                                     pass
-                                    #print('pausa') #yo (mariano) lo arreglo dsps
+                                    
                         if pressed[pygame.K_LEFT]:
                             jugador.actualizarAngulo(pygame.K_LEFT)
                             self.info.actualizarAngulo(jugador.angulo)
@@ -355,7 +335,7 @@ class gameLogic:
                             potencia = int(self.powerBar.carga)
                         else:
                             self.powerBar.resetear()
-                        ##print("potencia: " + str(potencia))
+                       
                     else:
                         self.listaJugadores[turnos[0]].turnoTanque(False)
                         turnos[0] = -1
@@ -389,12 +369,11 @@ def testgame():#Logica de mainScreen()
                 mapa = ["Mapas/galaxia.png",9.8]
                 functions.resetTanks(listaJugadores,resetTanks,window)
                 functions.anhadirDiezmo(listaJugadores)
+                
                 #tienda 
                 game = gameLogic(window,listaJugadores,mapa)
                 game.run(clock)
                 partidosActuales += 1
-        #print("pantaalla actual: "+str(pantallaActual))
-        ##print("not reach")
+        
         clock.tick(60)
         pygame.display.update()
-#testgame()

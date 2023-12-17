@@ -3,9 +3,7 @@ import pygame, params
 def backgroundDraw(screen,ruta):
     WIDTH = params.size*16
     HEIGHT = params.size*9
-    print(ruta)
     backGr = pygame.image.load(ruta)
-    # print(backGr)
     backGr = pygame.transform.scale(backGr,(WIDTH,HEIGHT))
     screen.blit(backGr,(0,0))
     
