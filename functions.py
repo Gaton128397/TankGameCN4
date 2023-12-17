@@ -166,7 +166,8 @@ def run(img,propBotonesPantalla,pantalla):
                             if btn.item == 4:
                                 ##print('Confirmar seleccion')
                                 ##print('parte del juego')
-                                return 12
+                                if params.mapa != None:
+                                    return 12
                             elif btn.item == 5:
                                 params.mapa = random.choice(crearMapas())
                                 ##print('mapa random')
@@ -359,9 +360,29 @@ def determinarGanador(listaJugadores):
     for i in range(len(listaKD)):
         if listaKD[i].generalkda[1] < mayorBajas.generalkda[1]:
             mayorBajas = listaKD[i]
-    for i in range(len(listaJugadores)):
-        if mayorBajas == listaJugadores[i]:
-            return i
+    empate = True
+    for i in range(len(listaKD)):
+        for j in range(len(listaKD)):
+            if listaKD[i].generalkda[1] != listaKD[j].generalkda[1]:
+                empate = False
+    if not empate:
+        for i in range(len(listaJugadores)):
+            if mayorBajas == listaJugadores[i]:
+                return i
+    else:
+        mayorDinero = listaJugadores[0]
+        for i in range(len(listaJugadores)):
+            if listaJugadores[i].money > mayorDinero.money:
+                mayorDinero = listaJugadores[i]
+        for i in range(len(listaJugadores)):
+            if listaJugadores[i].money == mayorDinero.money:
+                listaKD.append(listaJugadores[i])
+        for i in range(len(listaKD)):
+            if listaKD[i].generalkda[1] < mayorDinero.generalkda[1]:
+                mayorDinero = listaKD[i]
+        for i in range(len(listaJugadores)):
+            if mayorDinero == listaJugadores[i]:
+                return i
 def devolverColores(listaColores):
     colores = []
     for i in range(len(listaColores)):

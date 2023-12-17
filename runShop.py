@@ -1,4 +1,4 @@
-import pygame, sys,crearItems,params,player,time,functions
+import pygame, sys,crearItems,params,player,time,functions, gameScreens
 from button import Button
 from random import randint
 
@@ -215,6 +215,8 @@ def openShop(playerList,ia): #recibe una lista de jugadores
             showInventory(playerList[jugadorNormal])
             showStats(playerList[jugadorNormal])
             showMoney(playerList[jugadorNormal])
+            imagenTanque = gameScreens.imgTankWinner(playerList[jugadorNormal].tanque.color,0.08)
+            params.screen.blit(imagenTanque.surfaceTank,(params.screen.get_width()*0.007,params.screen.get_height()*0.015))
             pygame.display.update()
             # running = False
         else:
@@ -273,6 +275,8 @@ def openShop(playerList,ia): #recibe una lista de jugadores
             showInventory(playerList[player])
             showStats(playerList[player])
             showMoney(playerList[player])
+            imagenTanque = gameScreens.imgTankWinner(playerList[player].tanque.color,0.08)
+            params.screen.blit(imagenTanque.surfaceTank,(params.screen.get_width()*0.007,params.screen.get_height()*0.015))
             pygame.display.update()
     return 12
 

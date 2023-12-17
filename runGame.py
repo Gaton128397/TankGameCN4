@@ -20,7 +20,6 @@ class gameLogic:
 
         # drawFunctions.backgroundDraw(self.backGround,self.mapaIMG)
         self.backGround.blit(self.mapa.getMap()[0],(0,0))
-        print('a')
         self.screen.blit(self.backGround,(0,0))
         
         #Terreno
