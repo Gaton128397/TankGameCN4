@@ -3,6 +3,7 @@ import crearItems
 params = ''
 class Player:
     def __init__(self,ia):
+        # Inicialización de la clase Player
         self.money = 10000
         self.health = 0
         self.dmg = 0
@@ -22,13 +23,16 @@ class Player:
         self.generalkda = [0,0]#indice 0 points, indice 1 kills, indice 2 deaths
         
     def asignTank(self,tank):
+        # Asigna un tanque al jugador
         self.tanque = tank
         
     def returnKDA(self):
+        # Devuelve las estadísticas KDA del jugador
         return self.kda
     
 def createItems():
     '''CREARITEMS'''
+    # Crea una lista de objetos de tipo 'item'
     shield = crearItems.item(0,'shield','reduce daño (1 uso)',2500,'shield')
     dmg = crearItems.item(1,'damage','+10 daño',100,'shield')
     health = crearItems.item(2,'health','+10 vida',100,'shield')
@@ -56,7 +60,7 @@ def buyItemIA(listaItems,player):
             elif item.ID == 2:
                 player.money = player.money
             elif item.ID == 1 and player.inventory[item.ID]  ==10 and player.money<1000:
-                #en caso de que ya haya 10 de dano y el dinero sea menor que 1000, no se podra restar y entra en un ciclo infinito, con esto se evita
+                # Evitar ciclo infinito cuando ya hay 10 de daño y el dinero es menor que 1000
                 print('dinero jugador:',player.money)
                 break
             else:
