@@ -26,3 +26,10 @@ def returnSurface(matriz):
             surface.blit(matriz[i],(0,0))
     
     return surface
+
+def blitIndicador(screen,indicador,tLetra):
+    screen.fill((255,255,255))
+    texto = str(indicador)
+    fuente = pygame.font.Font(None, int(screen.get_width() *tLetra))
+    superficie_texto = fuente.render(texto, True, (0, 0, 0))
+    screen.blit(superficie_texto, (int(screen.get_width() *0.2), int(screen.get_height() *0.07)))

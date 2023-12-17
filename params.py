@@ -1,8 +1,11 @@
 from pygame import display, image
 playersNumber = 2
 roundNumber = 1
+<<<<<<< HEAD
 
 gravityConstant = 9.8
+=======
+>>>>>>> origin/gaton
 size = 100
 screen = display.set_mode((size*16, size*9))
 #icons
