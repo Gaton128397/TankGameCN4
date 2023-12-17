@@ -1,4 +1,4 @@
-import math, params, player, nTank, random, runGame, gameScreens, drawFunctions
+import math, params, player, nTank, random, runGame, gameScreens, drawFunctions, scoreBoard
 import pygame,sys,runShop
 from button import Button
 from createMap import Map
@@ -315,6 +315,7 @@ def run(img,propBotonesPantalla,pantalla):
             
         elif pantalla == 12:
             ##print('Juego')
+            exitCmd = 0
             window = params.screen
             partidosActuales = 0
             listaJugadores = []
@@ -329,14 +330,50 @@ def run(img,propBotonesPantalla,pantalla):
                 runShop.openShop(listaJugadores,ia)
                 gameScreens.pantallaEmpiezaJuego(window)
                 game = runGame.gameLogic(window,listaJugadores,params.mapa)
-                game.run(clock)
+                exitCmd = game.run(clock)
+                if exitCmd == -1:
+                    return -1
+                if exitCmd == 4:
+                    return 4
                 partidosActuales += 1
-            return 4
+            actualizarKDAFinal(listaJugadores)
+            summary = scoreBoard.scoreBoardShow(listaJugadores,window, devolverColores(variableReseteo),"Pantallas/scorePartidaGlobal.png",True)
+            summary.sb_run()
+            return gameScreens.ganadorScreen(window,variableReseteo[determinarGanador(listaJugadores)][0])
+        
         else:
             ##print(pantalla)
             params.screen.blit(background, (0, 0))
             pygame.display.flip()
             clock.tick(60)
+
+def determinarGanador(listaJugadores):
+    listaKD = []
+    mayorBajas = listaJugadores[0]
+    for i in range(len(listaJugadores)):
+        if listaJugadores[i].generalkda[0] > mayorBajas.generalkda[0]:
+            mayorBajas = listaJugadores[i]
+    for i in range(len(listaJugadores)):
+        if listaJugadores[i].generalkda[0] == mayorBajas.generalkda[0]:
+            listaKD.append(listaJugadores[i])
+    for i in range(len(listaKD)):
+        if listaKD[i].generalkda[1] < mayorBajas.generalkda[1]:
+            mayorBajas = listaKD[i]
+    for i in range(len(listaJugadores)):
+        if mayorBajas == listaJugadores[i]:
+            return i
+def devolverColores(listaColores):
+    colores = []
+    for i in range(len(listaColores)):
+        colores.append(listaColores[i][0])
+    return colores
+
+def actualizarKDAFinal(listaJugadores):
+    for i in range(len(listaJugadores)):
+        listaJugadores[i].generalkda[0] += listaJugadores[i].kda[0]
+        listaJugadores[i].generalkda[1] += listaJugadores[i].kda[1]
+        listaJugadores[i].kda[0] = 0
+        listaJugadores[i].kda[1] = 0
 
 def crearButtons(listaProporciones):
     #resizeButtons

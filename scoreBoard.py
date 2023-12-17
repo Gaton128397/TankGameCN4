@@ -40,7 +40,7 @@ class imgTank:
         pygame.draw.line(self.surfaceTank, self.color, (self.xCanon1, self.yCanon1), (self.xCanon2, self.yCanon2), int(self.surfaceTank.get_height()*0.04)) #cañon
         
     
-class scoreBoard():
+class scoreBoardShow():
     def __init__(self,listaJugadores, window,colors,ruta,general):
         self.WIDTH = params.size*16
         self.HEIGHT = params.size*9

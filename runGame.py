@@ -1,5 +1,5 @@
 from random import randint
-import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerPhysics, ninfoBlock, functions, nProyectil, scoreBoard, npowerBar
+import pygame,nTank,nTerrain,sys, params, drawFunctions, player, random, playerPhysics, ninfoBlock, functions, nProyectil, scoreBoard, npowerBar, gameScreens
 
 class gameLogic:
     
@@ -123,15 +123,15 @@ class gameLogic:
         if len(self.listaJugadores) == 1:
             #print("jugador gano")
             #mostrar pantalla de que el jugador gano
-            #summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
-            #summary.sb_run()
-            #summary = None
+            summary = scoreBoard.scoreBoardShow(self.listaPlayers,self.screen, self.coloresJuagadores,"Pantallas/scorePartidaRound.png",False)
+            summary.sb_run()
+            summary = None
             return False
         elif self.cantidadbullets <= 0:
             #print("jugadores sin balas")
-            #summary = scoreBoard.scoreBoard(self.listaPlayers,self.screen, self.coloresJuagadores,"imgs/pantallas/scorePartida.png",False)
-            #summary.sb_run()
-            #summary = None
+            summary = scoreBoard.scoreBoardShow(self.listaPlayers,self.screen, self.coloresJuagadores,"Pantallas/scorePartidaRound.png",False)
+            summary.sb_run()
+            summary = None
             
             #mostrar pantalla de que se los jugadores se quedaron sin balas
             return False
@@ -337,6 +337,12 @@ class gameLogic:
                                     self.listaJugadores[turnos[0]].turnoTanque(False)
                                     turnos[0] = -1
                                 if event.key == pygame.K_ESCAPE:
+                                    exitCmnd = 0
+                                    exitCmnd = gameScreens.pauseScreen(self.screen)
+                                    if exitCmnd == -1:
+                                        return -1
+                                    if exitCmnd == 4:
+                                        return 4
                                     pass
                                     #print('pausa') #yo (mariano) lo arreglo dsps
                         if pressed[pygame.K_LEFT]:
