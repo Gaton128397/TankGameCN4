@@ -210,8 +210,12 @@ class gameLogic:
     
     def comprobarBalasJugador(self,jugador):
         if self.listaPlayers[jugador.playerID].inventory[3] <= 0 and self.listaPlayers[jugador.playerID].inventory[4] <= 0 and self.listaPlayers[jugador.playerID].inventory[5] <= 0:
+            print("jugador sin balas")
             self.listaPlayers[jugador.playerID].tanque.ammo = False
-        
+    
+    def comprobarBalasTodos(self):
+        for i in range(len(self.listaJugadores)):
+            self.comprobarBalasJugador(self.listaJugadores[i])
     
     def cantidadBalas(self):
         cantidadBalas = 0
@@ -240,6 +244,7 @@ class gameLogic:
         wind = randint(-10,10)
         self.actualizarViento(wind)
         anguloIA = -1
+        self.comprobarBalasTodos()
         while running:
             
             if self.checkearTurno(listaTurnos,turnos,jugadoresDerrotados,balaID):
@@ -279,6 +284,7 @@ class gameLogic:
                             else:
                                 balaID = randint(3,5)
                     else:
+                        self.listaJugadores[turnos[0]].turnoTanque(False)
                         turnos[0] = -1
                 else:
                     if jugador.ammo:
@@ -328,6 +334,7 @@ class gameLogic:
                                     self.info.actualizarCantidadBalas(self.listaPlayers[jugador.playerID].inventory[balaID])
                                 
                                 if event.key == pygame.K_0:
+                                    self.listaJugadores[turnos[0]].turnoTanque(False)
                                     turnos[0] = -1
                                 if event.key == pygame.K_ESCAPE:
                                     pass
@@ -345,6 +352,7 @@ class gameLogic:
                             self.powerBar.resetear()
                         ##print("potencia: " + str(potencia))
                     else:
+                        self.listaJugadores[turnos[0]].turnoTanque(False)
                         turnos[0] = -1
             else:
                 running = False

@@ -1,4 +1,4 @@
-import math, params, player, nTank, random, runGame, gameScreens
+import math, params, player, nTank, random, runGame, gameScreens, drawFunctions
 import pygame,sys,runShop
 from button import Button
 from createMap import Map
@@ -124,9 +124,7 @@ def checkResize(event):
 def run(img,propBotonesPantalla,pantalla):
     clock = pygame.time.Clock()
     img1 = img
-    screen = pantalla
-    mapa = None
-    modo = None
+    
 
     while True:
         
@@ -247,15 +245,14 @@ def run(img,propBotonesPantalla,pantalla):
 
                         #settingsGame     #METER EN JUEGO GASTON
                         if pantalla == 9:
+                            print("pantalla 9")
                             if btn.item == 24:
-                                print('Confirmar eleccion')
                                 print('Confirmar eleccion')
                                 return 3
                             elif btn.item == 25:
-                                params.playersNumber += 1
-                                print('Aumentar Jugadores')
-                                params.playersNumber += 1
-                                print('Aumentar Jugadores')
+                                if params.playersNumber < 6:
+                                    params.playersNumber += 1
+                                    print('Aumentar Jugadores')	
                             elif btn.item == 26:
                                 # Verificar si hay al menos 2 jugadores antes de disminuir
                                 if params.playersNumber > 2:
@@ -263,15 +260,7 @@ def run(img,propBotonesPantalla,pantalla):
                                     print('Disminuir Jugadores')
                                 else:
                                     print('No se puede disminuir más. Mínimo 2 jugadores.')
-                                # Verificar si hay al menos 2 jugadores antes de disminuir
-                                if params.playersNumber > 2:
-                                    params.playersNumber -= 1
-                                    print('Disminuir Jugadores')
-                                else:
-                                    print('No se puede disminuir más. Mínimo 2 jugadores.')
                             elif btn.item == 27:
-                                params.roundNumber += 1
-                                print('Aumentar Rondas')
                                 params.roundNumber += 1
                                 print('Aumentar Rondas')
                             elif btn.item == 28:
@@ -305,7 +294,26 @@ def run(img,propBotonesPantalla,pantalla):
                             return 12
 
                         #PANTALLA PROVISORIA DE JUEGO     #METER EN JUEGO GASTON
-        if pantalla == 12:
+        if pantalla == 9:
+            width = params.size*16
+            height = params.size*9
+            surfaceIndicadorJugadores = pygame.Surface((width*0.03,height*0.05))
+            surfaceIndicadorJugadores.fill((255,255,255))
+            surfaceIndicadorJugadores.set_alpha()
+            surfaceIndicadorJugadores.set_colorkey((255,255,255))
+            surfaceIndicadorRondas = pygame.Surface((width*0.035,height*0.05))
+            surfaceIndicadorRondas.fill((255,255,255))
+            surfaceIndicadorRondas.set_alpha()
+            surfaceIndicadorRondas.set_colorkey((255,255,255))
+            drawFunctions.blitIndicador(surfaceIndicadorJugadores,params.playersNumber,1.3)
+            drawFunctions.blitIndicador(surfaceIndicadorRondas,params.roundNumber,1)
+            params.screen.blit(background, (0, 0))
+            params.screen.blit(surfaceIndicadorJugadores,(width*0.487,height*0.4))
+            params.screen.blit(surfaceIndicadorRondas,(width*0.48,height*0.84))
+            pygame.display.flip()
+            clock.tick(60)
+            
+        elif pantalla == 12:
             ##print('Juego')
             window = params.screen
             partidosActuales = 0
@@ -324,10 +332,11 @@ def run(img,propBotonesPantalla,pantalla):
                 game.run(clock)
                 partidosActuales += 1
             return 4
-        ##print(pantalla)
-        params.screen.blit(background, (0, 0))
-        pygame.display.flip()
-        clock.tick(60)
+        else:
+            ##print(pantalla)
+            params.screen.blit(background, (0, 0))
+            pygame.display.flip()
+            clock.tick(60)
 
 def crearButtons(listaProporciones):
     #resizeButtons
