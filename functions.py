@@ -300,48 +300,42 @@ def run(img,propBotonesPantalla,pantalla):
             actualizarKDAFinal(listaJugadores)
             summary = scoreBoard.scoreBoardShow(listaJugadores,window, devolverColores(variableReseteo),"Pantallas/scorePartidaGlobal.png",True)
             summary.sb_run()
-            return gameScreens.ganadorScreen(window,variableReseteo[determinarGanador(listaJugadores)][0])
+            return gameScreens.ganadorScreen(window,variableReseteo[definirGanador(listaJugadores)][0])
         
         else:
             params.screen.blit(background, (0, 0))
             pygame.display.flip()
             clock.tick(60)
 
-def determinarGanador(listaJugadores):
-    listaKD = []
-    mayorBajas = listaJugadores[0]
-    for i in range(len(listaJugadores)):
-        if listaJugadores[i].generalkda[0] > mayorBajas.generalkda[0]:
-            mayorBajas = listaJugadores[i]
-    for i in range(len(listaJugadores)):
-        if listaJugadores[i].generalkda[0] == mayorBajas.generalkda[0]:
-            listaKD.append(listaJugadores[i])
-    for i in range(len(listaKD)):
-        if listaKD[i].generalkda[1] < mayorBajas.generalkda[1]:
-            mayorBajas = listaKD[i]
-    empate = True
-    for i in range(len(listaKD)):
-        for j in range(len(listaKD)):
-            if listaKD[i].generalkda[1] != listaKD[j].generalkda[1]:
-                empate = False
-    if not empate:
-        for i in range(len(listaJugadores)):
-            if mayorBajas == listaJugadores[i]:
-                return i
+def definirGanador(listaDeJugadores):
+    listaProporcionKD = []
+    for i in range(len(listaDeJugadores)):
+        if listaDeJugadores[i].generalkda[1] != 0:
+            listaProporcionKD.append(listaDeJugadores[i].generalkda[0]/listaDeJugadores[i].generalkda[1])
+        else:
+            listaProporcionKD.append(listaDeJugadores[i].generalkda[0]) # o cualquier otro valor que quieras asignar cuando las muertes son 0
+    print(listaProporcionKD)
+    maxKD = max(listaProporcionKD)
+    print(maxKD)
+    listaDeJugadoresEmpatados = []
+    for i in range(len(listaDeJugadores)):
+        if listaProporcionKD[i] == maxKD:
+            listaDeJugadoresEmpatados.append(i)
+    
+    if len(listaDeJugadoresEmpatados) == 1:
+        print("El ganador es el jugador", listaDeJugadoresEmpatados[0])
+        return listaDeJugadoresEmpatados[0]
     else:
-        mayorDinero = listaJugadores[0]
-        for i in range(len(listaJugadores)):
-            if listaJugadores[i].money > mayorDinero.money:
-                mayorDinero = listaJugadores[i]
-        for i in range(len(listaJugadores)):
-            if listaJugadores[i].money == mayorDinero.money:
-                listaKD.append(listaJugadores[i])
-        for i in range(len(listaKD)):
-            if listaKD[i].generalkda[1] < mayorDinero.generalkda[1]:
-                mayorDinero = listaKD[i]
-        for i in range(len(listaJugadores)):
-            if mayorDinero == listaJugadores[i]:
-                return i
+        maxMoney = 0
+        jugadorGanador = 0
+        for i in range(len(listaDeJugadoresEmpatados)):
+            if listaDeJugadores[listaDeJugadoresEmpatados[i]].money > maxMoney:
+                maxMoney = listaDeJugadores[listaDeJugadoresEmpatados[i]].money
+                jugadorGanador = listaDeJugadoresEmpatados[i]
+        print("El ganador es el jugador", jugadorGanador)
+        return jugadorGanador
+        #print("Hay un empate entre los jugadores", listaDeJugadoresEmpatados)
+
 def devolverColores(listaColores):
     colores = []
     for i in range(len(listaColores)):
