@@ -262,8 +262,9 @@ def run(img,propBotonesPantalla,pantalla):
                                 else:
                                     print('No se puede disminuir más. Mínimo 2 jugadores.')
                             elif btn.item == 27:
-                                params.roundNumber += 1
-                                print('Aumentar Rondas')
+                                if params.roundNumber < 20:
+                                    params.roundNumber += 1
+                                    print('Aumentar Rondas')
                             elif btn.item == 28:
                                 # Verificar si hay al menos 1 ronda antes de disminuir
                                 if params.roundNumber > 1:
