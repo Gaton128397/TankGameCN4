@@ -1,4 +1,4 @@
-import math, params, player, nTank, random, runGame, gameScreens, drawFunctions, scoreBoard
+import math, params, player, nTank, random, runGame, gameScreens, drawFunctions, gameScreens, scoreBoard
 import pygame,sys,runShop
 from button import Button
 from createMap import Map
@@ -328,7 +328,7 @@ def run(img,propBotonesPantalla,pantalla):
                 resetTanks(listaJugadores,variableReseteo,window)
                 anhadirDiezmo(listaJugadores)
                 runShop.openShop(listaJugadores,ia)
-                gameScreens.pantallaEmpiezaJuego(window)
+                gameScreens.pantallaEmpiezaJuego(window, variableReseteo)
                 game = runGame.gameLogic(window,listaJugadores,params.mapa)
                 exitCmd = game.run(clock)
                 if exitCmd == -1:
