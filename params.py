@@ -5,7 +5,7 @@ playersNumber = 2
 roundNumber = 1
 
 #Pantalla
-size = 100
+size = 70
 screen = display.set_mode((size*16, size*9))
 
 #Icons items
